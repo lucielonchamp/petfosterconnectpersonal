@@ -23,7 +23,6 @@ Pet Foster Connect est une application web conçue pour simplifier et accélére
 
 ## 🚀 Technologies Utilisées
 
-*   [Spécifiez les technologies utilisées, par exemple :]
     *   Frontend : React
     *   Backend : Node.js
     *   Database : PostgreSQL
