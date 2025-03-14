@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node src/index.ts",
+    "watch": "tsx watch ./src/index.ts",
     "build": "tsc",
     "serve": "node dist/index.js"
   },
@@ -16,6 +17,7 @@
     "@types/node": "^22.13.10",
     "express": "^4.21.2",
     "ts-node": "^10.9.2",
+    "tsx": "^4.19.3",
     "typescript": "^5.8.2"
   }
 }
