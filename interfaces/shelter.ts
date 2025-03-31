@@ -1,7 +1,7 @@
 interface Shelter {
   id: string;
   name: string;
-  location: string;
+  localisation: string;
   description?: string;
   user_id: string;
   created_at: Date;

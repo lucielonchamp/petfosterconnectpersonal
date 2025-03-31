@@ -1,7 +1,7 @@
 interface Foster {
   id: string;
-  firstName: string;
-  lastName: string;
+  firstname: string;
+  lastname: string;
   address: string;
   user_id: string;
   created_at: Date;
