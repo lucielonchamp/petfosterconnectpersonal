@@ -12,6 +12,4 @@ RUN npx prisma generate
 
 EXPOSE 3000
 
-# watch permet d'utiliser tsx watch ./src/index.ts qui permet d'exec un serveur typescript en mode watch avec hot reload
-
-CMD ["npm", "run", "watch", "--host", "0.0.0.0"]
+CMD sh -c "npx prisma db push --accept-data-loss && npx prisma db seed && npm run watch --host 0.0.0.0"
