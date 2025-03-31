@@ -8,43 +8,37 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
+  id        String @id @default(uuid())
+  email     String @unique
   password  String
-  role      Role     @relation(fields: [roleId], references: [id])
+  role      Role     @relation(fields: [roleId], references: [id])     
   roleId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  Shelter   Shelter?
-  Foster    Foster[]
 }
 
 model Role {
-  id        String   @id @default(uuid())
-  name      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  User      User[]
+  id          String @id @default(uuid()) 
+  name        String @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Animal {
-  id          String       @id @default(uuid())
-  name        String
-  picture     String
-  specie      Specie       @relation(fields: [specieId], references: [id])
-  specieId    String
-  breed       String
-  sex         String
-  age         Int
-  description String
-  status      AnimalStatus
-  shelter     Shelter      @relation(fields: [shelterId], references: [id])
-  shelterId   String
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  Foster      Foster?      @relation(fields: [fosterId], references: [id])
-  fosterId    String?
-  Request     Request[]
+  id           String @id @default(uuid()) 
+  name         String
+  picture      String
+  specie       Specie @relation(fields : [specieId], references: [id])
+  specieId     String
+  breed        String
+  sex          String
+  age          Int
+  description  String
+  status       AnimalStatus
+  shelter      Shelter  @relation(fields: [shelterId], references: [id])
+  shelterId    String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 enum AnimalStatus {
@@ -54,29 +48,28 @@ enum AnimalStatus {
 }
 
 model Shelter {
-  id          String    @id @default(uuid())
-  name        String    @unique
-  location    String
-  description String?
-  user        User      @relation(fields: [userId], references: [id])
-  userId      String    @unique
-  animals     Animal[]
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  Request     Request[]
+  id           String @id @default(uuid()) 
+  name         String @unique
+  location     String
+  description  String?
+  user         User     @relation(fields: [userId], references: [id])     
+  userId       String @unique
+  animals      Animal[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
+
 model Foster {
-  id        String    @id @default(uuid())
-  firstName String
-  lastName  String
-  address   String
-  user      User      @relation(fields: [userId], references: [id])
-  userId    String
-  animals   Animal[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  Request   Request[]
+  id           String @id @default(uuid()) 
+  firstName    String 
+  lastName     String 
+  address      String
+  user         User     @relation(fields: [userId], references: [id])     
+  userId       String
+  animals      Animal[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 enum RequestStatus {
@@ -86,19 +79,19 @@ enum RequestStatus {
 }
 
 model Request {
-  id             String        @id @default(uuid())
-  status         RequestStatus
+  id             String @id @default(uuid())
+  status         RequestStatus 
   fosterComment  String?
   shelterComment String?
-  answeredDate   DateTime      @default(now())
-  createdAt      DateTime      @default(now())
-  shelter        Shelter       @relation(fields: [shelterId], references: [id])
+  answeredDate   Datetime @default(now())
+  createdAt      DateTime @default(now())
+  shelter        Shelter  @relation(fields: [shelterId], references: [id])
   shelterId      String
-  foster         Foster        @relation(fields: [fosterId], references: [id])
+  foster         Foster  @relation(fields: [fosterId], references: [id])
   fosterId       String
-  animal         Animal        @relation(fields: [animalId], references: [id])
+  animal         Animal  @relation(fields: [animalId], references: [id])
   animalId       String
-  updatedAt      DateTime      @updatedAt
+  updatedAt      DateTime @updatedAt
 }
 
 enum SpecieNameEnum {
@@ -110,9 +103,8 @@ enum SpecieNameEnum {
 }
 
 model Specie {
-  id        String         @id @default(uuid())
-  name      SpecieNameEnum
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @updatedAt
-  Animal    Animal[]
+  id           String @id @default(uuid())
+  name         SpecieNameEnum
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
