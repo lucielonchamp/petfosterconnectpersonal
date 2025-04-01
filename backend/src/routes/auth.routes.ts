@@ -35,7 +35,7 @@ const router = express.Router();
  *     responses:
  *       201:
  *         description: Inscription réussie
- *       400:
+ *       403:
  *         description: Email invalide, mot de passe trop court
  *       409:
  *         description: Conflit - L'email est déjà utilisé
