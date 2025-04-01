@@ -4,7 +4,6 @@ import * as path from 'path';
 import * as bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
-const SALT_ROUNDS = process.env.SALT_ROUNDS || 10;
 
 async function seed() {
   console.log('Starting seeding process from JSON...');
@@ -35,7 +34,7 @@ async function seed() {
   console.log('Hashing passwords and creating Users...');
   const usersToCreate = await Promise.all(
     jsonData.users.map(async (user: any) => {
-      const hashedPassword = await bcrypt.hash(user.password, SALT_ROUNDS);
+      const hashedPassword = await bcrypt.hash(user.password, parseInt(process.env.SALT_ROUNDS || '10', 10));
       return {
         ...user,
         password: hashedPassword,
