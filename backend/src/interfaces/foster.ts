@@ -1,9 +1,11 @@
-interface Foster {
-  id: string;
-  firstName: string;
-  lastName: string;
-  address: string;
-  user_id: string;
-  created_at: Date;
-  updated_at: Date;
+import { Foster as PrismaFoster } from '@prisma/client';
+
+export interface Foster extends PrismaFoster { }
+
+export interface FosterWithUser extends Foster {
+  user: {
+    id: string;
+    email: string;
+    roleId: string;
+  };
 }

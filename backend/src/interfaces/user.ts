@@ -1,8 +1,10 @@
-interface User {
-  id: string;
-  email: string;
-  password: string;
-  role_id: string;
-  created_at: Date;
-  updated_at: Date;
+import { User as PrismaUser } from '@prisma/client';
+
+export interface User extends PrismaUser { }
+
+export interface UserWithRole extends User {
+  role: {
+    id: string;
+    name: string;
+  };
 }

@@ -16,7 +16,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   Shelter   Shelter?
-  Foster    Foster[]
+  Foster    Foster?
 }
 
 model Role {
@@ -72,7 +72,7 @@ model Foster {
   lastName  String
   address   String
   user      User      @relation(fields: [userId], references: [id])
-  userId    String
+  userId    String    @unique
   animals   Animal[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt

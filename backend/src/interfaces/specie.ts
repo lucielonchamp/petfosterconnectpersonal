@@ -1,4 +1,6 @@
-enum SpecieNameEnum {
+import { Specie as PrismaSpecie } from '@prisma/client';
+
+export enum SpecieNameEnum {
   DOG = 'dog',
   CAT = 'cat',
   BIRD = 'bird',
@@ -6,9 +8,12 @@ enum SpecieNameEnum {
   OTHER = 'other'
 }
 
-interface Specie {
-  id: string;
-  name: SpecieNameEnum;
-  created_at: Date;
-  updated_at: Date;
+export interface Specie extends PrismaSpecie { }
+
+export interface SpecieWithAnimals extends Specie {
+  animals: {
+    id: string;
+    name: string;
+    status: string;
+  }[];
 }
