@@ -1,0 +1,51 @@
+.welcome-panel {
+    flex: 0 0 40%;
+    background-color: #5B6B94;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+.welcome-content {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    position: relative;
+    width: 300px;
+    height: 350px;
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
+    padding: 2rem;
+}
+
+.welcome-text-container {
+    position: absolute;
+    top: 1.5rem;
+    left: 2rem;
+    right: 2rem;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.welcome-title {
+    color: white;
+    margin: 0;
+    text-align: left;
+}
+
+.dog-image {
+    position: absolute;
+    width: 80%;
+    bottom: -35%;
+    left: 50%;
+    transform: translateX(-50%);
+    object-fit: contain;
+    z-index: 1;
+}
+
+@media (max-width: 768px) {
+    .welcome-panel {
+        display: none;
+    }
+} 
