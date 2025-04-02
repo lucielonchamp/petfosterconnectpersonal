@@ -1,11 +1,13 @@
 import { Lock, Person, Visibility, VisibilityOff } from '@mui/icons-material';
 import { Box, Button, Container, IconButton, InputAdornment, Stack, TextField, Typography } from '@mui/material';
 import { ChangeEvent, FormEvent, useState } from 'react';
+import { useNavigate } from 'react-router';
 import logo from '../../assets/logo.png';
 import WelcomePanel from '../../components/WelcomePanel/WelcomePanel';
 import './Login.css';
 
 const Login = () => {
+    const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState('');
@@ -168,7 +170,7 @@ const Login = () => {
                                                 color: '#4a5a83',
                                             }
                                         }}
-                                        onClick={() => window.location.href = '/register'}
+                                        onClick={() => navigate('/register')}
                                     >
                                         S'inscrire
                                     </Button>
@@ -214,6 +216,7 @@ const Login = () => {
                                                     bgcolor: 'transparent',
                                                 }
                                             }}
+                                            onClick={() => navigate('/')}
                                         >
                                             <span style={{ fontWeight: 'bold' }}>Retour&nbsp;</span> sur l'accueil
                                         </Button>
