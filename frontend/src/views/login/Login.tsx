@@ -13,6 +13,8 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const validateEmail = (email: string) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -29,13 +31,36 @@ const Login = () => {
         }
     };
 
-    const handleSubmit = (e: FormEvent) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         if (!validateEmail(email)) {
             setEmailError('Veuillez entrer un email valide');
             return;
         }
-        // Logique de connexion à implémenter
+
+        setLoading(true);
+        setError('');
+
+        try {
+            const response = await fetch('http://localhost:3000/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password }),
+                credentials: 'include'
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message);
+            }
+
+            navigate('/dashboard');
+        } catch (err) {
+            setError(err instanceof Error ? err.message : 'Erreur de connexion');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -58,6 +83,12 @@ const Login = () => {
 
                         <Box component="form" onSubmit={handleSubmit} width="100%">
                             <Stack spacing={2}>
+                                {error && (
+                                    <Typography color="error" textAlign="center">
+                                        {error}
+                                    </Typography>
+                                )}
+
                                 <PetFosterTextField
                                     type="email"
                                     placeholder="Email"
@@ -90,6 +121,7 @@ const Login = () => {
                                 <Button
                                     type="submit"
                                     variant="contained"
+                                    disabled={loading}
                                     sx={{
                                         bgcolor: '#5B6B94',
                                         '&:hover': {
@@ -103,7 +135,7 @@ const Login = () => {
                                         marginTop: '1rem',
                                     }}
                                 >
-                                    Me connecter
+                                    {loading ? 'Connexion...' : 'Me connecter'}
                                 </Button>
 
                                 <Typography variant="body2" color="#666" align="center">
