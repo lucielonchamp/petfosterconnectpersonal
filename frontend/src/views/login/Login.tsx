@@ -1,8 +1,9 @@
 import { Lock, Person, Visibility, VisibilityOff } from '@mui/icons-material';
-import { Box, Button, Container, IconButton, InputAdornment, Stack, TextField, Typography } from '@mui/material';
+import { Box, Button, Container, Stack, Typography } from '@mui/material';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router';
 import logo from '../../assets/logo.png';
+import PetFosterTextField from '../../components/PetFosterTextField/PetFosterTextField';
 import WelcomePanel from '../../components/WelcomePanel/WelcomePanel';
 import './Login.css';
 
@@ -37,30 +38,6 @@ const Login = () => {
         // Logique de connexion à implémenter
     };
 
-    const commonTextFieldSx = {
-        '& .MuiOutlinedInput-root': {
-            backgroundColor: '#B7C1D3',
-            borderRadius: '12px',
-            '& fieldset': {
-                borderColor: '#B7C1D3',
-                borderRadius: '12px',
-            },
-            '&:hover fieldset': {
-                borderColor: '#5B6B94',
-            },
-            '&.Mui-focused fieldset': {
-                borderColor: '#5B6B94',
-            },
-        },
-        '& .MuiOutlinedInput-input': {
-            color: '#333',
-            '&::placeholder': {
-                color: '#fff',
-                opacity: 1,
-            },
-        },
-    };
-
     return (
         <Box className="login-container">
             <Box flex="0 0 60%" display="flex" justifyContent="center" alignItems="center">
@@ -76,56 +53,29 @@ const Login = () => {
                             CONNEXION
                         </Typography>
                         <Typography variant="subtitle1" color="#666" mb={3}>
-                            How to i get started lorem ipsum dolor at?
+                            Connectez-vous pour accéder à votre espace personnel
                         </Typography>
 
                         <Box component="form" onSubmit={handleSubmit} width="100%">
                             <Stack spacing={2}>
-                                <TextField
-                                    fullWidth
-                                    variant="outlined"
+                                <PetFosterTextField
                                     type="email"
                                     placeholder="Email"
                                     value={email}
                                     onChange={handleEmailChange}
                                     error={!!emailError}
                                     helperText={emailError}
-                                    sx={commonTextFieldSx}
-                                    InputProps={{
-                                        startAdornment: (
-                                            <InputAdornment position="start">
-                                                <Person sx={{ color: '#fff' }} />
-                                            </InputAdornment>
-                                        ),
-                                    }}
+                                    startIcon={<Person sx={{ color: '#fff' }} />}
                                 />
 
-                                <TextField
-                                    fullWidth
-                                    variant="outlined"
+                                <PetFosterTextField
                                     type={showPassword ? 'text' : 'password'}
                                     placeholder="Mot de passe"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    sx={commonTextFieldSx}
-                                    InputProps={{
-                                        startAdornment: (
-                                            <InputAdornment position="start">
-                                                <Lock sx={{ color: '#fff' }} />
-                                            </InputAdornment>
-                                        ),
-                                        endAdornment: (
-                                            <InputAdornment position="end">
-                                                <IconButton
-                                                    onClick={() => setShowPassword(!showPassword)}
-                                                    edge="end"
-                                                    sx={{ color: '#fff' }}
-                                                >
-                                                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                                                </IconButton>
-                                            </InputAdornment>
-                                        ),
-                                    }}
+                                    startIcon={<Lock sx={{ color: '#fff' }} />}
+                                    endIcon={showPassword ? <VisibilityOff /> : <Visibility />}
+                                    onEndIconClick={() => setShowPassword(!showPassword)}
                                 />
 
                                 <Box alignSelf="flex-end">
