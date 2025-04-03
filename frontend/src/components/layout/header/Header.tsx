@@ -42,7 +42,7 @@ function Header() {
             </nav>
 
             {/* Connexion */}
-            <div className="login-container">
+            <div className="cta-login-container">
                 <ButtonPurple href="/login">Connexion</ButtonPurple>
             </div>
 
