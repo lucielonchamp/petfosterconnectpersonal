@@ -8,3 +8,8 @@ export interface RoleWithUsers extends Role {
     email: string;
   }[];
 }
+
+export enum RoleEnum {
+  SHELTER = 'shelter',
+  FOSTER = 'foster'
+}

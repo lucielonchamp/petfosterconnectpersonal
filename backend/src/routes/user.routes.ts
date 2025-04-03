@@ -44,9 +44,23 @@ router.get("/:id", Controller.getUserById);
 
 /**
  * @swagger
- * /user/{id}:
+ * /user/{id}/shelter:
+ *  get:
+ *    summary: Get a user with shelter by ID
+ *    tags: [Users]
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        required: true
+ *        description: The ID of the user
+ */
+router.get("/:id/shelter", Controller.getUserWithShelter);
+
+/**
+ * @swagger
+ * /user/{id}/shelter:
  *  patch:
- *    summary: Update a user by ID
+ *    summary: Update a user with shelter by ID
  *    tags: [Users]
  *    parameters:
  *      - name: id
@@ -67,7 +81,48 @@ router.get("/:id", Controller.getUserById);
  *              roleId:
  *                type: string
  */
-router.patch("/:id", Controller.updateUser);
+router.patch("/:id/shelter", Controller.updateUserWithShelter);
+
+/**
+ * @swagger
+ * /user/{id}/foster:
+ *  get:
+ *    summary: Get a user with foster by ID
+ *    tags: [Users]
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        required: true
+ *        description: The ID of the user
+ */
+router.get("/:id/foster", Controller.getUserWithFoster);
+
+/**
+ * @swagger
+ * /user/{id}/foster:
+ *  patch:
+ *    summary: Update a user with foster by ID
+ *    tags: [Users]
+ *    parameters:
+ *      - name: id
+ *        in: path
+ *        required: true
+ *        description: The ID of the user
+ *    requestBody:  
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            properties:
+ *              email:
+ *                type: string
+ *              password:
+ *                type: string
+ *              roleId:
+ *                type: string
+ */
+router.patch("/:id/foster", Controller.updateUserWithFoster);
 
 /**
  * @swagger

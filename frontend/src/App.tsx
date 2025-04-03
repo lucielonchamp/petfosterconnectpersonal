@@ -5,6 +5,10 @@ import Dashboard from './views/dashboard/Dashboard';
 import Home from './views/home/Home';
 import Login from './views/login/Login';
 import Register from './views/register/Register';
+import ShelterProfile from './views/shelter-profile/ShelterProfile';
+import FosterProfile from './views/foster-profile/FosterProfile';
+
+
 
 function App() {
 
@@ -15,6 +19,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/shelter/profile" element={<ShelterProfile />} />
+        <Route path="/foster/profile" element={<FosterProfile />} />
       </Routes>
     </>
   )
