@@ -4,7 +4,7 @@ export const registerSchema = z.object({
 	email: z.coerce.string({
 		required_error: "Email required"
 	}).email({
-		message: "Le format de l'email est invalide."
+		message: "Mail format is not valid"
 	}),
 	password: z.string(),
 	roleId: z.string()
@@ -12,7 +12,7 @@ export const registerSchema = z.object({
 
 export type RegisterType = z.infer<typeof registerSchema>;
 
-export const loginShema = z.object({
+export const loginSchema = z.object({
   email : z.string({
     required_error: "Email required"
   }).email({
@@ -21,5 +21,5 @@ export const loginShema = z.object({
   password : z.string(),
 });
 
-export type LoginType = z.infer<typeof loginShema>;
+export type LoginType = z.infer<typeof loginSchema>;
 

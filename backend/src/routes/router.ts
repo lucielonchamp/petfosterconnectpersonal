@@ -1,11 +1,13 @@
 import express from 'express';
 import authRoute from './auth.routes';
 import userRoute from './user.routes';
+import roleRoute from './role.routes'
 
 const router = express.Router();
 
 router.use('/auth', authRoute);
 router.use('/user', userRoute);
+router.use('/role', roleRoute);
 
 // 404
 router.get('*', function (req, res) {

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { loginShema, registerSchema } from "../schemas/auth.schema";
+import { loginSchema, registerSchema } from "../schemas/auth.schema";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -21,13 +21,12 @@ export async function register(request: Request, response: Response): Promise<an
     })
   }
 
-  try {
-
-    const existingUser = await prisma.user.findUnique({
-      where: {
-        email: data.email
-      }
-    });
+	try {
+		const existingUser = await prisma.user.findUnique({
+			where: {
+				email: data.email
+			}
+		});
 
     if (existingUser) {
       return response.status(500).json({ success: false, message: "Email already used." })
@@ -60,7 +59,7 @@ export const login = async (req: Request, res: Response): Promise<any> => {
 
   const requestedData = req.body;
 
-  const { success, error } = loginShema.safeParse(requestedData);
+	const { success, error } = loginSchema.safeParse(requestedData);
 
   if (!success) {
     return res.status(400).json({
