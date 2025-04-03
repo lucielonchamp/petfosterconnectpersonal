@@ -11,7 +11,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /users:
+ * /user:
  *  get:
  *    summary: Get all users
  *    tags: [Users]
@@ -23,7 +23,7 @@ router.get("/", Controller.getUsers);
 
 /**
  * @swagger
- * /users/{id}:
+ * /user/{id}:
  *  get:
  *    summary: Get a user by ID
  *    tags: [Users]
@@ -32,12 +32,19 @@ router.get("/", Controller.getUsers);
  *        in: path
  *        required: true
  *        description: The ID of the user
+ *    responses:
+ *      200:
+ *        description: A user
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
  */
 router.get("/:id", Controller.getUserById);
 
 /**
  * @swagger
- * /users/{id}:
+ * /user/{id}:
  *  patch:
  *    summary: Update a user by ID
  *    tags: [Users]
@@ -46,7 +53,7 @@ router.get("/:id", Controller.getUserById);
  *        in: path
  *        required: true
  *        description: The ID of the user
- *    requestBody:  
+ *    requestBody:
  *      required: true
  *      content:
  *        application/json:
@@ -64,7 +71,7 @@ router.patch("/:id", Controller.updateUser);
 
 /**
  * @swagger
- * /users/{id}:
+ * /user/{id}:
  *  delete:
  *    summary: Delete a user by ID
  *    tags: [Users]
@@ -73,6 +80,13 @@ router.patch("/:id", Controller.updateUser);
  *        in: path
  *        required: true
  *        description: The ID of the user
+ *    responses:
+ *      200:
+ *        description: A user
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
  */
 router.delete("/:id", Controller.deleteUser);
 

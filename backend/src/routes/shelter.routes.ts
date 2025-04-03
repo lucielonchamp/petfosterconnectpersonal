@@ -12,16 +12,24 @@ const router = express.Router();
 
 /**
  * @swagger
- * /shelters:
+ * /shelter:
  *  get:
  *    summary: Get all shelters
  *    tags: [Shelters]
-*/
+ *    responses:
+ *      200:
+ *        description: A list of shelters
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ */
 router.get("/", Controller.getShelters);
 
 /**
  * @swagger
- * /shelters/{id}:
+ * /shelter/{id}:
  *  get:
  *    summary: Get a shelter by ID
  *    tags: [Shelters]
@@ -30,12 +38,19 @@ router.get("/", Controller.getShelters);
  *        in: path
  *        required: true
  *        description: The ID of the shelter
+ *    responses:
+ *      200:
+ *        description: A shelter
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
  */
 router.get("/:id", Controller.getShelterById);
 
-/**   
+/**
  * @swagger
- * /shelters:
+ * /shelter:
  *  post:
  *    summary: Create a shelter
  *    tags: [Shelters]
@@ -45,12 +60,19 @@ router.get("/:id", Controller.getShelterById);
  *        application/json:
  *          schema:
  *            type: object
+ *    responses:
+ *      201:
+ *        description: A shelter
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
  */
 router.post("/", Controller.createShelter);
 
 /**
  * @swagger
- * /shelters/{id}:
+ * /shelter/{id}:
  *  put:
  *    summary: Update a shelter by ID
  *    tags: [Shelters]
@@ -59,12 +81,19 @@ router.post("/", Controller.createShelter);
  *        in: path
  *        required: true
  *        description: The ID of the shelter
+ *    responses:
+ *      200:
+ *        description: A shelter
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
  */
 router.put("/:id", Controller.updateShelter);
 
 /**
  * @swagger
- * /shelters/{id}:
+ * /shelter/{id}:
  *  delete:
  *    summary: Delete a shelter by ID
  *    tags: [Shelters]

@@ -1,32 +1,32 @@
-import * as Controller  from "../controllers/role.controller";
 import express from "express";
+import * as Controller from "../controllers/role.controller";
 
 const router = express.Router();
 
-  /**
-   * @swagger
-   * /roles:
-   *   get:
-   *     summary: Get all roles
-   *     description: Retrieve a list of available roles
-   *     operationId: getRoles
-   *     responses:
-   *       200:
-   *         description: A list of roles
-   *         content:
-   *           application/json:
-   *             schema:
-   *               type: array
-   *               items:
-   *                 type: string
-   *                 enum: 
-   *                   - foster
-   *                   - shelter
-   */
-
-  /**
+/**
  * @swagger
- * /roles:
+ * /role:
+ *   get:
+ *     summary: Get all roles
+ *     description: Retrieve a list of available roles
+ *     operationId: getRoles
+ *     responses:
+ *       200:
+ *         description: A list of roles
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: string
+ *                 enum:
+ *                   - foster
+ *                   - shelter
+ */
+
+/**
+ * @swagger
+ * /role:
  *   post:
  *     summary: Create a new role
  *     description: Create a new role by providing its name
@@ -93,7 +93,7 @@ const router = express.Router();
  *                   example: "Server error"
  */
 
-router.get('/', Controller.getRole);
-router.post('/', Controller.createRole);
+router.get("/", Controller.getRole);
+router.post("/", Controller.createRole);
 
 export default router;
