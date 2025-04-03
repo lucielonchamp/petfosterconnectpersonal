@@ -1,47 +1,54 @@
+:root {
+  --font: 'Roboto', sans-serif;
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  --color-purple: #5B6C97;
+  --color-purple-hover: #485578;
+  --color-white: #FFFEFC;
+  --color-black: #000000;
+}
+
+body {
+  place-items: baseline;
+}
+
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--font);
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.container {
+  max-width: 1440px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 15px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.container-fluid {
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+ul {
+  list-style-type: none;
+  display: flex;
+  margin: 0;
+  padding-left: 0;
 }
 
-.card {
-  padding: 2em;
+a:hover,
+a:focus,
+a:active {
+  text-decoration: underline;
 }
-
-.read-the-docs {
-  color: #888;
-}
-
-  body {
-    font-family: 'Roboto', sans-serif;
-  }
-
