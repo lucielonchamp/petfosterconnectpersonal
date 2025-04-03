@@ -17,6 +17,7 @@ const PetFosterInput = ({
         '& .MuiOutlinedInput-root': {
             backgroundColor: '#B7C1D3',
             borderRadius: '12px',
+            height: '45px',
             '& fieldset': {
                 borderColor: '#B7C1D3',
                 borderRadius: '12px',
@@ -30,9 +31,20 @@ const PetFosterInput = ({
         },
         '& .MuiOutlinedInput-input': {
             color: '#333',
+            padding: '8px 14px',
+            fontSize: '0.9rem',
             '&::placeholder': {
                 color: '#fff',
                 opacity: 1,
+                fontSize: '0.9rem',
+            },
+        },
+        '& .MuiInputAdornment-root': {
+            '& .MuiSvgIcon-root': {
+                fontSize: '1.2rem',
+            },
+            '& .MuiIconButton-root': {
+                padding: '4px',
             },
         },
     };

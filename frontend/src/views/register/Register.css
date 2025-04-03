@@ -1,0 +1,33 @@
+.register-form-container {
+    flex: 1 1 60%;
+    padding: 1.5rem;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.register-welcome-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 40%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+@media (max-width: 768px) {
+    .register-container {
+        flex-direction: column;
+    }
+
+    .register-form-container {
+        flex: 1;
+        padding: 1rem;
+        width: 100%;
+    }
+
+    .register-welcome-container {
+        display: none;
+    }
+} 

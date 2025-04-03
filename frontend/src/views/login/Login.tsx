@@ -7,6 +7,8 @@ import PetFosterTextField from '../../components/PetFosterTextField/PetFosterTex
 import WelcomePanel from '../../components/WelcomePanel/WelcomePanel';
 import './Login.css';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const Login = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
@@ -42,7 +44,7 @@ const Login = () => {
         setError('');
 
         try {
-            const response = await fetch('http://localhost:3000/auth/login', {
+            const response = await fetch(`${API_URL}/auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password }),
@@ -74,10 +76,10 @@ const Login = () => {
                             alt="PetFoster Connect"
                             sx={{ width: 120, pointerEvents: 'none' }}
                         />
-                        <Typography variant="h4" color="#333" sx={{ fontWeight: 'bold' }}>
+                        <Typography variant="h4" component="h1" color="#333" sx={{ fontWeight: 'bold' }}>
                             CONNEXION
                         </Typography>
-                        <Typography variant="subtitle1" color="#666" mb={3}>
+                        <Typography variant="subtitle1" component="h2" color="#666" mb={3}>
                             Connectez-vous pour accéder à votre espace personnel
                         </Typography>
 
