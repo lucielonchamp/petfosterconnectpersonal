@@ -7,8 +7,7 @@ import Login from './views/login/Login';
 import Register from './views/register/Register';
 import ShelterProfile from './views/shelter-profile/ShelterProfile';
 import FosterProfile from './views/foster-profile/FosterProfile';
-
-
+import NotFound from './views/not-found/NotFound';
 
 function App() {
 
@@ -25,6 +24,7 @@ function App() {
         <Route path="/foster/profile" element={<ProtectedRoute>
           <FosterProfile />
         </ProtectedRoute>} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   )
