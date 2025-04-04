@@ -1,5 +1,6 @@
 import express from "express";
 import * as Controller from "../controllers/auth.controller";
+import { authMiddleware } from "../middlewares/authMiddleware";
 
 const router = express.Router();
 /**
@@ -42,7 +43,7 @@ const router = express.Router();
  *       500:
  *         description: Erreur interne du serveur
  */
-router.post('/register', Controller.register);
+router.post("/register", Controller.register);
 
 /**
  * @swagger
@@ -94,5 +95,87 @@ router.post('/register', Controller.register);
  *         description: Erreur serveur
  */
 router.post("/login", Controller.login);
+
+/**
+ * @swagger
+ * /auth/me:
+ *   get:
+ *     tags:
+ *       - Authentication
+ *     summary: Récupérer les informations de l'utilisateur connecté
+ *     description: Renvoie les informations de l'utilisateur authentifié
+ *     security:
+ *       - cookieAuth: []
+ *     responses:
+ *       200:
+ *         description: Informations de l'utilisateur
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                       format: uuid
+ *                     email:
+ *                       type: string
+ *                       format: email
+ *                     role:
+ *                       type: object
+ *                       properties:
+ *                         id:
+ *                           type: string
+ *                           format: uuid
+ *                         name:
+ *                           type: string
+ *                     createdAt:
+ *                       type: string
+ *                       format: date-time
+ *                     updatedAt:
+ *                       type: string
+ *                       format: date-time
+ *       401:
+ *         description: Non authentifié
+ *       500:
+ *         description: Erreur serveur
+ */
+router.get("/me", authMiddleware, Controller.getMe);
+
+/**
+ * @swagger
+ * /auth/logout:
+ *   post:
+ *     tags:
+ *       - Authentication
+ *     summary: Déconnexion utilisateur
+ *     description: Déconnecte l'utilisateur en supprimant le cookie d'authentification
+ *     security:
+ *       - cookieAuth: []
+ *     responses:
+ *       200:
+ *         description: Déconnexion réussie
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: "Déconnexion réussie"
+ *       401:
+ *         description: Non authentifié
+ *       500:
+ *         description: Erreur serveur
+ */
+router.post("/logout", authMiddleware, Controller.logout);
 
 export default router;

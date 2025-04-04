@@ -1,16 +1,27 @@
-import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerJsdoc from "swagger-jsdoc";
 
-const options = {
+const swaggerOptions = {
   definition: {
-    openapi: '3.0.0',
+    openapi: "3.0.0",
     info: {
-      title: 'Pet Foster Connect API',
-      version: '1.0.0',
+      title: "Pet Foster Connect API",
+      version: "1.0.0",
+      description: "Documentation de l'API",
+    },
+    components: {
+      // pour les cookies dans les requêtes user/me
+      securitySchemes: {
+        cookieAuth: {
+          type: "apiKey",
+          in: "cookie",
+          name: "authToken",
+        },
+      },
     },
   },
-  apis: ['./src/routes/*.ts'],
+  apis: ["./src/routes/*.ts"],
 };
 
-const specs = swaggerJsdoc(options);
+const specs = swaggerJsdoc(swaggerOptions);
 
 export { specs };

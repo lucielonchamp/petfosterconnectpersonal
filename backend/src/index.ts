@@ -1,3 +1,4 @@
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
 import swaggerUi from "swagger-ui-express";
@@ -18,10 +19,12 @@ app.use(
 
 app.use(express.json());
 
+// cookieParser pour pouvoir lire les cookies et les utiliser dans les requêtes et les supprimer
+app.use(cookieParser());
+
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 app.use("", router);
-
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

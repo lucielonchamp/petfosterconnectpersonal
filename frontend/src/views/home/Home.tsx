@@ -1,18 +1,18 @@
-import Header from '../../components/layout/header/Header';
-import './Home.css';
-import heart from '../../assets/heart.png';
-import dog from '../../assets/dog.png';
-import cat from '../../assets/cat.png';
-import doggi from '../../assets/doggi.png';
-import corgi from '../../assets/corgi.png';
-import ButtonPurple from '../../components/ui/ButtonPurple';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Typography } from '@mui/material';
+import cat from '../../assets/cat.png';
+import corgi from '../../assets/corgi.png';
+import dog from '../../assets/dog.png';
+import doggi from '../../assets/doggi.png';
+import heart from '../../assets/heart.png';
+import Header from '../../components/layout/header/Header';
+import ButtonPurple from '../../components/ui/ButtonPurple';
+import './Home.css';
 
 function Home() {
 
     return (
-        <>
+        <div id="home-page">
             <Header />
             <section id="home" className="container">
                 <div>
@@ -40,7 +40,7 @@ function Home() {
                     </div>
                 </div>
             </section>
-        </>
+        </div>
     )
 }
 

@@ -5,17 +5,17 @@ import { useNavigate } from 'react-router';
 import logo from '../../assets/logo.png';
 import PetFosterTextField from '../../components/PetFosterTextField/PetFosterTextField';
 import WelcomePanel from '../../components/WelcomePanel/WelcomePanel';
+import { useAuth } from '../../hooks/useAuth';
 import './Login.css';
 
-const API_URL = import.meta.env.VITE_API_URL;
 
 const Login = () => {
     const navigate = useNavigate();
+    const { login, error: authError } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
     const validateEmail = (email: string) => {
@@ -41,25 +41,13 @@ const Login = () => {
         }
 
         setLoading(true);
-        setError('');
 
         try {
-            const response = await fetch(`${API_URL}/auth/login`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password }),
-                credentials: 'include'
-            });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.message);
-            }
-
+            await login(email, password);
             navigate('/dashboard');
         } catch (err) {
-            setError(err instanceof Error ? err.message : 'Erreur de connexion');
+            console.log(err);
+            // Les erreurs sont déjà gérées par le contexte
         } finally {
             setLoading(false);
         }
@@ -85,9 +73,9 @@ const Login = () => {
 
                         <Box component="form" onSubmit={handleSubmit} width="100%">
                             <Stack spacing={2}>
-                                {error && (
+                                {authError && (
                                     <Typography color="error" textAlign="center">
-                                        {error}
+                                        {authError}
                                     </Typography>
                                 )}
 

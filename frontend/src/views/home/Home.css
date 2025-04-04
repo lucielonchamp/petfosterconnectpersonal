@@ -1,3 +1,10 @@
+#home-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 #home {
     div {
         display: flex;

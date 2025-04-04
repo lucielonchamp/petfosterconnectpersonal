@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router';
 import logo from '../../assets/logo.png';
 import PetFosterTextField from '../../components/PetFosterTextField/PetFosterTextField';
 import WelcomePanel from '../../components/WelcomePanel/WelcomePanel';
+import { useAuth } from '../../hooks/useAuth';
 import './Register.css';
 
 interface Role {
@@ -17,6 +18,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 const Register = () => {
     const navigate = useNavigate();
+    const { login } = useAuth();
     const [activeStep, setActiveStep] = useState(0);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -167,6 +169,7 @@ const Register = () => {
                 throw new Error(data.message);
             }
 
+            await login(email, password);
             navigate('/dashboard');
         } catch (err) {
             setError(err instanceof Error ? err.message : 'Erreur lors de l\'inscription');
