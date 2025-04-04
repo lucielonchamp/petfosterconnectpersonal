@@ -7,6 +7,7 @@ import PetFosterTextField from "../../components/PetFosterTextField/PetFosterTex
 import { LoaderPetFoster } from "../../components/Loader/LoaderPetFoster";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import dog from "../../assets/dog.png";
+import { useAuth } from "../../hooks/useAuth";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -44,6 +45,8 @@ const ShelterProfile = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [formErrors, setFormErrors] = useState<FormErrors>({});
+
+  const { user } = useAuth();
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -110,8 +113,7 @@ const ShelterProfile = () => {
 
   const getUserInformations = async () => {
     try {
-      // TODO: Récupérer l'id de l'utilisateur par le context
-      const response = await fetch(`${API_URL}/user/fcbbebff-243a-4672-8db6-f837647d3c0d/shelter`);
+      const response = await fetch(`${API_URL}/user/${user?.id}/shelter`);
 
       const { data } = await response.json();
 
@@ -148,8 +150,7 @@ const ShelterProfile = () => {
     setIsSubmitting(true);
 
     try {
-      // TODO: Récupérer l'id de l'utilisateur par le context
-      const response = await fetch(`${API_URL}/user/fcbbebff-243a-4672-8db6-f837647d3c0d/shelter`, {
+      const response = await fetch(`${API_URL}/user/${user?.id}/shelter`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(shelterWithUser),

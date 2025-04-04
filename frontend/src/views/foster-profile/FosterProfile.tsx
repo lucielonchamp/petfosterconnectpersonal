@@ -7,6 +7,7 @@ import PetFosterTextField from "../../components/PetFosterTextField/PetFosterTex
 import { LoaderPetFoster } from "../../components/Loader/LoaderPetFoster";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import heart from "../../assets/heart.png";
+import { useAuth } from "../../hooks/useAuth";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -45,6 +46,8 @@ const FosterProfile = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [formErrors, setFormErrors] = useState<FormErrors>({});
+
+  const { user } = useAuth();
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -111,8 +114,7 @@ const FosterProfile = () => {
 
   const getUserInformations = async () => {
     try {
-      // TODO: Récupérer l'id de l'utilisateur par le context
-      const response = await fetch(`${API_URL}/user/e1f2a3b4-c5d6-7890-1234-ef0123456789/foster`);
+      const response = await fetch(`${API_URL}/user/${user?.id}/foster`);
 
       const { data } = await response.json();
 
@@ -149,8 +151,7 @@ const FosterProfile = () => {
     setIsSubmitting(true);
 
     try {
-      // TODO: Récupérer l'id de l'utilisateur par le context
-      const response = await fetch(`${API_URL}/user/e1f2a3b4-c5d6-7890-1234-ef0123456789/foster`, {
+      const response = await fetch(`${API_URL}/user/${user?.id}/foster`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(fosterWithUser),

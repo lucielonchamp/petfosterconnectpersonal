@@ -19,8 +19,12 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/shelter/profile" element={<ShelterProfile />} />
-        <Route path="/foster/profile" element={<FosterProfile />} />
+        <Route path="/shelter/profile" element={<ProtectedRoute>
+          <ShelterProfile />
+        </ProtectedRoute>} />
+        <Route path="/foster/profile" element={<ProtectedRoute>
+          <FosterProfile />
+        </ProtectedRoute>} />
       </Routes>
     </>
   )
