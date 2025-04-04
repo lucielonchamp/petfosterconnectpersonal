@@ -20,6 +20,7 @@
   "devDependencies": {
     "@jest/globals": "^29.7.0",
     "@types/bcrypt": "^5.0.2",
+    "@types/cors": "^2.8.17",
     "@types/express": "^5.0.1",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.14.0",
