@@ -174,13 +174,12 @@ export async function createFoster(
 
     res.status(201).json({
       success: true,
-      message: 'Shelter created successfully',
+      message: 'Foster created successfully',
       data: foster
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Error creating shelter", error });
-  }
+    res.status(500).json({ message: "Error creating foster", error });
 }
 
 export async function updateFoster(
