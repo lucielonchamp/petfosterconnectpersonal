@@ -1,13 +1,12 @@
-import { Container, Stack, Typography, Snackbar, Alert, Slide, SlideProps } from '@mui/material';
-import { Layout } from '../../components/layout/header/Layout';
-import React, { ChangeEvent, useEffect, useState } from 'react';
-import { FosterWithUser } from '../../interfaces/foster';
-import ButtonPurple from '../../components/ui/ButtonPurple';
-import PetFosterTextField from '../../components/PetFosterTextField/PetFosterTextField';
-import { LoaderPetFoster } from '../../components/Loader/LoaderPetFoster';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import heart from '../../assets/heart.png';
-import { useAuth } from '../../hooks/useAuth';
+import { Container, Stack, Typography, Snackbar, Alert, Slide, SlideProps } from "@mui/material";
+import React, { ChangeEvent, useEffect, useState } from "react";
+import { FosterWithUser } from "../../interfaces/foster";
+import ButtonPurple from "../../components/ui/ButtonPurple";
+import PetFosterTextField from "../../components/PetFosterTextField/PetFosterTextField";
+import { LoaderPetFoster } from "../../components/Loader/LoaderPetFoster";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import heart from "../../assets/heart.png";
+import { useAuth } from "../../hooks/useAuth";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -184,18 +183,15 @@ const FosterProfile = () => {
 
   if (loading) {
     return (
-      <Layout sx={{ margin: 2 }}>
-        <Container
-          sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}
-        >
-          <LoaderPetFoster />
-        </Container>
-      </Layout>
+      <Container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
+        <LoaderPetFoster />
+      </Container>
     );
   }
 
   return (
-    <Layout sx={{ margin: 2 }}>
+    <Container>
+
       <Snackbar
         open={snackbar.open}
         autoHideDuration={3000}
@@ -207,7 +203,7 @@ const FosterProfile = () => {
             minWidth: '300px',
             boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
             borderRadius: '8px',
-          },
+          }
         }}
       >
         <Alert
@@ -220,7 +216,7 @@ const FosterProfile = () => {
             },
             '& .MuiAlert-message': {
               fontSize: '0.9rem',
-            },
+            }
           }}
         >
           {snackbar.message}
@@ -237,14 +233,8 @@ const FosterProfile = () => {
         </div>
       </Stack>
 
-      <Stack
-        component="form"
-        onSubmit={handleSubmit}
-        alignItems="center"
-        justifyContent="center"
-        spacing={4}
-      >
-        <Stack direction={{ xs: 'column', md: 'row' }} width="100%" spacing={6} margin="auto">
+      <Stack component="form" onSubmit={handleSubmit} alignItems="center" justifyContent="center" spacing={4}>
+        <Stack direction={{ xs: "column", md: "row" }} width="100%" spacing={6} margin="auto">
           <Stack spacing={2} width="100%" alignItems="center" justifyContent="center">
             <PetFosterTextField
               label="Mon email"
@@ -260,13 +250,11 @@ const FosterProfile = () => {
               type={showPassword ? 'text' : 'password'}
               label="Mot de passe"
               value={fosterWithUser.user?.password}
-              onChange={e => {
+              onChange={(e) => {
                 setIsEditing(true);
-                setFosterWithUser(prev => ({
+                setFosterWithUser((prev) => ({
                   ...prev,
-                  user: prev.user
-                    ? { ...prev.user, password: e.target.value }
-                    : { id: '', email: '', password: '' },
+                  user: prev.user ? { ...prev.user, password: e.target.value } : { id: '', email: '', password: '' }
                 }));
               }}
               endIcon={showPassword ? <VisibilityOff /> : <Visibility />}
@@ -282,7 +270,7 @@ const FosterProfile = () => {
               label="Prénom"
               type="text"
               value={fosterWithUser.firstName}
-              onChange={e => {
+              onChange={(e) => {
                 setIsEditing(true);
                 setFosterWithUser({ ...fosterWithUser, firstName: e.target.value });
               }}
@@ -294,7 +282,7 @@ const FosterProfile = () => {
               label="Nom"
               type="text"
               value={fosterWithUser.lastName}
-              onChange={e => {
+              onChange={(e) => {
                 setIsEditing(true);
                 setFosterWithUser({ ...fosterWithUser, lastName: e.target.value });
               }}
@@ -307,7 +295,7 @@ const FosterProfile = () => {
               type="text"
               multiline
               value={fosterWithUser.address}
-              onChange={e => {
+              onChange={(e) => {
                 setIsEditing(true);
                 setFosterWithUser({ ...fosterWithUser, address: e.target.value });
               }}
@@ -322,13 +310,14 @@ const FosterProfile = () => {
           type="submit"
           variant="contained"
           color="primary"
-          sx={{ width: 'fit-content' }}
+          sx={{ width: "fit-content" }}
           disabled={!isEditing || isSubmitting}
         >
           {isSubmitting ? 'Enregistrement...' : 'Enregistrer les modifications'}
         </ButtonPurple>
       </Stack>
-    </Layout>
+    </Container>
+
   );
 };
 

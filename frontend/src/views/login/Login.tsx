@@ -7,6 +7,7 @@ import PetFosterTextField from '../../components/PetFosterTextField/PetFosterTex
 import WelcomePanel from '../../components/WelcomePanel/WelcomePanel';
 import { useAuth } from '../../hooks/useAuth';
 import './Login.css';
+import { Path } from '../../interfaces/Path';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -43,7 +44,7 @@ const Login = () => {
 
     try {
       await login(email, password);
-      navigate('/dashboard');
+      navigate(Path.DASHBOARD);
     } catch (err) {
       console.log(err);
       // Les erreurs sont déjà gérées par le contexte
@@ -92,14 +93,17 @@ const Login = () => {
                   type={showPassword ? 'text' : 'password'}
                   placeholder="Mot de passe"
                   value={password}
-                  onChange={e => setPassword(e.target.value)}
+                  onChange={(e) => setPassword(e.target.value)}
                   startIcon={<Lock sx={{ color: '#fff' }} />}
                   endIcon={showPassword ? <VisibilityOff /> : <Visibility />}
                   onEndIconClick={() => setShowPassword(!showPassword)}
                 />
 
                 <Box alignSelf="flex-end">
-                  <Button variant="text" sx={{ color: '#333', textTransform: 'none' }}>
+                  <Button
+                    variant="text"
+                    sx={{ color: '#333', textTransform: 'none' }}
+                  >
                     Mot de passe oublié ?
                   </Button>
                 </Box>
@@ -136,9 +140,9 @@ const Login = () => {
                       '&:hover': {
                         bgcolor: 'transparent',
                         color: '#4a5a83',
-                      },
+                      }
                     }}
-                    onClick={() => navigate('/register')}
+                    onClick={() => navigate(Path.REGISTER)}
                   >
                     S'inscrire
                   </Button>
@@ -167,8 +171,8 @@ const Login = () => {
                       },
                       '&::after': {
                         right: '-50px',
-                      },
-                    },
+                      }
+                    }
                   }}
                 >
                   <span className="decorative-text">
@@ -182,9 +186,9 @@ const Login = () => {
                         position: 'relative',
                         '&:hover': {
                           bgcolor: 'transparent',
-                        },
+                        }
                       }}
-                      onClick={() => navigate('/')}
+                      onClick={() => navigate(Path.HOME)}
                     >
                       <span style={{ fontWeight: 'bold' }}>Retour&nbsp;</span> sur l'accueil
                     </Button>
@@ -196,7 +200,9 @@ const Login = () => {
         </Container>
       </Box>
 
-      <WelcomePanel title="Ravis de te revoir !" />
+      <WelcomePanel
+        title="Ravis de te revoir !"
+      />
     </Box>
   );
 };
