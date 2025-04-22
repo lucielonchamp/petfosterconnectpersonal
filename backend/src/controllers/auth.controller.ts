@@ -9,7 +9,7 @@ const prisma = new PrismaClient();
 export async function register(request: Request, response: Response): Promise<any> {
   const requestedData = request.body;
 
-	const { success, error, data } = registerSchema.safeParse(requestedData);
+  const { success, error, data } = registerSchema.safeParse(requestedData);
 
   if (!success) {
     return response.status(400).json({
@@ -30,8 +30,8 @@ export async function register(request: Request, response: Response): Promise<an
       return response.status(500).json({ success: false, message: 'Email already used.' });
     }
 
-		const salt = bcrypt.genSaltSync(10);
-		const hash = bcrypt.hashSync(data.password, salt);
+    const salt = bcrypt.genSaltSync(Number(process.env.SALT_ROUNDS) || 10);
+    const hash = bcrypt.hashSync(data.password, Number(process.env.SALT_ROUNDS) || 10);
 
     const newUser = await prisma.user.create({
       data: {
@@ -81,7 +81,7 @@ export const login = async (req: Request, res: Response): Promise<any> => {
       return;
     }
 
-		const passwordCheck = await bcrypt.compare(password, user.password);
+    const passwordCheck = await bcrypt.compare(password, user.password);
 
     if (!passwordCheck) {
       res.status(400).json({ success: false, message: 'Incorrect password' });

@@ -121,9 +121,9 @@ const ShelterProfile = () => {
       }
 
       setShelterWithUser({
-        name: data.Shelter.name,
-        location: data.Shelter.location,
-        description: data.Shelter.description,
+        name: data.Shelter?.name || '',
+        location: data.Shelter?.location || '',
+        description: data.Shelter?.description || '',
         user: {
           id: data.id,
           email: data.email,

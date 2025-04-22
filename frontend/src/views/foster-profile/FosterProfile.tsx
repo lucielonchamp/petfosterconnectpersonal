@@ -122,9 +122,9 @@ const FosterProfile = () => {
       }
 
       setFosterWithUser({
-        firstName: data.Foster.firstName,
-        lastName: data.Foster.lastName,
-        address: data.Foster.address,
+        firstName: data.Foster?.firstName || '',
+        lastName: data.Foster?.lastName || '',
+        address: data.Foster?.address || '',
         user: {
           id: data.id,
           email: data.email,

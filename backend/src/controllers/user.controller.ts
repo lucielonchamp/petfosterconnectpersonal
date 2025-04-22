@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { PrismaClient, Shelter, Foster, User } from '@prisma/client';
+import { PrismaClient, Shelter, Foster, User, Prisma } from '@prisma/client';
 import {
   updateUserSchema,
   updateUserShelterSchema,
@@ -151,56 +151,96 @@ export async function deleteUser(request: Request, response: Response): Promise<
 
 export async function updateUserWithShelter(
   req: Request<{ id: string }, {}, z.infer<typeof updateUserShelterSchema>>,
-  res: Response<ApiResponse<User> | ErrorResponse>
+  res: Response<ApiResponse<User & { Shelter: Shelter | null }> | ApiResponse<null>>
 ): Promise<void> {
   const { id } = req.params;
   const requestedData = req.body;
 
-  const { data, success, error } = updateUserShelterSchema.safeParse(requestedData);
+  const validationResult = updateUserShelterSchema.safeParse(requestedData);
 
-  if (!success) {
+  if (!validationResult.success) {
     res.status(400).json({
       success: false,
-      message: 'Invalid data',
-      error: error,
+      message: 'Invalid input data',
+      error: validationResult.error.format(),
     });
     return;
   }
 
+  const data = validationResult.data;
+
   try {
-    // Hacher le mot de passe s'il est fourni
-    let hashedPassword;
-    if (data?.user?.password) {
-      hashedPassword = await bcrypt.hash(data.user.password, 10);
+    const userDataForUpdate: Prisma.UserUpdateInput = {};
+    if (data.user?.email) {
+      userDataForUpdate.email = data.user.email;
+    }
+    if (data.user?.password) {
+      userDataForUpdate.password = await bcrypt.hash(data.user.password, Number(process.env.SALT_ROUNDS) || 10);
     }
 
-    const updatedEntity = await prisma.user.update({
+    const shelterCreateData: Prisma.ShelterCreateWithoutUserInput = {
+      name: data.name ?? 'Nom manquant',
+      location: data.location ?? 'Lieu manquant',
+      description: data.description, // Nullable, so undefined is okay
+    };
+
+    const shelterUpdateData: Prisma.ShelterUpdateWithoutUserInput = {
+      name: data.name,
+      location: data.location,
+      description: data.description,
+    };
+
+    const updatedUserWithShelter = await prisma.user.update({
       where: { id: id },
       data: {
-        email: data?.user?.email,
-        ...(hashedPassword && { password: hashedPassword }),
-        roleId: data?.user?.roleId,
+        ...userDataForUpdate,
         Shelter: {
-          update: {
-            where: { userId: id },
-            data: {
-              name: data?.name,
-              location: data?.location,
-              description: data?.description,
-            },
-          },
-        },
+          upsert: {
+            create: shelterCreateData,
+            update: shelterUpdateData,
+          }
+        }
       },
+      include: {
+        Shelter: true
+      }
     });
 
     res.status(200).json({
       success: true,
-      message: 'Profile updated successfully',
-      data: updatedEntity,
+      message: 'User and Shelter profile updated/created successfully',
+      data: updatedUserWithShelter,
     });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ success: false, message: 'Error updating profile', error });
+    return;
+
+  } catch (error: any) {
+    console.error(`Error updating user ${id} with shelter profile:`, error);
+
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2025') {
+      res.status(404).json({
+        success: false,
+        message: `User with ID ${id} not found.`,
+        error: error.meta ?? error.message,
+      });
+      return;
+    }
+
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {
+      const target = (error.meta?.target as string[])?.join(', ') || 'field';
+      res.status(409).json({
+        success: false,
+        message: `Update failed due to a conflict: ${target} already exists.`,
+        error: error.meta
+      });
+      return;
+    }
+
+    res.status(500).json({
+      success: false,
+      message: 'Error updating profile',
+      error: error.message
+    });
+    return;
   }
 }
 
@@ -256,49 +296,51 @@ export async function updateUserWithFoster(
   }
 
   try {
-    // Récupérer le foster associé à l'utilisateur
-    const foster = await prisma.foster.findFirst({
-      where: { userId: id },
-    });
-
-    if (!foster) {
-      res.status(404).json({
-        success: false,
-        message: 'Foster not found',
-      });
-      return;
+    const userDataForUpdate: Prisma.UserUpdateInput = {};
+    if (data.user?.email) {
+      userDataForUpdate.email = data.user.email;
+    }
+    if (data.user?.password) {
+      userDataForUpdate.password = await bcrypt.hash(data.user.password, Number(process.env.SALT_ROUNDS) || 10);
     }
 
-    // Hacher le mot de passe s'il est fourni
-    let hashedPassword;
-    if (data?.user?.password) {
-      hashedPassword = await bcrypt.hash(data.user.password, 10);
-    }
+    const fosterCreateData: Prisma.FosterCreateWithoutUserInput = {
+      firstName: data.firstName ?? 'Prénom manquant',
+      lastName: data.lastName ?? 'Nom manquant',
+      address: data.address ?? 'Adresse manquante',
 
-    const updatedEntity = await prisma.user.update({
+    };
+
+
+    const fosterUpdateData: Prisma.FosterUpdateWithoutUserInput = {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      address: data.address,
+    };
+
+    const updatedUserWithFoster = await prisma.user.update({
       where: { id: id },
       data: {
-        email: data?.user?.email,
-        ...(hashedPassword && { password: hashedPassword }),
-        roleId: data?.user?.roleId,
+        ...userDataForUpdate,
+
         Foster: {
-          update: {
-            where: { id: foster.id },
-            data: {
-              firstName: data?.firstName,
-              lastName: data?.lastName,
-              address: data?.address,
-            },
-          },
-        },
+          upsert: {
+            create: fosterCreateData,
+            update: fosterUpdateData,
+          }
+        }
       },
+      include: {
+        Foster: true
+      }
     });
 
     res.status(200).json({
       success: true,
-      message: 'Profile updated successfully',
-      data: updatedEntity,
+      message: 'User and Foster profile updated/created successfully',
+      data: updatedUserWithFoster,
     });
+    return;
   } catch (error) {
     console.log(error);
     res.status(500).json({ success: false, message: 'Error updating profile', error });
