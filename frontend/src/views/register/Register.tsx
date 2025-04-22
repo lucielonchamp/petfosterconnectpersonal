@@ -17,6 +17,7 @@ import PetFosterTextField from '../../components/PetFosterTextField/PetFosterTex
 import WelcomePanel from '../../components/WelcomePanel/WelcomePanel';
 import { useAuth } from '../../hooks/useAuth';
 import './Register.css';
+import { Path } from '../../interfaces/Path';
 
 interface Role {
   id: number;
@@ -49,13 +50,11 @@ const Register = () => {
     const fetchRoles = async () => {
       try {
         const response = await fetch(`${API_URL}/role`, {
-          credentials: 'include',
+          credentials: 'include'
         });
         const data = await response.json();
         if (data.success) {
-          const filteredRoles = data.data.filter(
-            (role: Role) => role.name.toLowerCase() !== 'admin'
-          );
+          const filteredRoles = data.data.filter((role: Role) => role.name.toLowerCase() !== 'admin');
           setRoles(filteredRoles);
         }
       } catch (err) {
@@ -169,9 +168,9 @@ const Register = () => {
         body: JSON.stringify({
           email,
           password,
-          roleId: selectedRole,
+          roleId: selectedRole
         }),
-        credentials: 'include',
+        credentials: 'include'
       });
 
       const data = await response.json();
@@ -181,9 +180,9 @@ const Register = () => {
       }
 
       await login(email, password);
-      navigate('/dashboard');
+      navigate(Path.DASHBOARD);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Erreur lors de l'inscription");
+      setError(err instanceof Error ? err.message : 'Erreur lors de l\'inscription');
     } finally {
       setLoading(false);
     }
@@ -197,7 +196,11 @@ const Register = () => {
             <Typography variant="subtitle1" color="#666" mb={2}>
               Choisissez votre rôle
             </Typography>
-            <Box display="flex" justifyContent="space-around" gap={2}>
+            <Box
+              display="flex"
+              justifyContent="space-around"
+              gap={2}
+            >
               {roles.map((role: Role) => (
                 <Card
                   key={role.id}
@@ -206,10 +209,7 @@ const Register = () => {
                     flex: '1',
                     maxWidth: '200px',
                     transition: 'all 0.3s ease',
-                    border:
-                      selectedRole === role.id.toString()
-                        ? '2px solid #5B6B94'
-                        : '1px solid #e0e0e0',
+                    border: selectedRole === role.id.toString() ? '2px solid #5B6B94' : '1px solid #e0e0e0',
                     '&:hover': {
                       transform: 'translateY(-4px)',
                       boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
@@ -311,19 +311,17 @@ const Register = () => {
   };
 
   return (
-    <Box
-      className="register-container"
-      sx={{
-        display: 'flex',
-        minHeight: '100vh',
-        width: '100vw',
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        margin: 0,
-        padding: 0,
-        flexDirection: { xs: 'column', md: 'row' },
-      }}
+    <Box className="register-container" sx={{
+      display: 'flex',
+      minHeight: '100vh',
+      width: '100vw',
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      margin: 0,
+      padding: 0,
+      flexDirection: { xs: 'column', md: 'row' }
+    }}
     >
       <Box flex="0 0 60%" display="flex" justifyContent="center" alignItems="center">
         <Container maxWidth="sm">
@@ -416,9 +414,7 @@ const Register = () => {
                   }}
                 >
                   {activeStep === steps.length - 1
-                    ? loading
-                      ? 'Inscription...'
-                      : "M'inscrire"
+                    ? (loading ? 'Inscription...' : 'M\'inscrire')
                     : 'Suivant'}
                 </Button>
               </Stack>
@@ -435,9 +431,9 @@ const Register = () => {
                     '&:hover': {
                       bgcolor: 'transparent',
                       color: '#4a5a83',
-                    },
+                    }
                   }}
-                  onClick={() => navigate('/login')}
+                  onClick={() => navigate(Path.LOGIN)}
                 >
                   Se connecter
                 </Button>
@@ -467,8 +463,8 @@ const Register = () => {
                     },
                     '&::after': {
                       right: '-50px',
-                    },
-                  },
+                    }
+                  }
                 }}
               >
                 <span className="decorative-text">
@@ -482,9 +478,9 @@ const Register = () => {
                       position: 'relative',
                       '&:hover': {
                         bgcolor: 'transparent',
-                      },
+                      }
                     }}
-                    onClick={() => navigate('/')}
+                    onClick={() => navigate(Path.HOME)}
                   >
                     <span style={{ fontWeight: 'bold' }}>Retour&nbsp;</span> sur l'accueil
                   </Button>
@@ -495,7 +491,9 @@ const Register = () => {
         </Container>
       </Box>
 
-      <WelcomePanel title="Bienvenue parmi nous !" />
+      <WelcomePanel
+        title="Bienvenue parmi nous !"
+      />
     </Box>
   );
 };

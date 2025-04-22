@@ -1,7 +1,8 @@
-import { Container, Typography, Stack } from '@mui/material';
-import { useNavigate } from 'react-router';
-import notFoundImage from '../../assets/404.png';
-import ButtonPurple from '../../components/ui/ButtonPurple';
+import { Container, Typography, Stack } from "@mui/material";
+import { useNavigate } from "react-router";
+import notFoundImage from "../../assets/404.png";
+import ButtonPurple from "../../components/ui/ButtonPurple";
+import { Path } from "../../interfaces/Path";
 
 const NotFound = () => {
   const navigate = useNavigate();
@@ -47,7 +48,7 @@ const NotFound = () => {
           variant="contained"
           color="primary"
           size="large"
-          onClick={() => navigate('/')}
+          onClick={() => navigate(Path.HOME)}
           sx={{
             mt: 4,
             px: 4,

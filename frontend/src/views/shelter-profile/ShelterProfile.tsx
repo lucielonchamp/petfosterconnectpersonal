@@ -1,13 +1,12 @@
-import { Container, Stack, Typography, Snackbar, Alert, Slide, SlideProps } from '@mui/material';
-import { Layout } from '../../components/layout/header/Layout';
-import React, { ChangeEvent, useEffect, useState } from 'react';
-import { ShelterWithUser } from '../../interfaces/shelter';
-import ButtonPurple from '../../components/ui/ButtonPurple';
-import PetFosterTextField from '../../components/PetFosterTextField/PetFosterTextField';
-import { LoaderPetFoster } from '../../components/Loader/LoaderPetFoster';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import dog from '../../assets/dog.png';
-import { useAuth } from '../../hooks/useAuth';
+import { Container, Stack, Typography, Snackbar, Alert, Slide, SlideProps } from "@mui/material";
+import React, { ChangeEvent, useEffect, useState } from "react";
+import { ShelterWithUser } from "../../interfaces/shelter";
+import ButtonPurple from "../../components/ui/ButtonPurple";
+import PetFosterTextField from "../../components/PetFosterTextField/PetFosterTextField";
+import { LoaderPetFoster } from "../../components/Loader/LoaderPetFoster";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import dog from "../../assets/dog.png";
+import { useAuth } from "../../hooks/useAuth";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -183,18 +182,14 @@ const ShelterProfile = () => {
 
   if (loading) {
     return (
-      <Layout sx={{ margin: 2 }}>
-        <Container
-          sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}
-        >
-          <LoaderPetFoster />
-        </Container>
-      </Layout>
+      <Container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
+        <LoaderPetFoster />
+      </Container>
     );
   }
 
   return (
-    <Layout sx={{ margin: 2 }}>
+    <Container>
       <Snackbar
         open={snackbar.open}
         autoHideDuration={3000}
@@ -329,7 +324,7 @@ const ShelterProfile = () => {
           {isSubmitting ? 'Enregistrement...' : 'Enregistrer les modifications'}
         </ButtonPurple>
       </Stack>
-    </Layout>
+    </Container>
   );
 };
 
