@@ -3,7 +3,7 @@ export enum SpecieNameEnum {
   CAT = 'cat',
   BIRD = 'bird',
   REPTILE = 'reptile',
-  OTHER = 'other'
+  OTHER = 'other',
 }
 
 export interface Specie {

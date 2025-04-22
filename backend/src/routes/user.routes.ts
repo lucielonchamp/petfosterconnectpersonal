@@ -1,5 +1,5 @@
-import express from "express";
-import * as Controller from "../controllers/user.controller";
+import express from 'express';
+import * as Controller from '../controllers/user.controller';
 const router = express.Router();
 
 /**
@@ -19,7 +19,7 @@ const router = express.Router();
  *      '200':
  *        description: A list of users
  */
-router.get("/", Controller.getUsers);
+router.get('/', Controller.getUsers);
 
 /**
  * @swagger
@@ -40,7 +40,7 @@ router.get("/", Controller.getUsers);
  *            schema:
  *              type: object
  */
-router.get("/:id", Controller.getUserById);
+router.get('/:id', Controller.getUserById);
 
 /**
  * @swagger
@@ -54,7 +54,7 @@ router.get("/:id", Controller.getUserById);
  *        required: true
  *        description: The ID of the user
  */
-router.get("/:id/shelter", Controller.getUserWithShelter);
+router.get('/:id/shelter', Controller.getUserWithShelter);
 
 /**
  * @swagger
@@ -81,7 +81,7 @@ router.get("/:id/shelter", Controller.getUserWithShelter);
  *              roleId:
  *                type: string
  */
-router.patch("/:id/shelter", Controller.updateUserWithShelter);
+router.patch('/:id/shelter', Controller.updateUserWithShelter);
 
 /**
  * @swagger
@@ -95,7 +95,7 @@ router.patch("/:id/shelter", Controller.updateUserWithShelter);
  *        required: true
  *        description: The ID of the user
  */
-router.get("/:id/foster", Controller.getUserWithFoster);
+router.get('/:id/foster', Controller.getUserWithFoster);
 
 /**
  * @swagger
@@ -108,7 +108,7 @@ router.get("/:id/foster", Controller.getUserWithFoster);
  *        in: path
  *        required: true
  *        description: The ID of the user
- *    requestBody:  
+ *    requestBody:
  *      required: true
  *      content:
  *        application/json:
@@ -122,7 +122,7 @@ router.get("/:id/foster", Controller.getUserWithFoster);
  *              roleId:
  *                type: string
  */
-router.patch("/:id/foster", Controller.updateUserWithFoster);
+router.patch('/:id/foster', Controller.updateUserWithFoster);
 
 /**
  * @swagger
@@ -143,6 +143,6 @@ router.patch("/:id/foster", Controller.updateUserWithFoster);
  *            schema:
  *              type: object
  */
-router.delete("/:id", Controller.deleteUser);
+router.delete('/:id', Controller.deleteUser);
 
 export default router;

@@ -1,7 +1,7 @@
 export enum RequestStatus {
   PENDING = 'pending',
   ACCEPTED = 'accepted',
-  REFUSED = 'refused'
+  REFUSED = 'refused',
 }
 
 export interface Request {

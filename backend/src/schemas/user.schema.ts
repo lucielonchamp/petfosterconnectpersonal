@@ -1,9 +1,9 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const updateUserSchema = z.object({
   email: z.string().email().optional(),
   password: z.string().optional(),
-  roleId: z.string().uuid().optional()
+  roleId: z.string().uuid().optional(),
 });
 
 export const updateUserShelterSchema = z.object({
@@ -14,8 +14,8 @@ export const updateUserShelterSchema = z.object({
     id: z.string().uuid(),
     email: z.string().email().optional(),
     roleId: z.string().uuid().optional(),
-    password: z.string().optional()
-  })
+    password: z.string().optional(),
+  }),
 });
 
 export const updateUserFosterSchema = z.object({
@@ -26,6 +26,6 @@ export const updateUserFosterSchema = z.object({
     id: z.string().uuid(),
     email: z.string().email().optional(),
     roleId: z.string().uuid().optional(),
-    password: z.string().optional()
-  })
+    password: z.string().optional(),
+  }),
 });

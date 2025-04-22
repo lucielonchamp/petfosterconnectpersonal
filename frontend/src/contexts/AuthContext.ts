@@ -1,5 +1,5 @@
-import { createContext } from "react";
-import { AuthContextType } from "../types/auth.types";
+import { createContext } from 'react';
+import { AuthContextType } from '../types/auth.types';
 
 // Valeurs par défaut du contexte
 const defaultAuthContext: AuthContextType = {

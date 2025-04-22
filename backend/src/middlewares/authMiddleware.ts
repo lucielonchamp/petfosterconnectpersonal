@@ -1,6 +1,6 @@
-import { PrismaClient } from "@prisma/client";
-import { NextFunction, Request, Response } from "express";
-import jwt from "jsonwebtoken";
+import { PrismaClient } from '@prisma/client';
+import { NextFunction, Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
 
 const prisma = new PrismaClient();
 
@@ -15,19 +15,13 @@ declare global {
 }
 
 // Middleware principal qui vérifie si l'utilisateur est authentifié
-const authMiddleware = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): void => {
+const authMiddleware = (req: Request, res: Response, next: NextFunction): void => {
   // Récupère le token depuis les cookies
   const token = req.cookies.authToken;
 
   // Si pas de token, l'utilisateur n'est pas connecté
   if (!token) {
-    res
-      .status(401)
-      .json({ success: false, message: "Authentification requise" });
+    res.status(401).json({ success: false, message: 'Authentification requise' });
     return;
   }
 
@@ -43,7 +37,7 @@ const authMiddleware = (
     next(); // Passe au middleware/route suivant
   } catch (error) {
     // Si le token est invalide ou expiré
-    res.status(401).json({ success: false, message: "Token invalide" });
+    res.status(401).json({ success: false, message: 'Token invalide' });
     return;
   }
 };
@@ -56,7 +50,7 @@ const roleMiddleware = (allowedRoles: string[]) => {
     if (!req.userId) {
       return res.status(401).json({
         success: false,
-        message: "Authentification requise",
+        message: 'Authentification requise',
       });
     }
 
@@ -72,7 +66,7 @@ const roleMiddleware = (allowedRoles: string[]) => {
       if (!user || !allowedRoles.includes(user.role.name)) {
         return res.status(403).json({
           success: false,
-          message: "Accès refusé - Rôle insuffisant",
+          message: 'Accès refusé - Rôle insuffisant',
         });
       }
 
@@ -80,7 +74,7 @@ const roleMiddleware = (allowedRoles: string[]) => {
     } catch (error) {
       return res.status(500).json({
         success: false,
-        message: "Erreur serveur",
+        message: 'Erreur serveur',
       });
     }
   };

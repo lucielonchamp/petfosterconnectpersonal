@@ -1,6 +1,6 @@
-import express from "express";
-import * as Controller from "../controllers/auth.controller";
-import { authMiddleware } from "../middlewares/authMiddleware";
+import express from 'express';
+import * as Controller from '../controllers/auth.controller';
+import { authMiddleware } from '../middlewares/authMiddleware';
 
 const router = express.Router();
 /**
@@ -43,7 +43,7 @@ const router = express.Router();
  *       500:
  *         description: Erreur interne du serveur
  */
-router.post("/register", Controller.register);
+router.post('/register', Controller.register);
 
 /**
  * @swagger
@@ -94,7 +94,7 @@ router.post("/register", Controller.register);
  *       500:
  *         description: Erreur serveur
  */
-router.post("/login", Controller.login);
+router.post('/login', Controller.login);
 
 /**
  * @swagger
@@ -145,7 +145,7 @@ router.post("/login", Controller.login);
  *       500:
  *         description: Erreur serveur
  */
-router.get("/me", authMiddleware, Controller.getMe);
+router.get('/me', authMiddleware, Controller.getMe);
 
 /**
  * @swagger
@@ -176,6 +176,6 @@ router.get("/me", authMiddleware, Controller.getMe);
  *       500:
  *         description: Erreur serveur
  */
-router.post("/logout", authMiddleware, Controller.logout);
+router.post('/logout', authMiddleware, Controller.logout);
 
 export default router;

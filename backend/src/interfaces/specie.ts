@@ -5,10 +5,10 @@ export enum SpecieNameEnum {
   CAT = 'cat',
   BIRD = 'bird',
   REPTILE = 'reptile',
-  OTHER = 'other'
+  OTHER = 'other',
 }
 
-export interface Specie extends PrismaSpecie { }
+export interface Specie extends PrismaSpecie {}
 
 export interface SpecieWithAnimals extends Specie {
   animals: {

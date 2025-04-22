@@ -89,6 +89,7 @@
 }
 
 @media(max-width: 976px) {
+
     #home .imgs div:last-of-type,
     #home .imgs div:first-of-type {
         display: none;
@@ -96,15 +97,16 @@
 }
 
 @media (max-width: 560px) {
-    #home > div {
+    #home>div {
         position: relative;
     }
 
-    #home > div .title{
+    #home>div .title {
         padding: 1rem 0;
     }
 
-    #home .img-left, #home .img-right {
+    #home .img-left,
+    #home .img-right {
         position: absolute;
     }
 

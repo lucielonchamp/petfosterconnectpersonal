@@ -3,10 +3,10 @@ import { Request as PrismaRequest } from '@prisma/client';
 export enum RequestStatus {
   PENDING = 'pending',
   ACCEPTED = 'accepted',
-  REFUSED = 'refused'
+  REFUSED = 'refused',
 }
 
-export interface Request extends PrismaRequest { }
+export interface Request extends PrismaRequest {}
 
 export interface RequestWithRelations extends Request {
   shelter: {

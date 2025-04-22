@@ -17,9 +17,8 @@ services:
       - 3000:3000
     depends_on:
       database:
-        condition: "service_healthy"
-    env_file:
-      docker.env
+        condition: 'service_healthy'
+    env_file: docker.env
 
   database:
     image: postgis/postgis
@@ -30,10 +29,10 @@ services:
     env_file:
       - docker.env
     healthcheck:
-       test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB -h localhost || exit 1"]
-       interval: 10s
-       timeout: 5s
-       retries: 5
+      test: ['CMD-SHELL', 'pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB -h localhost || exit 1']
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   adminer:
     image: adminer

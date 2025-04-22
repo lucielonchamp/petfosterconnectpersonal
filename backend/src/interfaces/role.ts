@@ -1,6 +1,6 @@
 import { Role as PrismaRole } from '@prisma/client';
 
-export interface Role extends PrismaRole { }
+export interface Role extends PrismaRole {}
 
 export interface RoleWithUsers extends Role {
   users: {
@@ -11,5 +11,5 @@ export interface RoleWithUsers extends Role {
 
 export enum RoleEnum {
   SHELTER = 'shelter',
-  FOSTER = 'foster'
+  FOSTER = 'foster',
 }

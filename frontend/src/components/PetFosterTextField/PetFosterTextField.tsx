@@ -64,18 +64,10 @@ const PetFosterInput = ({
   };
 
   const inputProps = {
-    startAdornment: startIcon && (
-      <InputAdornment position="start">
-        {startIcon}
-      </InputAdornment>
-    ),
+    startAdornment: startIcon && <InputAdornment position="start">{startIcon}</InputAdornment>,
     endAdornment: endIcon && (
       <InputAdornment position="end">
-        <IconButton
-          onClick={onEndIconClick}
-          edge="end"
-          sx={{ color: '#fff' }}
-        >
+        <IconButton onClick={onEndIconClick} edge="end" sx={{ color: '#fff' }}>
           {endIcon}
         </IconButton>
       </InputAdornment>
@@ -93,4 +85,4 @@ const PetFosterInput = ({
   );
 };
 
-export default PetFosterInput; 
+export default PetFosterInput;

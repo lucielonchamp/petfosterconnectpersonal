@@ -3,10 +3,10 @@ import { Animal as PrismaAnimal } from '@prisma/client';
 export enum AnimalStatus {
   FOSTERED = 'fostered',
   WAITING = 'waiting',
-  SHELTERED = 'sheltered'
+  SHELTERED = 'sheltered',
 }
 
-export interface Animal extends PrismaAnimal { }
+export interface Animal extends PrismaAnimal {}
 
 export interface AnimalWithRelations extends Animal {
   specie: {

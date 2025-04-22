@@ -1,5 +1,5 @@
-import express from "express";
-import * as Controller from "../controllers/role.controller";
+import express from 'express';
+import * as Controller from '../controllers/role.controller';
 
 const router = express.Router();
 
@@ -93,7 +93,7 @@ const router = express.Router();
  *                   example: "Server error"
  */
 
-router.get("/", Controller.getRole);
-router.post("/", Controller.createRole);
+router.get('/', Controller.getRole);
+router.post('/', Controller.createRole);
 
 export default router;

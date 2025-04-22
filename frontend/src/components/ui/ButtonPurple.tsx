@@ -6,9 +6,8 @@ interface ButtonPurpleProps extends ButtonProps {
 }
 
 const ButtonPurple = styled(Button, {
-  shouldForwardProp: (prop) => prop !== 'fontSize',
+  shouldForwardProp: prop => prop !== 'fontSize',
 })<ButtonPurpleProps>(({ fontSize }) => ({
-
   fontFamily: 'var(--font)',
   backgroundColor: 'var(--color-purple)',
   padding: '12px 20px',

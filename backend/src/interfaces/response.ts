@@ -8,4 +8,4 @@ export interface ApiResponse<T> {
 export interface ErrorResponse {
   message: string;
   error: unknown;
-} 
+}

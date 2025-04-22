@@ -1,13 +1,13 @@
-import { Container, Stack, Typography, Snackbar, Alert, Slide, SlideProps } from "@mui/material";
-import { Layout } from "../../components/layout/header/Layout";
-import React, { ChangeEvent, useEffect, useState } from "react";
-import { ShelterWithUser } from "../../interfaces/shelter";
-import ButtonPurple from "../../components/ui/ButtonPurple";
-import PetFosterTextField from "../../components/PetFosterTextField/PetFosterTextField";
-import { LoaderPetFoster } from "../../components/Loader/LoaderPetFoster";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import dog from "../../assets/dog.png";
-import { useAuth } from "../../hooks/useAuth";
+import { Container, Stack, Typography, Snackbar, Alert, Slide, SlideProps } from '@mui/material';
+import { Layout } from '../../components/layout/header/Layout';
+import React, { ChangeEvent, useEffect, useState } from 'react';
+import { ShelterWithUser } from '../../interfaces/shelter';
+import ButtonPurple from '../../components/ui/ButtonPurple';
+import PetFosterTextField from '../../components/PetFosterTextField/PetFosterTextField';
+import { LoaderPetFoster } from '../../components/Loader/LoaderPetFoster';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
+import dog from '../../assets/dog.png';
+import { useAuth } from '../../hooks/useAuth';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -25,8 +25,8 @@ const ShelterProfile = () => {
     location: undefined,
     description: undefined,
     user: {
-      id: "",
-      email: "",
+      id: '',
+      email: '',
       password: undefined,
     },
   });
@@ -40,7 +40,7 @@ const ShelterProfile = () => {
   }>({
     open: false,
     message: '',
-    severity: 'info'
+    severity: 'info',
   });
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -57,7 +57,7 @@ const ShelterProfile = () => {
     const errors: FormErrors = {};
 
     if (!shelterWithUser.user?.email) {
-      errors.email = 'L\'email est requis';
+      errors.email = "L'email est requis";
     } else if (!validateEmail(shelterWithUser.user.email)) {
       errors.email = 'Veuillez entrer un email valide';
     }
@@ -85,9 +85,9 @@ const ShelterProfile = () => {
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setIsEditing(true);
-    setShelterWithUser((prev) => ({
+    setShelterWithUser(prev => ({
       ...prev,
-      user: prev.user ? { ...prev.user, email: value } : { id: '', email: value }
+      user: prev.user ? { ...prev.user, email: value } : { id: '', email: value },
     }));
     if (value && !validateEmail(value)) {
       setFormErrors(prev => ({ ...prev, email: 'Veuillez entrer un email valide' }));
@@ -107,7 +107,7 @@ const ShelterProfile = () => {
     setSnackbar({
       open: true,
       message,
-      severity
+      severity,
     });
   };
 
@@ -128,9 +128,8 @@ const ShelterProfile = () => {
         user: {
           id: data.id,
           email: data.email,
-        }
+        },
       });
-
     } catch (err) {
       console.error(err);
       showMessage('Erreur lors du chargement du profil', 'error');
@@ -154,7 +153,7 @@ const ShelterProfile = () => {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(shelterWithUser),
-        credentials: 'include'
+        credentials: 'include',
       });
 
       const data = await response.json();
@@ -185,7 +184,9 @@ const ShelterProfile = () => {
   if (loading) {
     return (
       <Layout sx={{ margin: 2 }}>
-        <Container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
+        <Container
+          sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}
+        >
           <LoaderPetFoster />
         </Container>
       </Layout>
@@ -205,7 +206,7 @@ const ShelterProfile = () => {
             minWidth: '300px',
             boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
             borderRadius: '8px',
-          }
+          },
         }}
       >
         <Alert
@@ -218,7 +219,7 @@ const ShelterProfile = () => {
             },
             '& .MuiAlert-message': {
               fontSize: '0.9rem',
-            }
+            },
           }}
         >
           {snackbar.message}
@@ -235,9 +236,14 @@ const ShelterProfile = () => {
         </div>
       </Stack>
 
-
-      <Stack component="form" onSubmit={handleSubmit} alignItems="center" justifyContent="center" spacing={4}>
-        <Stack direction={{ xs: "column", md: "row" }} width="100%" spacing={6} margin="auto">
+      <Stack
+        component="form"
+        onSubmit={handleSubmit}
+        alignItems="center"
+        justifyContent="center"
+        spacing={4}
+      >
+        <Stack direction={{ xs: 'column', md: 'row' }} width="100%" spacing={6} margin="auto">
           <Stack spacing={2} width="100%" alignItems="center" justifyContent="center">
             <PetFosterTextField
               label="Mon email"
@@ -253,11 +259,13 @@ const ShelterProfile = () => {
               type={showPassword ? 'text' : 'password'}
               label="Mot de passe"
               value={shelterWithUser.user?.password}
-              onChange={(e) => {
+              onChange={e => {
                 setIsEditing(true);
-                setShelterWithUser((prev) => ({
+                setShelterWithUser(prev => ({
                   ...prev,
-                  user: prev.user ? { ...prev.user, password: e.target.value } : { id: '', email: '', password: '' }
+                  user: prev.user
+                    ? { ...prev.user, password: e.target.value }
+                    : { id: '', email: '', password: '' },
                 }));
               }}
               endIcon={showPassword ? <VisibilityOff /> : <Visibility />}
@@ -273,7 +281,7 @@ const ShelterProfile = () => {
               label="Nom de ma structure"
               type="text"
               value={shelterWithUser.name}
-              onChange={(e) => {
+              onChange={e => {
                 setIsEditing(true);
                 setShelterWithUser({ ...shelterWithUser, name: e.target.value });
               }}
@@ -285,7 +293,7 @@ const ShelterProfile = () => {
               label="Localisation"
               type="text"
               value={shelterWithUser.location}
-              onChange={(e) => {
+              onChange={e => {
                 setIsEditing(true);
                 setShelterWithUser({ ...shelterWithUser, location: e.target.value });
               }}
@@ -302,7 +310,7 @@ const ShelterProfile = () => {
           multiline
           rows={4}
           value={shelterWithUser.description}
-          onChange={(e) => {
+          onChange={e => {
             setIsEditing(true);
             setShelterWithUser({ ...shelterWithUser, description: e.target.value });
           }}
@@ -315,7 +323,7 @@ const ShelterProfile = () => {
           type="submit"
           variant="contained"
           color="primary"
-          sx={{ width: "fit-content" }}
+          sx={{ width: 'fit-content' }}
           disabled={!isEditing || isSubmitting}
         >
           {isSubmitting ? 'Enregistrement...' : 'Enregistrer les modifications'}

@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import * as fs from 'fs'
+import * as fs from 'fs';
 import * as path from 'path';
 import * as bcrypt from 'bcryptjs';
 
@@ -34,7 +34,10 @@ async function seed() {
   console.log('Hashing passwords and creating Users...');
   const usersToCreate = await Promise.all(
     jsonData.users.map(async (user: any) => {
-      const hashedPassword = await bcrypt.hash(user.password, parseInt(process.env.SALT_ROUNDS || '10', 10));
+      const hashedPassword = await bcrypt.hash(
+        user.password,
+        parseInt(process.env.SALT_ROUNDS || '10', 10)
+      );
       return {
         ...user,
         password: hashedPassword,
@@ -43,7 +46,7 @@ async function seed() {
   );
   await prisma.user.createMany({
     data: usersToCreate,
-    skipDuplicates: true
+    skipDuplicates: true,
   });
   console.log('Users created.');
 
@@ -51,54 +54,60 @@ async function seed() {
   console.log('Creating Shelters...');
 
   await Promise.all(
-    jsonData.shelters.map((shelter: any) => prisma.shelter.upsert({
-      where: { id: shelter.id },
-      update: shelter,
-      create: shelter,
-    }))
+    jsonData.shelters.map((shelter: any) =>
+      prisma.shelter.upsert({
+        where: { id: shelter.id },
+        update: shelter,
+        create: shelter,
+      })
+    )
   );
   console.log('Shelters created.');
-
 
   // 5. Create Fosters
   console.log('Creating Fosters...');
   await Promise.all(
-    jsonData.fosters.map((foster: any) => prisma.foster.upsert({
-      where: { id: foster.id },
-      update: foster,
-      create: foster,
-    }))
+    jsonData.fosters.map((foster: any) =>
+      prisma.foster.upsert({
+        where: { id: foster.id },
+        update: foster,
+        create: foster,
+      })
+    )
   );
   console.log('Fosters created.');
 
   // 6. Create Animals
   console.log('Creating Animals...');
   await Promise.all(
-    jsonData.animals.map((animal: any) => prisma.animal.upsert({
-      where: { id: animal.id },
-      update: { ...animal, fosterId: animal.fosterId || null },
-      create: { ...animal, fosterId: animal.fosterId || null },
-    }))
+    jsonData.animals.map((animal: any) =>
+      prisma.animal.upsert({
+        where: { id: animal.id },
+        update: { ...animal, fosterId: animal.fosterId || null },
+        create: { ...animal, fosterId: animal.fosterId || null },
+      })
+    )
   );
   console.log('Animals created.');
 
   // 7. Create Requests
   console.log('Creating Requests...');
   await Promise.all(
-    jsonData.requests.map((request: any) => prisma.request.upsert({
-      where: { id: request.id },
-      update: request,
-      create: request,
-    }))
+    jsonData.requests.map((request: any) =>
+      prisma.request.upsert({
+        where: { id: request.id },
+        update: request,
+        create: request,
+      })
+    )
   );
   console.log('Requests created.');
-
 
   console.log('Seeding finished successfully.');
 }
 
 seed()
-  .catch((e) => {
+  .catch(e => {
     console.error('Error during seeding:', e);
     process.exit(1);
   })

@@ -10,24 +10,40 @@ import FosterProfile from './views/foster-profile/FosterProfile';
 import NotFound from './views/not-found/NotFound';
 
 function App() {
-
   return (
     <>
       <Routes>
-        <Route path='/dashboard' element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/shelter/profile" element={<ProtectedRoute>
-          <ShelterProfile />
-        </ProtectedRoute>} />
-        <Route path="/foster/profile" element={<ProtectedRoute>
-          <FosterProfile />
-        </ProtectedRoute>} />
+        <Route
+          path="/shelter/profile"
+          element={
+            <ProtectedRoute>
+              <ShelterProfile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/foster/profile"
+          element={
+            <ProtectedRoute>
+              <FosterProfile />
+            </ProtectedRoute>
+          }
+        />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>
-  )
+  );
 }
 
 export default App;

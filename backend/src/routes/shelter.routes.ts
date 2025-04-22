@@ -1,5 +1,5 @@
-import express from "express";
-import * as Controller from "../controllers/shelter.controller";
+import express from 'express';
+import * as Controller from '../controllers/shelter.controller';
 
 const router = express.Router();
 
@@ -25,7 +25,7 @@ const router = express.Router();
  *              type: array
  *              items:
  */
-router.get("/", Controller.getShelters);
+router.get('/', Controller.getShelters);
 
 /**
  * @swagger
@@ -46,7 +46,7 @@ router.get("/", Controller.getShelters);
  *            schema:
  *              type: object
  */
-router.get("/:id", Controller.getShelterById);
+router.get('/:id', Controller.getShelterById);
 
 /**
  * @swagger
@@ -68,7 +68,7 @@ router.get("/:id", Controller.getShelterById);
  *            schema:
  *              type: object
  */
-router.post("/", Controller.createShelter);
+router.post('/', Controller.createShelter);
 
 /**
  * @swagger
@@ -89,7 +89,7 @@ router.post("/", Controller.createShelter);
  *            schema:
  *              type: object
  */
-router.put("/:id", Controller.updateShelter);
+router.put('/:id', Controller.updateShelter);
 
 /**
  * @swagger
@@ -103,6 +103,6 @@ router.put("/:id", Controller.updateShelter);
  *        required: true
  *        description: The ID of the shelter
  */
-router.delete("/:id");
+router.delete('/:id');
 
 export default router;

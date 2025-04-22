@@ -1,11 +1,10 @@
-import { Request, Response } from "express";
-import { PrismaClient, Shelter } from "@prisma/client";
-import { createShelterSchema, updateShelterSchema } from "../schemas/shelter.schema";
-import { ApiResponse, ErrorResponse } from "../interfaces/response";
-import { ShelterWithUser } from "../interfaces/shelter";
+import { Request, Response } from 'express';
+import { PrismaClient, Shelter } from '@prisma/client';
+import { createShelterSchema, updateShelterSchema } from '../schemas/shelter.schema';
+import { ApiResponse, ErrorResponse } from '../interfaces/response';
+import { ShelterWithUser } from '../interfaces/shelter';
 
 const prisma = new PrismaClient();
-
 
 export async function getShelters(
   req: Request,
@@ -18,8 +17,8 @@ export async function getShelters(
           select: {
             id: true,
             email: true,
-            roleId: true
-          }
+            roleId: true,
+          },
         },
       },
     });
@@ -27,11 +26,11 @@ export async function getShelters(
     res.status(200).json({
       success: true,
       message: 'Shelters fetched successfully',
-      data: shelters
+      data: shelters,
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Error fetching shelters", error });
+    res.status(500).json({ message: 'Error fetching shelters', error });
   }
 }
 
@@ -49,16 +48,16 @@ export async function getShelterById(
           select: {
             id: true,
             email: true,
-            roleId: true
-          }
+            roleId: true,
+          },
         },
       },
     });
 
     if (!shelter) {
       res.status(404).json({
-        message: "Shelter not found",
-        error: "Shelter not found"
+        message: 'Shelter not found',
+        error: 'Shelter not found',
       });
       return;
     }
@@ -66,11 +65,11 @@ export async function getShelterById(
     res.status(200).json({
       success: true,
       message: 'Shelter fetched successfully',
-      data: shelter
+      data: shelter,
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Error fetching shelter", error });
+    res.status(500).json({ message: 'Error fetching shelter', error });
   }
 }
 
@@ -83,7 +82,7 @@ export async function createShelter(
   const { success, data, error } = createShelterSchema.safeParse(requestBody);
 
   if (!success) {
-    res.status(400).json({ message: "Invalid data", error });
+    res.status(400).json({ message: 'Invalid data', error });
     return;
   }
 
@@ -102,24 +101,24 @@ export async function createShelter(
 
     if (existingShelter || existingFoster) {
       res.status(409).json({
-        message: "User already has a shelter or foster",
-        error: "User already has a shelter or foster"
+        message: 'User already has a shelter or foster',
+        error: 'User already has a shelter or foster',
       });
       return;
     }
 
     const shelter = await prisma.shelter.create({
-      data
+      data,
     });
 
     res.status(201).json({
       success: true,
       message: 'Shelter created successfully',
-      data: shelter
+      data: shelter,
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Error creating shelter", error });
+    res.status(500).json({ message: 'Error creating shelter', error });
   }
 }
 
@@ -133,24 +132,24 @@ export async function updateShelter(
   const { success, data, error } = updateShelterSchema.safeParse(requestBody);
 
   if (!success) {
-    res.status(400).json({ message: "Invalid data", error });
+    res.status(400).json({ message: 'Invalid data', error });
     return;
   }
 
   try {
     const shelter = await prisma.shelter.update({
       where: { id },
-      data
+      data,
     });
 
     res.status(200).json({
       success: true,
       message: 'Shelter updated successfully',
-      data: shelter
+      data: shelter,
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Error updating shelter", error });
+    res.status(500).json({ message: 'Error updating shelter', error });
   }
 }
 
@@ -162,16 +161,16 @@ export async function deleteShelter(
 
   try {
     const deletedShelter = await prisma.shelter.delete({
-      where: { id }
+      where: { id },
     });
 
     res.status(200).json({
       success: true,
       message: 'Shelter deleted successfully',
-      data: deletedShelter
+      data: deletedShelter,
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Error deleting shelter", error });
+    res.status(500).json({ message: 'Error deleting shelter', error });
   }
-} 
+}

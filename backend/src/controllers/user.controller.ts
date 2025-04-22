@@ -1,17 +1,19 @@
-import { Request, Response } from "express";
-import { PrismaClient, Shelter, Foster, User } from "@prisma/client";
-import { updateUserSchema, updateUserShelterSchema, updateUserFosterSchema } from "../schemas/user.schema";
-import bcrypt from "bcryptjs";
-import { ApiResponse, ErrorResponse } from "../interfaces/response";
-import { z } from "zod";
-import { ShelterWithUser } from "../interfaces/shelter";
-import { RoleEnum } from "../interfaces/role";
-
+import { Request, Response } from 'express';
+import { PrismaClient, Shelter, Foster, User } from '@prisma/client';
+import {
+  updateUserSchema,
+  updateUserShelterSchema,
+  updateUserFosterSchema,
+} from '../schemas/user.schema';
+import bcrypt from 'bcryptjs';
+import { ApiResponse, ErrorResponse } from '../interfaces/response';
+import { z } from 'zod';
+import { ShelterWithUser } from '../interfaces/shelter';
+import { RoleEnum } from '../interfaces/role';
 
 const prisma = new PrismaClient();
 
 export async function getUsers(request: Request, response: Response): Promise<any> {
-
   try {
     const users = await prisma.user.findMany();
 
@@ -19,23 +21,23 @@ export async function getUsers(request: Request, response: Response): Promise<an
       return response.status(404).json({
         success: false,
         message: 'Users not found',
-        error: 'Users not found'
-      })
-    };
+        error: 'Users not found',
+      });
+    }
 
     return response.status(200).json({
       success: true,
       message: 'Users found',
-      data: users
-    })
+      data: users,
+    });
   } catch (error) {
     return response.status(500).json({
       success: false,
       message: 'Error fetching users',
-      error: error
-    })
+      error: error,
+    });
   }
-};
+}
 
 export async function getUserById(request: Request, response: Response): Promise<any> {
   const { id } = request.params;
@@ -43,39 +45,37 @@ export async function getUserById(request: Request, response: Response): Promise
   if (!id) {
     return response.status(400).json({
       success: false,
-      message: 'User ID is required'
-    })
+      message: 'User ID is required',
+    });
   }
 
   try {
-
     const user = await prisma.user.findUnique({
       where: {
-        id: id
-      }
+        id: id,
+      },
     });
 
     if (!user) {
       return response.status(404).json({
         success: false,
-        message: 'User not found'
-      })
+        message: 'User not found',
+      });
     }
 
     return response.status(200).json({
       success: true,
       message: `User ${id} found`,
-      data: user
-    })
-
+      data: user,
+    });
   } catch (error) {
     return response.status(500).json({
       success: false,
       message: 'Error fetching user',
-      error: error
-    })
+      error: error,
+    });
   }
-};
+}
 
 export async function updateUser(request: Request, response: Response): Promise<any> {
   const { id } = request.params;
@@ -84,8 +84,8 @@ export async function updateUser(request: Request, response: Response): Promise<
   if (!id) {
     return response.status(400).json({
       success: false,
-      message: 'User ID is required'
-    })
+      message: 'User ID is required',
+    });
   }
 
   const { data, success, error } = updateUserSchema.safeParse(requestedData);
@@ -94,36 +94,34 @@ export async function updateUser(request: Request, response: Response): Promise<
     return response.status(400).json({
       success: false,
       message: 'Invalid data',
-      error: error
-    })
+      error: error,
+    });
   }
 
   try {
-
     if (data.password) {
       data.password = await bcrypt.hash(data.password, 10);
     }
 
     const updatedUser = await prisma.user.update({
       where: {
-        id: id
+        id: id,
       },
-      data: data
-    })
+      data: data,
+    });
 
     return response.status(200).json({
       success: true,
       message: `User ${id} updated`,
-      data: updatedUser
-    })
+      data: updatedUser,
+    });
   } catch (error) {
     return response.status(500).json({
       success: false,
       message: 'Error updating user',
     });
   }
-
-};
+}
 
 export async function deleteUser(request: Request, response: Response): Promise<any> {
   const { id } = request.params;
@@ -131,27 +129,24 @@ export async function deleteUser(request: Request, response: Response): Promise<
   try {
     const deletedUser = await prisma.user.delete({
       where: {
-        id: id
-      }
-    })
+        id: id,
+      },
+    });
 
     // TODO : delete shelter if user is a shelter, delete foster if user is a foster
 
     return response.status(200).json({
       success: true,
       message: `User ${id} deleted`,
-      data: deletedUser
-    })
-
+      data: deletedUser,
+    });
   } catch (error) {
     return response.status(500).json({
       success: false,
       message: 'Error deleting user',
-      error: error
-    })
+      error: error,
+    });
   }
-
-
 }
 
 export async function updateUserWithShelter(
@@ -167,8 +162,8 @@ export async function updateUserWithShelter(
     res.status(400).json({
       success: false,
       message: 'Invalid data',
-      error: error
-    })
+      error: error,
+    });
     return;
   }
 
@@ -191,21 +186,21 @@ export async function updateUserWithShelter(
             data: {
               name: data?.name,
               location: data?.location,
-              description: data?.description
-            }
-          }
-        }
-      }
+              description: data?.description,
+            },
+          },
+        },
+      },
     });
 
     res.status(200).json({
       success: true,
       message: 'Profile updated successfully',
-      data: updatedEntity
+      data: updatedEntity,
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ success: false, message: "Error updating profile", error });
+    res.status(500).json({ success: false, message: 'Error updating profile', error });
   }
 }
 
@@ -216,21 +211,29 @@ export async function getUserWithShelter(request: Request, response: Response): 
     const user = await prisma.user.findUnique({
       where: { id },
       include: {
-        Shelter: true
-      }
+        Shelter: true,
+      },
     });
 
     if (!user) {
-      return response.status(404).json({ success: false, message: "User not found" });
+      return response.status(404).json({ success: false, message: 'User not found' });
     }
 
     const { password, ...userWithoutPassword } = user;
 
     console.log('user', userWithoutPassword);
 
-    return response.status(200).json({ success: true, message: "User with shelter fetched successfully", data: userWithoutPassword });
+    return response
+      .status(200)
+      .json({
+        success: true,
+        message: 'User with shelter fetched successfully',
+        data: userWithoutPassword,
+      });
   } catch (error) {
-    return response.status(500).json({ success: false, message: "Error fetching user with shelter", error });
+    return response
+      .status(500)
+      .json({ success: false, message: 'Error fetching user with shelter', error });
   }
 }
 
@@ -247,21 +250,21 @@ export async function updateUserWithFoster(
     res.status(400).json({
       success: false,
       message: 'Invalid data',
-      error: error
-    })
+      error: error,
+    });
     return;
   }
 
   try {
     // Récupérer le foster associé à l'utilisateur
     const foster = await prisma.foster.findFirst({
-      where: { userId: id }
+      where: { userId: id },
     });
 
     if (!foster) {
       res.status(404).json({
         success: false,
-        message: 'Foster not found'
+        message: 'Foster not found',
       });
       return;
     }
@@ -284,21 +287,21 @@ export async function updateUserWithFoster(
             data: {
               firstName: data?.firstName,
               lastName: data?.lastName,
-              address: data?.address
-            }
-          }
-        }
-      }
+              address: data?.address,
+            },
+          },
+        },
+      },
     });
 
     res.status(200).json({
       success: true,
       message: 'Profile updated successfully',
-      data: updatedEntity
+      data: updatedEntity,
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ success: false, message: "Error updating profile", error });
+    res.status(500).json({ success: false, message: 'Error updating profile', error });
   }
 }
 
@@ -309,20 +312,28 @@ export async function getUserWithFoster(request: Request, response: Response): P
     const user = await prisma.user.findUnique({
       where: { id },
       include: {
-        Foster: true
-      }
+        Foster: true,
+      },
     });
 
     if (!user) {
-      return response.status(404).json({ success: false, message: "User not found" });
+      return response.status(404).json({ success: false, message: 'User not found' });
     }
 
     const { password, ...userWithoutPassword } = user;
 
     console.log('user', userWithoutPassword);
 
-    return response.status(200).json({ success: true, message: "User with foster fetched successfully", data: userWithoutPassword });
+    return response
+      .status(200)
+      .json({
+        success: true,
+        message: 'User with foster fetched successfully',
+        data: userWithoutPassword,
+      });
   } catch (error) {
-    return response.status(500).json({ success: false, message: "Error fetching user with foster", error });
+    return response
+      .status(500)
+      .json({ success: false, message: 'Error fetching user with foster', error });
   }
 }

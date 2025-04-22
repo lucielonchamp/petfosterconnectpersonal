@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const createShelterSchema = z.object({
   name: z.string(),
@@ -6,7 +6,6 @@ export const createShelterSchema = z.object({
   location: z.string(),
   userId: z.string(),
 });
-
 
 export const updateShelterSchema = z.object({
   name: z.string().optional(),

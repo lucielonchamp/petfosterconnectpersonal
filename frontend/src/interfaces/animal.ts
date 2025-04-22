@@ -1,7 +1,7 @@
 export enum AnimalStatus {
   FOSTERED = 'fostered',
   WAITING = 'waiting',
-  SHELTERED = 'sheltered'
+  SHELTERED = 'sheltered',
 }
 
 export interface Animal {
