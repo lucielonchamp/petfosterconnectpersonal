@@ -181,68 +181,69 @@ export async function createFoster(
     console.log(error);
     res.status(500).json({ message: "Error creating foster", error });
   }
+}
 
-  export async function updateFoster(
-    req: Request<{ id: string }, {}, Partial<Omit<Foster, 'id' | 'createdAt' | 'updatedAt'>>>,
-    res: Response<ApiResponse<Foster> | ErrorResponse>
-  ): Promise<void> {
-    const { id } = req.params;
-    const requestBody = req.body;
+export async function updateFoster(
+  req: Request<{ id: string }, {}, Partial<Omit<Foster, 'id' | 'createdAt' | 'updatedAt'>>>,
+  res: Response<ApiResponse<Foster> | ErrorResponse>
+): Promise<void> {
+  const { id } = req.params;
+  const requestBody = req.body;
 
-    const { success, data, error } = updateFosterSchema.safeParse(requestBody);
+  const { success, data, error } = updateFosterSchema.safeParse(requestBody);
 
-    if (!success) {
-      res.status(400).json({ message: "Invalid data", error });
-      return;
-    }
-
-    try {
-      const foster = await prisma.foster.update({
-        where: { id },
-        data
-      });
-
-      res.status(200).json({
-        success: true,
-        message: 'Foster updated successfully',
-        data: foster
-      });
-    } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: "Error updating foster", error });
-    }
+  if (!success) {
+    res.status(400).json({ message: "Invalid data", error });
+    return;
   }
 
-  export async function deleteFoster(request: Request<{ id: string }>, response: Response<ApiResponse<Foster> | ErrorResponse>): Promise<any> {
+  try {
+    const foster = await prisma.foster.update({
+      where: { id },
+      data
+    });
 
-    const { id } = request.params;
+    res.status(200).json({
+      success: true,
+      message: 'Foster updated successfully',
+      data: foster
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Error updating foster", error });
+  }
+}
 
-    try {
+export async function deleteFoster(request: Request<{ id: string }>, response: Response<ApiResponse<Foster> | ErrorResponse>): Promise<any> {
 
-      if (!id) {
-        return response.status(400).json({
-          success: false,
-          message: 'Foster family ID is required'
-        })
-      }
+  const { id } = request.params;
 
-      const deletedFoster = await prisma.foster.delete({
-        where: {
-          id
-        }
-      });
+  try {
 
-      return response.status(200).json({
-        success: true,
-        message: `Foster Family ${id} deleted`,
-        data: deletedFoster
-      })
-
-    } catch (error) {
-      return response.status(500).json({
+    if (!id) {
+      return response.status(400).json({
         success: false,
-        message: 'Error deleting user',
-        error: error
+        message: 'Foster family ID is required'
       })
     }
+
+    const deletedFoster = await prisma.foster.delete({
+      where: {
+        id
+      }
+    });
+
+    return response.status(200).json({
+      success: true,
+      message: `Foster Family ${id} deleted`,
+      data: deletedFoster
+    })
+
+  } catch (error) {
+    return response.status(500).json({
+      success: false,
+      message: 'Error deleting user',
+      error: error
+    })
   }
+}
