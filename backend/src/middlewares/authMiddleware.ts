@@ -45,13 +45,14 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction): void =
 // Middleware qui vérifie si l'utilisateur a les bons rôles
 // Prend en paramètre un tableau des rôles autorisés
 const roleMiddleware = (allowedRoles: string[]) => {
-  return async (req: Request, res: Response, next: NextFunction) => {
+  return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     // Vérifie si l'utilisateur est authentifié
     if (!req.userId) {
-      return res.status(401).json({
+      res.status(401).json({
         success: false,
         message: 'Authentification requise',
       });
+      return;
     }
 
     try {
@@ -64,20 +65,69 @@ const roleMiddleware = (allowedRoles: string[]) => {
 
       // Vérifie si l'utilisateur existe et a un rôle autorisé
       if (!user || !allowedRoles.includes(user.role.name)) {
-        return res.status(403).json({
+        res.status(403).json({
           success: false,
           message: 'Accès refusé - Rôle insuffisant',
         });
+        return;
       }
 
       next(); // Utilisateur autorisé, passe à la suite
     } catch (error) {
-      return res.status(500).json({
+      res.status(500).json({
         success: false,
         message: 'Erreur serveur',
       });
+      return;
     }
   };
 };
 
-export { authMiddleware, roleMiddleware };
+const isFosterOwnerMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+  const { fosterId } = req.params;
+  const userId = req.userId;
+
+  if (!userId) {
+    res.status(401).json({
+      success: false,
+      message: 'Authentification requise',
+    });
+    return;
+  }
+
+  try {
+    // Vérifiez si le foster appartient à l'utilisateur
+    const foster = await prisma.foster.findUnique({
+      where: { id: fosterId },
+      select: { userId: true },
+    });
+
+    if (!foster) {
+      res.status(404).json({
+        success: false,
+        message: 'Foster non trouvé',
+      });
+      return;
+    }
+
+    // Vérifie si l'utilisateur est le propriétaire du foster
+    if (foster.userId !== userId) {
+      res.status(403).json({
+        success: false,
+        message: "Vous n'êtes pas autorisé à accéder aux informations de ce foster",
+      });
+      return;
+    }
+
+    // L'utilisateur est autorisé
+    next();
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Erreur serveur',
+    });
+    return;
+  }
+};
+
+export { authMiddleware, roleMiddleware, isFosterOwnerMiddleware };
