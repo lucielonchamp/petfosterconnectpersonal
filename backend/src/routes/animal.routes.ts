@@ -88,5 +88,6 @@ const router = express.Router();
 */
 
 router.get('/', Controller.getAnimals);
+router.get('/:id', Controller.getAnimalById);
 
 export default router;
