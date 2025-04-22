@@ -13,7 +13,7 @@ router.use('/user', userRoute);
 router.use('/role', roleRoute);
 router.use('/animal', animalRoute);
 router.use('/shelter', shelterRoute);
-router.use('/foster', fosterRoute)
+router.use('/foster', fosterRoute);
 
 // 404
 router.get('*', function (req, res) {

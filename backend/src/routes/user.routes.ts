@@ -143,6 +143,6 @@ router.patch('/:id/foster', Controller.updateUserWithFoster);
  *            schema:
  *              type: object
  */
-router.delete('/:id', Controller.deleteUser);
+router.delete("/:id", Controller.anonymizeUser);
 
 export default router;

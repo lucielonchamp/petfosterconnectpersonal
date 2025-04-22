@@ -337,3 +337,86 @@ export async function getUserWithFoster(request: Request, response: Response): P
       .json({ success: false, message: 'Error fetching user with foster', error });
   }
 }
+
+export async function anonymizeUser(request: Request, response: Response): Promise<any> {
+  const { id } = request.params;
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id },
+      include: {
+        Foster: true,
+        Shelter: true
+      }
+    });
+
+    if (!user) {
+      return response.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    const updates: any = {
+      email: `deleted+${user.id}@petfoster.com`,
+      password: await bcrypt.hash('deleted-password', 10),
+      isRemoved: true
+    };
+
+    if (user.Foster) {
+      const Foster = await prisma.foster.update({
+        where: { id: user.Foster.id },
+        data: {
+          firstName: '',
+          lastName: '',
+          address: '',
+          isRemoved: true,
+          Request: {
+            updateMany: {
+              where: {},
+              data: {
+                fosterComment: null,
+                shelterComment: null
+              }
+            }
+          }
+        }
+      });
+    }
+
+    if (user.Shelter) {
+      await prisma.shelter.update({
+        where: { id: user.Shelter.id },
+        data: {
+          name: '',
+          location: '',
+          description: null,
+          isRemoved: true,
+          Request: {
+            updateMany: {
+              where: {},
+              data: {
+                fosterComment: null,
+                shelterComment: null
+              }
+            }
+          }
+        }
+      });
+    }
+
+    await prisma.user.update({
+      where: { id },
+      data: updates
+    });
+
+    return response.status(200).json({
+      success: true,
+      message: `User ${id} anonymized`,
+    });
+
+  } catch (error) {
+    return response.status(500).json({
+      success: false,
+      message: 'Error anonymizing user',
+      error
+    });
+  }
+}

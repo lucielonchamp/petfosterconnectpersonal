@@ -91,18 +91,4 @@ router.post('/', Controller.createShelter);
  */
 router.put('/:id', Controller.updateShelter);
 
-/**
- * @swagger
- * /shelter/{id}:
- *  delete:
- *    summary: Delete a shelter by ID
- *    tags: [Shelters]
- *    parameters:
- *      - name: id
- *        in: path
- *        required: true
- *        description: The ID of the shelter
- */
-router.delete('/:id');
-
 export default router;

@@ -11,6 +11,7 @@ model User {
   id        String   @id @default(uuid())
   email     String   @unique
   password  String
+  isRemoved Boolean  @default(false)
   role      Role     @relation(fields: [roleId], references: [id])
   roleId    String
   createdAt DateTime @default(now())
@@ -58,6 +59,7 @@ model Shelter {
   name        String    @unique
   location    String
   description String?
+  isRemoved   Boolean @default(false)
   user        User      @relation(fields: [userId], references: [id])
   userId      String    @unique
   animals     Animal[]
@@ -71,6 +73,7 @@ model Foster {
   firstName String
   lastName  String
   address   String
+  isRemoved Boolean   @default(false)
   user      User      @relation(fields: [userId], references: [id])
   userId    String    @unique
   animals   Animal[]
