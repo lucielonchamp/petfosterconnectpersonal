@@ -3,8 +3,15 @@ import bcrypt from 'bcryptjs';
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { loginSchema, registerSchema } from '../schemas/auth.schema';
+import { clearAuthCookies } from '../utils/clearAuthCookies';
 
 const prisma = new PrismaClient();
+
+const LOGIN_COOKIES_OPTIONS = {
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: 'strict' as const,
+  maxAge: 60 * 60 * 1000,
+};
 
 export async function register(request: Request, response: Response): Promise<any> {
   const requestedData = request.body;
@@ -88,7 +95,7 @@ export const login = async (req: Request, res: Response): Promise<any> => {
       return;
     }
 
-    const token = jwt.sign(
+    const authToken = jwt.sign(
       {
         userId: user.id,
       },
@@ -98,19 +105,12 @@ export const login = async (req: Request, res: Response): Promise<any> => {
       }
     );
 
-    const cookieOptions = {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict' as const,
-      maxAge: 60 * 60 * 1000, // 1H (pour correspondre à expiresIn du token)
-    };
-
-    res.cookie('authToken', token, cookieOptions);
+    res.cookie('authToken', authToken, { ...LOGIN_COOKIES_OPTIONS, httpOnly: true });
 
     res.status(200).json({
       success: true,
       message: 'Connexion réussie 😄!',
-      token: token,
+      authToken,
     });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Erreur serveur' });
@@ -128,8 +128,6 @@ export const getMe = async (req: Request, res: Response): Promise<any> => {
   }
 
   try {
-    // Recherche l'utilisateur dans la base de données avec son ID
-    // Include: role permet de charger aussi les informations du rôle
     const user = await prisma.user.findUnique({
       where: {
         id: req.userId, // On utilise l'ID stocké par le middleware
@@ -141,7 +139,6 @@ export const getMe = async (req: Request, res: Response): Promise<any> => {
       },
     });
 
-    // Si l'utilisateur n'existe pas en base (cas rare mais possible)
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -149,7 +146,6 @@ export const getMe = async (req: Request, res: Response): Promise<any> => {
       });
     }
 
-    // Renvoie les données utilisateur au format attendu par le front
     return res.status(200).json({
       success: true,
       user: {
@@ -159,7 +155,6 @@ export const getMe = async (req: Request, res: Response): Promise<any> => {
       },
     });
   } catch (error) {
-    // En cas d'erreur avec la base de données
     return res.status(500).json({
       success: false,
       message: 'Erreur serveur',
@@ -167,23 +162,20 @@ export const getMe = async (req: Request, res: Response): Promise<any> => {
   }
 };
 
-// Déconnecte l'utilisateur en supprimant son cookie
 export const logout = async (req: Request, res: Response): Promise<any> => {
   try {
-    // Supprime le cookie contenant le token JWT
-    res.clearCookie('authToken', {
-      httpOnly: true, // Le cookie n'est pas accessible en JavaScript
-      secure: process.env.NODE_ENV === 'production', // HTTPS en production
-      sameSite: 'strict' as const, // Protection CSRF
-    });
+    const logoutCookiesOptions = {
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict' as const,
+    };
 
-    // Confirme la déconnexion
+    clearAuthCookies(res, logoutCookiesOptions);
+
     return res.status(200).json({
       success: true,
       message: 'Déconnexion réussie',
     });
   } catch (error) {
-    // En cas d'erreur lors de la suppression du cookie
     return res.status(500).json({
       success: false,
       message: 'Erreur lors de la déconnexion',

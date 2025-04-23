@@ -4,6 +4,7 @@ import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 import router from './routes/router';
 import { specs } from './swagger';
+import { validateCsrfToken } from './middlewares/csrfMiddleware';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -19,10 +20,11 @@ app.use(
 
 app.use(express.json());
 
-// cookieParser pour pouvoir lire les cookies et les utiliser dans les requêtes et les supprimer
 app.use(cookieParser());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+
+app.use(validateCsrfToken);
 
 app.use('', router);
 

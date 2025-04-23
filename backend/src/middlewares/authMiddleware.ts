@@ -26,8 +26,7 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction): void =
   }
 
   try {
-    // Vérifie et décode le token JWT
-    // On ne récupère que l'userId car c'est la seule info dont on a besoin
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
       userId: string;
     };

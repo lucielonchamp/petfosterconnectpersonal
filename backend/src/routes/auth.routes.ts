@@ -1,6 +1,7 @@
 import express from 'express';
 import * as Controller from '../controllers/auth.controller';
 import { authMiddleware } from '../middlewares/authMiddleware';
+import { generateCsrfToken } from '../middlewares/csrfMiddleware';
 
 const router = express.Router();
 /**
@@ -177,5 +178,21 @@ router.get('/me', authMiddleware, Controller.getMe);
  *         description: Erreur serveur
  */
 router.post('/logout', authMiddleware, Controller.logout);
+
+/**
+ * @swagger
+ * /auth/csrf-token:
+ *   get:
+ *     tags:
+ *       - Authentication
+ *     summary: Get a CSRF token
+ *     description: Returns a CSRF token for CSRF protection
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: CSRF token successfully generated
+ */
+router.get('/csrf-token', authMiddleware, generateCsrfToken);
 
 export default router;
