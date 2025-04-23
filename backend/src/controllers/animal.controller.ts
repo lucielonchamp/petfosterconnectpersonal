@@ -5,21 +5,127 @@ const prisma = new PrismaClient();
 
 export async function getAnimals(request: Request, response: Response): Promise<any> {
   try {
-    const animals = await prisma.animal.findMany();
+    const { sex, specieId, breed, minAge, maxAge, status, fosterId, shelterId } = request.query;
 
-    if (!animals) {
-      return response.status(409).json({
-        success: false,
-        message: 'Invalid data',
-      });
+    // Construire l'objet de filtrage dynamiquement
+    const whereClause: any = {};
+
+    if (sex) {
+      whereClause.sex = sex;
     }
+
+    if (specieId) {
+      whereClause.specieId = specieId;
+    }
+
+    if (breed) {
+      whereClause.breed = {
+        contains: breed,
+        mode: 'insensitive'
+      };
+    }
+
+    if (minAge || maxAge) {
+      whereClause.age = {};
+
+      if (minAge) {
+        whereClause.age.gte = parseInt(minAge as string);
+      }
+
+      if (maxAge) {
+        whereClause.age.lte = parseInt(maxAge as string);
+      }
+    }
+
+    if (status) {
+      // Gérer le cas où status est un tableau
+      if (Array.isArray(status)) {
+        whereClause.status = {
+          in: status
+        };
+      } else {
+        whereClause.status = status;
+      }
+    }
+
+    if (sex) {
+      // Gérer le cas où status est un tableau
+      if (Array.isArray(sex)) {
+        whereClause.sex = {
+          in: status
+        };
+      } else {
+        whereClause.status = status;
+      }
+    }
+
+    if (specieId) {
+      // Gérer le cas où specieId est un tableau
+      if (Array.isArray(specieId)) {
+        whereClause.specieId = {
+          in: specieId
+        };
+      } else {
+        whereClause.specieId = specieId;
+      }
+    }
+
+    // Ajout des filtres par ID
+    if (fosterId) {
+      whereClause.fosterId = fosterId;
+    }
+
+    if (shelterId) {
+      // Gérer le cas où shelterId est un tableau
+      if (Array.isArray(shelterId)) {
+        whereClause.shelterId = {
+          in: shelterId
+        };
+      } else {
+        whereClause.shelterId = shelterId;
+      }
+    }
+
+    const animals = await prisma.animal.findMany({
+      where: whereClause,
+      include: {
+        specie: {
+          select: {
+            id: true,
+            name: true
+          }
+        },
+        shelter: {
+          select: {
+            id: true,
+            name: true,
+            location: true
+          }
+        },
+        Foster: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true
+          }
+        }
+      }
+    });
+
     return response
       .status(200)
-      .json({ success: true, message: 'animals correctly received', data: animals });
+      .json({
+        success: true,
+        message: 'animals correctly received',
+        data: animals
+      });
+
   } catch (error) {
+    console.error('Error in getAnimals:', error);
     return response.status(500).json({
       success: false,
       message: 'Server error',
+      error: error
     });
   }
 }

@@ -4,6 +4,7 @@ import ConnectedLayout from './components/layout/ConnectedLayout/ConnectedLayout
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import { Path } from './interfaces/Path';
 import AnimalDetail from './views/animal-detail/AnimalDetail';
+import Animals from './views/animals/Animals';
 import Dashboard from './views/dashboard/Dashboard';
 import FosterProfile from './views/foster-profile/FosterProfile';
 import Home from './views/home/Home';
@@ -20,6 +21,7 @@ function App() {
         <Route path={Path.LOGIN} element={<Login />} />
         <Route path={Path.REGISTER} element={<Register />} />
         <Route path={Path.ANIMAL_DETAIL} element={<AnimalDetail />} />
+        <Route path={Path.ANIMALS} element={<Animals />} />
 
         <Route
           path={`${Path.DASHBOARD}/*`}

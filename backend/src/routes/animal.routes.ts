@@ -1,22 +1,77 @@
-import * as Controller from '../controllers/animal.controller';
 import express from 'express';
+import * as Controller from '../controllers/animal.controller';
 import { authMiddleware, isFosterOwnerMiddleware, roleMiddleware } from '../middlewares/authMiddleware';
 
 const router = express.Router();
 
 /**
  * @swagger
- * /animals:
+ * /animal:
  *   get:
- *     summary: Get all animals
- *     description: Retrieve a list of available animals
+ *     summary: Get all animals with filters
+ *     description: Retrieve a list of animals with optional filters
  *     operationId: getAnimals
+ *     parameters:
+ *       - in: query
+ *         name: sex
+ *         schema:
+ *           type: string
+ *           enum: [Male, Female]
+ *         description: Filter by animal sex (male/female)
+ *       - in: query
+ *         name: specieId
+ *         schema:
+ *           type: string
+ *         description: Filter by specie ID
+ *       - in: query
+ *         name: breed
+ *         schema:
+ *           type: string
+ *         description: Filter by breed
+ *       - in: query
+ *         name: minAge
+ *         schema:
+ *           type: integer
+ *         description: Minimum age of animals
+ *       - in: query
+ *         name: maxAge
+ *         schema:
+ *           type: integer
+ *         description: Maximum age of animals
+ *       - in: query
+ *         name: status
+ *         schema:
+ *           type: string
+ *           enum: [fostered, waiting, sheltered]
+ *         description: Filter by animal status
+ *       - in: query
+ *         name: fosterId
+ *         schema:
+ *           type: string
+ *         description: Filter by foster ID
+ *       - in: query
+ *         name: shelterId
+ *         schema:
+ *           type: string
+ *         description: Filter by shelter ID
  *     responses:
  *       200:
- *         description: A list of animals
+ *         description: A filtered list of animals
  *         content:
  *           application/json:
  *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Animal'
+ *       500:
+ *         description: Server error
  */
 
 /**
