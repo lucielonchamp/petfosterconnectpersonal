@@ -12,6 +12,7 @@ import Login from './views/login/Login';
 import NotFound from './views/not-found/NotFound';
 import Register from './views/register/Register';
 import ShelterProfile from './views/shelter-profile/ShelterProfile';
+import AddRequest from './views/request/AddRequest';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
                   <Route index element={<Dashboard />} />
                   <Route path={Path.SHELTER_PROFILE} element={<ShelterProfile />} />
                   <Route path={Path.FOSTER_PROFILE} element={<FosterProfile />} />
+                  <Route path={Path.ADD_REQUEST} element={<AddRequest />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </ConnectedLayout>

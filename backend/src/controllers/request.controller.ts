@@ -22,29 +22,20 @@ export async function createRequest(
     return;
   }
 
-  const { fosterId, shelterId, animalId } = validation.data;
+  const { fosterId, fosterComment, animalId } = validation.data;
 
   try {
-    const [animal, foster, shelter] = await Promise.all([
-      prisma.animal.findUnique({ where: { id: animalId } }),
+    const [animal, foster] = await Promise.all([
+      prisma.animal.findUnique({ where: { id: animalId }, include: { shelter: true } }),
       prisma.foster.findUnique({ where: { id: fosterId } }),
-      prisma.shelter.findUnique({ where: { id: shelterId } })
     ]);
 
     if (!foster) {
       response.status(404).json({ success: false, message: `Foster with ID ${fosterId} not found.` });
       return;
     }
-    if (!shelter) {
-      response.status(404).json({ success: false, message: `Shelter with ID ${shelterId} not found.` });
-      return;
-    }
     if (!animal) {
       response.status(404).json({ success: false, message: `Animal with ID ${animalId} not found.` });
-      return;
-    }
-    if (animal.shelterId !== shelterId) {
-      response.status(400).json({ success: false, message: `Animal with ID ${animalId} does not belong to Shelter with ID ${shelterId}.` });
       return;
     }
 
@@ -57,13 +48,20 @@ export async function createRequest(
     }
 
     const newRequest = await prisma.request.create({
-      data: { fosterId, shelterId, animalId, status: RequestStatus.pending },
+      data: { fosterId, shelterId: animal.shelterId, animalId, status: RequestStatus.pending, fosterComment },
       include: {
         foster: { select: { id: true, firstName: true, lastName: true } },
         shelter: { select: { id: true, name: true } },
         animal: { select: { id: true, name: true, picture: true } },
       }
     });
+
+    if (newRequest) {
+      await prisma.animal.update({
+        where: { id: animalId },
+        data: { status: AnimalStatus.waiting }
+      });
+    }
 
     response.status(201).json({
       success: true,

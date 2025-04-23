@@ -7,6 +7,9 @@ export enum RequestStatus {
 export interface Request {
   id: string;
   status: RequestStatus;
+  animalId: string;
+  fosterId: string;
+  shelterId: string;
   fosterComment: string;
   shelterComment: string;
   answeredDate: Date;

@@ -136,6 +136,8 @@ export const getMe = async (req: Request, res: Response): Promise<any> => {
       },
       include: {
         role: true, // Charge la relation role pour avoir les permissions
+        Shelter: true,
+        Foster: true,
       },
     });
 

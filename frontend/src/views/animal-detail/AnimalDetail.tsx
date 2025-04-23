@@ -17,8 +17,12 @@ import { Link as RouterLink, useParams } from 'react-router';
 import Header from '../../components/layout/header/Header';
 import ButtonPurple from '../../components/ui/ButtonPurple';
 import { capitalizeFirstLetter, getStatusColor, getStatusLabel } from '../../helpers/statusHelper';
-import { Animal, AnimalWithRelations } from '../../interfaces/animal';
+import { Animal, AnimalStatus, AnimalWithRelations } from '../../interfaces/animal';
 import './AnimalDetail.css';
+import ButtonBlue from '../../components/ui/ButtonBlue';
+import { Path } from '../../interfaces/Path';
+import { useAuth } from '../../hooks/useAuth';
+import { RoleEnum } from '../../interfaces/role';
 
 interface ApiResponse {
   success: boolean;
@@ -28,6 +32,7 @@ interface ApiResponse {
 
 const AnimalDetail = () => {
   const { id } = useParams();
+  const { user } = useAuth();
   const [animal, setAnimal] = useState<AnimalWithRelations | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -157,6 +162,17 @@ const AnimalDetail = () => {
                   <LocationIcon />
                   <Typography>{animal.shelter?.location}</Typography>
                 </div>
+                {
+                  user?.role.name === RoleEnum.FOSTER && animal.status !== AnimalStatus.FOSTERED && (
+                    <ButtonBlue
+                      href={`${Path.DASHBOARD}${Path.ADD_REQUEST.replace(':animalId', animal.id)}`}
+                      className="adoption-button"
+                      endIcon={<ArrowForwardIcon />}
+                    >
+                      Faire une demande d'accueil
+                    </ButtonBlue>
+                  )
+                }
                 <ButtonPurple
                   href={`/shelter/${animal.shelter?.id}`}
                   endIcon={<ArrowForwardIcon />}

@@ -1,51 +1,53 @@
 :root {
-    --font: 'Roboto', sans-serif;
-    --font-weight-light: 300;
-    --font-weight-regular: 400;
-    --font-weight-medium: 500;
-    --font-weight-semibold: 600;
-    --font-weight-bold: 700;
-    --font-weight-extrabold: 800;
-    --color-purple: #5B6C97;
-    --color-purple-hover: #485578;
-    --color-white: #FFFEFC;
-    --color-black: #000000;
+  --font: 'Roboto', sans-serif;
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  --color-purple: #5b6c97;
+  --color-purple-hover: #485578;
+  --color-blue: #34748e;
+  --color-blue-hover: #285c72;
+  --color-white: #fffefc;
+  --color-black: #000000;
 }
 
 body {
-    place-items: baseline;
-    font-family: var(--font);
+  place-items: baseline;
+  font-family: var(--font);
 }
 
 #root {
-    width: 100%;
-    max-width: 100%;
-    font-family: var(--font);
+  width: 100%;
+  max-width: 100%;
+  font-family: var(--font);
 }
 
 .container {
-    max-width: 1440px;
-    width: 100%;
-    box-sizing: border-box;
-    padding: 0 15px;
+  max-width: 1440px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 15px;
 }
 
 .container-fluid {
-    max-width: 100%;
-    width: 100%;
-    box-sizing: border-box;
-    padding: 0;
+  max-width: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0;
 }
 
 ul {
-    list-style-type: none;
-    display: flex;
-    margin: 0;
-    padding-left: 0;
+  list-style-type: none;
+  display: flex;
+  margin: 0;
+  padding-left: 0;
 }
 
 a:hover,
 a:focus,
 a:active {
-    text-decoration: underline;
+  text-decoration: underline;
 }

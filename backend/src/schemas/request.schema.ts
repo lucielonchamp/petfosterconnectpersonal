@@ -9,9 +9,8 @@ export const paramIdSchema = z.object({
 // Schema for creating a request
 export const createRequestSchema = z.object({
   fosterId: z.string().uuid({ message: 'Invalid Foster ID format' }),
-  shelterId: z.string().uuid({ message: 'Invalid Shelter ID format' }),
+  fosterComment: z.string().max(500, { message: 'Foster comment cannot exceed 500 characters' }),
   animalId: z.string().uuid({ message: 'Invalid Animal ID format' }),
-  // Status is set server-side, comments added on update
 });
 
 // Schema for updating a request
