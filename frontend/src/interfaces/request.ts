@@ -28,6 +28,7 @@ export interface RequestWithRelations extends Request {
   animal: {
     id: string;
     name: string;
+    picture: string;
     specieId: string;
   };
 }

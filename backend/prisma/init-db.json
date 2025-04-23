@@ -122,9 +122,9 @@
       "sex": "Female",
       "age": 1,
       "description": "Sweet and cuddly.",
-      "status": "waiting",
+      "status": "fostered",
       "shelterId": "a3b4c5d6-e7f8-9012-3456-01234567890a",
-      "fosterId": null
+      "fosterId": "d6e7f8a9-b0c1-2345-6789-34567890abcd"
     },
     {
       "id": "a9b0c1d2-e3f4-5678-9012-67890abcdef0",
@@ -137,7 +137,7 @@
       "description": "Cheerful and sings beautifully.",
       "status": "fostered",
       "shelterId": "b4c5d6e7-f8a9-0123-4567-1234567890ab",
-      "fosterId": null
+      "fosterId": "c5d6e7f8-a9b0-1234-5678-234567890abc"
     },
     {
       "id": "b0c1d2e3-f4a5-6789-0123-7890abcdef01",
@@ -150,6 +150,84 @@
       "description": "Loyal and Protective",
       "status": "sheltered",
       "shelterId": "b4c5d6e7-f8a9-0123-4567-1234567890ab",
+      "fosterId": null
+    },
+    {
+      "id": "d3e4f5a6-b7c8-9012-3456-1abcdef01234",
+      "name": "Luna",
+      "picture": "luna.jpg",
+      "specieId": "d4e5f6a7-b8c9-0123-4567-890abcdef012",
+      "breed": "Domestic Shorthair",
+      "sex": "Female",
+      "age": 2,
+      "description": "Independent but enjoys attention.",
+      "status": "sheltered",
+      "shelterId": "a3b4c5d6-e7f8-9012-3456-01234567890a",
+      "fosterId": null
+    },
+    {
+      "id": "e4f5a6b7-c8d9-0123-4567-2bcdef012345",
+      "name": "Max",
+      "picture": "max.jpg",
+      "specieId": "c3d4e5f6-a7b8-9012-3456-7890abcdef01",
+      "breed": "Beagle",
+      "sex": "Male",
+      "age": 4,
+      "description": "Energetic and loves to sniff.",
+      "status": "sheltered",
+      "shelterId": "b4c5d6e7-f8a9-0123-4567-1234567890ab",
+      "fosterId": null
+    },
+    {
+      "id": "f5a6b7c8-d9e0-1234-5678-3cdef0123456",
+      "name": "Sunny",
+      "picture": "sunny.jpg",
+      "specieId": "e5f6a7b8-c9d0-1234-5678-90abcdef0123",
+      "breed": "Cockatiel",
+      "sex": "Female",
+      "age": 1,
+      "description": "Curious and friendly.",
+      "status": "fostered",
+      "shelterId": "a3b4c5d6-e7f8-9012-3456-01234567890a",
+      "fosterId": "d6e7f8a9-b0c1-2345-6789-34567890abcd"
+    },
+    {
+      "id": "a6b7c8d9-e0f1-2345-6789-4def01234567",
+      "name": "Leo",
+      "picture": "leo.jpg",
+      "specieId": "f6a7b8c9-d0e1-2345-6789-0abcdef01234",
+      "breed": "Leopard Gecko",
+      "sex": "Male",
+      "age": 5,
+      "description": "Calm and easy to handle.",
+      "status": "waiting",
+      "shelterId": "b4c5d6e7-f8a9-0123-4567-1234567890ab",
+      "fosterId": null
+    },
+    {
+      "id": "b7c8d9e0-f1a2-3456-7890-5ef012345678",
+      "name": "Daisy",
+      "picture": "daisy.jpg",
+      "specieId": "c3d4e5f6-a7b8-9012-3456-7890abcdef01",
+      "breed": "Golden Retriever",
+      "sex": "Female",
+      "age": 7,
+      "description": "Gentle senior, loves naps.",
+      "status": "fostered",
+      "shelterId": "b4c5d6e7-f8a9-0123-4567-1234567890ab",
+      "fosterId": "c5d6e7f8-a9b0-1234-5678-234567890abc"
+    },
+    {
+      "id": "c8d9e0f1-a2b3-4567-8901-6f0123456789",
+      "name": "Oreo",
+      "picture": "oreo.jpg",
+      "specieId": "d4e5f6a7-b8c9-0123-4567-890abcdef012",
+      "breed": "Tuxedo",
+      "sex": "Male",
+      "age": 0.5,
+      "description": "Playful kitten full of energy.",
+      "status": "sheltered",
+      "shelterId": "a3b4c5d6-e7f8-9012-3456-01234567890a",
       "fosterId": null
     }
   ],
@@ -175,11 +253,38 @@
     {
       "id": "e3f4a5b6-c7d8-9012-3456-0abcdef01234",
       "status": "pending",
-      "fosterComment": "Interested in adopting Rocky, if that's possible.",
+      "fosterComment": "Interested in fostering Rocky, if that's possible.",
       "shelterComment": null,
       "shelterId": "b4c5d6e7-f8a9-0123-4567-1234567890ab",
       "fosterId": "c5d6e7f8-a9b0-1234-5678-234567890abc",
       "animalId": "b0c1d2e3-f4a5-6789-0123-7890abcdef01"
+    },
+    {
+      "id": "f4a5b6c7-d8e9-0123-4567-1bcdef012345",
+      "status": "accepted",
+      "fosterComment": "Tweety would fit right in!",
+      "shelterComment": "Approved. Please arrange pickup.",
+      "shelterId": "b4c5d6e7-f8a9-0123-4567-1234567890ab",
+      "fosterId": "c5d6e7f8-a9b0-1234-5678-234567890abc",
+      "animalId": "a9b0c1d2-e3f4-5678-9012-67890abcdef0"
+    },
+    {
+      "id": "a5b6c7d8-e9f0-1234-5678-2cdef0123456",
+      "status": "accepted",
+      "fosterComment": "We have experience with cockatiels.",
+      "shelterComment": "Great! Approved.",
+      "shelterId": "a3b4c5d6-e7f8-9012-3456-01234567890a",
+      "fosterId": "d6e7f8a9-b0c1-2345-6789-34567890abcd",
+      "animalId": "f5a6b7c8-d9e0-1234-5678-3cdef0123456"
+    },
+    {
+      "id": "b6c7d8e9-f0a1-2345-6789-3def01234567",
+      "status": "accepted",
+      "fosterComment": "We can offer a loving home for Daisy.",
+      "shelterComment": "Perfect match, thank you!",
+      "shelterId": "b4c5d6e7-f8a9-0123-4567-1234567890ab",
+      "fosterId": "c5d6e7f8-a9b0-1234-5678-234567890abc",
+      "animalId": "b7c8d9e0-f1a2-3456-7890-5ef012345678"
     }
   ]
 }

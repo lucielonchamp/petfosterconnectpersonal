@@ -133,6 +133,9 @@ export async function getAnimalsByShelter(request: Request, response: Response):
       where: {
         shelterId: shelterId,
       },
+      include: {
+        specie: true,
+      }
     });
 
     if (!animals) {
@@ -171,6 +174,9 @@ export async function getAnimalsByFoster(request: Request, response: Response): 
       where: {
         fosterId: fosterId,
       },
+      include: {
+        specie: true,
+      }
     });
 
     if (animals.length === 0) {

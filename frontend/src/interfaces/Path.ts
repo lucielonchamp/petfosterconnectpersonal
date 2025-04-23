@@ -2,7 +2,7 @@ export enum Path {
   HOME = '/',
   LOGIN = '/login',
   REGISTER = '/register',
-  ANIMAL_DETAIL = 'animal/:id',
+  ANIMAL_DETAIL = '/animal/:id',
 
   // Connected Base Route
   DASHBOARD = '/dashboard',

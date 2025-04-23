@@ -1,7 +1,6 @@
 import {
   CalendarMonth as CalendarIcon,
   Home as HomeIcon,
-  Menu as MenuIcon,
   Person as PersonIcon,
   Pets as PetsIcon
 } from '@mui/icons-material';
@@ -11,9 +10,7 @@ import {
   Box,
   Button,
   Chip,
-  CircularProgress,
   Container,
-  IconButton,
   Paper,
   Table,
   TableBody,
@@ -25,6 +22,13 @@ import {
 } from '@mui/material';
 import { JSX, useEffect, useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
+import { RoleEnum } from '../../interfaces/role';
+import { AnimalStatus, AnimalWithRelations } from '../../interfaces/animal';
+import { RequestStatus, RequestWithRelations } from '../../interfaces/request';
+import { LoaderPetFoster } from '../../components/Loader/LoaderPetFoster';
+import { useNavigate } from 'react-router';
+import { getStatusColor, getStatusLabel } from '../../helpers/statusHelper';
+import { Path } from '../../interfaces/Path';
 
 // Types
 interface User {
@@ -32,7 +36,7 @@ interface User {
   email: string;
   role: {
     id: string;
-    name: string;
+    name: RoleEnum;
   };
 }
 
@@ -43,154 +47,154 @@ interface DashboardCard {
   color: string;
 }
 
-interface Animal {
-  id: string;
-  name: string;
-  image: string;
-  species: string;
-  breed: string;
-  age: string;
-  status: string;
-  createdAt: string;
-}
-
-interface FosterRequest {
-  id: string;
-  animalName: string;
-  animalImage: string;
-  requestDate: string;
-  status: 'Validé' | 'En attente' | 'Refusé';
-}
+const API_URL = import.meta.env.VITE_API_URL;
 
 const Dashboard = () => {
   const { user, loading } = useAuth() as { user: User | null; loading: boolean; logout: () => Promise<void> };
   const [stats, setStats] = useState<DashboardCard[]>([]);
 
-  // Données fictives
-  const recentAnimals: Animal[] = [
-    {
-      id: '1',
-      name: 'Vaiana',
-      image: 'https://placekitten.com/50/50',
-      species: 'Chat',
-      breed: 'Siamois',
-      age: '3 ans',
-      status: 'En famille',
-      createdAt: '12/03/2025'
-    },
-    {
-      id: '2',
-      name: 'Brioche',
-      image: 'https://placekitten.com/51/51',
-      species: 'Chat',
-      breed: 'Européen',
-      age: '4 ans',
-      status: "À l'association",
-      createdAt: '11/03/2025'
-    },
-    // ... autres animaux
-  ];
+  const [animals, setAnimals] = useState<AnimalWithRelations[]>([]);
+  const [requests, setRequests] = useState<RequestWithRelations[]>([]);
 
-  const recentRequests: FosterRequest[] = [
-    {
-      id: '1',
-      animalName: 'Vaiana',
-      animalImage: 'https://placekitten.com/50/50',
-      requestDate: '12/03/2025',
-      status: 'Validé'
-    },
-    {
-      id: '2',
-      animalName: 'Brioche',
-      animalImage: 'https://placekitten.com/51/51',
-      requestDate: '11/03/2025',
-      status: 'En attente'
-    },
-    // ... autres demandes
-  ];
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const navigate = useNavigate();
+
+  const getDashboardData = async () => {
+
+    setIsLoading(true);
+
+    const typeOfUser: RoleEnum = user?.role?.name || RoleEnum.ADMIN;
+
+    if (typeOfUser === RoleEnum.FOSTER || typeOfUser === RoleEnum.SHELTER) {
+
+      const responseUser = await fetch(`${API_URL}/user/${user?.id}/${user?.role?.name}`);
+
+      const { data: userWithProfile } = await responseUser.json();
+
+      const profileId = userWithProfile[typeOfUser.replace(/^./, typeOfUser[0].toUpperCase())].id
+
+      // ANIMALS
+      const responseAnimals = await fetch(`${API_URL}/animal/${typeOfUser}/${profileId}`, {
+        credentials: 'include',
+      });
+
+      const { data: animalsData } = await responseAnimals.json();
+      setAnimals(animalsData)
+
+      // REQUEST
+
+      const requestResponse = await fetch(`${API_URL}/request/user/${user?.id}`, {
+        credentials: 'include',
+      })
+
+      const { data: requestData } = await requestResponse.json();
+      setRequests(requestData);
+
+    }
+
+    setStatsByRole(typeOfUser);
+  };
+
+  function setStatsByRole(role: RoleEnum | undefined) {
+    switch (role) {
+      case 'admin':
+        setStats([
+          {
+            title: 'Utilisateurs Total',
+            value: '156',
+            icon: <PersonIcon sx={{ fontSize: 40 }} />,
+            color: '#2196F3'
+          },
+          {
+            title: 'Refuges Actifs',
+            value: '12',
+            icon: <HomeIcon sx={{ fontSize: 40 }} />,
+            color: '#4CAF50'
+          },
+          {
+            title: 'Familles d\'Accueil',
+            value: '45',
+            icon: <PetsIcon sx={{ fontSize: 40 }} />,
+            color: '#FF9800'
+          }
+        ]);
+        break;
+
+      case 'shelter':
+        setStats([
+          {
+            title: 'Animaux Hébergés',
+            value: animals?.filter((animal) => animal.status !== AnimalStatus.FOSTERED).length || 0,
+            icon: <PetsIcon sx={{ fontSize: 40 }} />,
+            color: '#4CAF50'
+          },
+          {
+            title: 'Demandes en Attente',
+            value: requests?.filter((request) => request.status === RequestStatus.PENDING).length || 0,
+            icon: <CalendarIcon sx={{ fontSize: 40 }} />,
+            color: '#FF9800'
+          },
+          {
+            title: 'Animaux en famille',
+            value: animals?.filter((animal) => animal.status === AnimalStatus.FOSTERED).length || 0,
+            icon: <HomeIcon sx={{ fontSize: 40 }} />,
+            color: '#2196F3'
+          }
+        ]);
+        break;
+
+      case 'foster':
+        setStats([
+          {
+            title: 'Animaux accueillis',
+            value: animals?.length || 0,
+            icon: <PetsIcon sx={{ fontSize: 40 }} />,
+            color: '#4CAF50'
+          },
+          {
+            title: 'Statut',
+            value: 'Disponible', // TODO: à changer quand le statut sera géré
+            icon: <CalendarIcon sx={{ fontSize: 40 }} />,
+            color: '#2196F3'
+          },
+          {
+            title: 'Demandes d\'accueil',
+            value: requests?.length || 0,
+            icon: <PersonIcon sx={{ fontSize: 40 }} />,
+            color: '#FF9800'
+          }
+        ]);
+        break;
+
+      default:
+        setStats([]);
+    }
+
+  }
 
   useEffect(() => {
-    if (user) {
-      switch (user.role.name) {
-        case 'admin':
-          setStats([
-            {
-              title: 'Utilisateurs Total',
-              value: '156',
-              icon: <PersonIcon sx={{ fontSize: 40 }} />,
-              color: '#2196F3'
-            },
-            {
-              title: 'Refuges Actifs',
-              value: '12',
-              icon: <HomeIcon sx={{ fontSize: 40 }} />,
-              color: '#4CAF50'
-            },
-            {
-              title: 'Familles d\'Accueil',
-              value: '45',
-              icon: <PetsIcon sx={{ fontSize: 40 }} />,
-              color: '#FF9800'
-            }
-          ]);
-          break;
+    setStatsByRole(user?.role?.name);
+  }, [user, animals, requests])
 
-        case 'shelter':
-          setStats([
-            {
-              title: 'Animaux Hébergés',
-              value: '24',
-              icon: <PetsIcon sx={{ fontSize: 40 }} />,
-              color: '#4CAF50'
-            },
-            {
-              title: 'Demandes en Attente',
-              value: '8',
-              icon: <CalendarIcon sx={{ fontSize: 40 }} />,
-              color: '#FF9800'
-            },
-            {
-              title: 'Familles d\'Accueil',
-              value: '15',
-              icon: <HomeIcon sx={{ fontSize: 40 }} />,
-              color: '#2196F3'
-            }
-          ]);
-          break;
+  useEffect(() => {
+    getDashboardData();
+    setIsLoading(false);
+  }, [user])
 
-        case 'foster':
-          setStats([
-            {
-              title: 'Animaux en Accueil',
-              value: '2',
-              icon: <PetsIcon sx={{ fontSize: 40 }} />,
-              color: '#4CAF50'
-            },
-            {
-              title: 'Statut',
-              value: 'Disponible',
-              icon: <CalendarIcon sx={{ fontSize: 40 }} />,
-              color: '#2196F3'
-            },
-            {
-              title: 'Demandes Reçues',
-              value: '3',
-              icon: <PersonIcon sx={{ fontSize: 40 }} />,
-              color: '#FF9800'
-            }
-          ]);
-          break;
+  const handleNavigateAnimals = (animalId: string) => () => {
+    navigate(Path.ANIMAL_DETAIL.replace(':id', animalId));
+  };
 
-        default:
-          setStats([]);
-      }
-    }
-  }, [user]);
+  const handleNavigateRequests = (requestId: string) => () => {
+    // TODO: faire la bonne redirection quand la page détail d'une demande sera créée
+    navigate(`/request/${requestId}`);
+  }
 
-  if (loading) {
+  if (isLoading || loading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh">
-        <CircularProgress />
+        <LoaderPetFoster />
       </Box>
     );
   }
@@ -273,7 +277,15 @@ const Dashboard = () => {
           borderBottom: '1px solid rgba(0, 0, 0, 0.05)'
         }}>
           <Typography variant="h6" sx={{ fontWeight: 500 }}>
-            Derniers animaux ajoutés
+            {
+              user?.role?.name === RoleEnum.SHELTER ?
+                'Animaux au refuge'
+                : user?.role?.name === RoleEnum.FOSTER ?
+                  'Animaux chez vous'
+                  :
+                  'Liste des animaux'
+
+            }
           </Typography>
           <Button
             color="primary"
@@ -295,16 +307,16 @@ const Dashboard = () => {
                 <TableCell>Race</TableCell>
                 <TableCell>Âge</TableCell>
                 <TableCell>Statut</TableCell>
-                <TableCell align="right">Actions</TableCell>
+                {/* <TableCell align="right">Actions</TableCell> */}
               </TableRow>
             </TableHead>
             <TableBody>
-              {recentAnimals.map((animal) => (
-                <TableRow key={animal.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+              {animals.map((animal) => (
+                <TableRow key={animal.id} onClick={handleNavigateAnimals(animal.id)} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} hover>
                   <TableCell>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                       <Avatar
-                        src={animal.image}
+                        src={animal.picture}
                         sx={{
                           width: 40,
                           height: 40,
@@ -314,27 +326,27 @@ const Dashboard = () => {
                       {animal.name}
                     </Box>
                   </TableCell>
-                  <TableCell>{animal.createdAt}</TableCell>
-                  <TableCell>{animal.species}</TableCell>
+                  <TableCell>{new Date(animal.createdAt).toLocaleDateString()}</TableCell>
+                  <TableCell>{animal?.specie?.name}</TableCell>
                   <TableCell>{animal.breed}</TableCell>
                   <TableCell>{animal.age}</TableCell>
                   <TableCell>
                     <Chip
-                      label={animal.status}
-                      color={animal.status === 'En famille' ? 'success' : 'warning'}
+                      label={getStatusLabel(animal.status)}
                       size="small"
                       sx={{
+                        backgroundColor: getStatusColor(animal.status),
                         borderRadius: 1,
                         textTransform: 'none',
                         fontWeight: 500
                       }}
                     />
                   </TableCell>
-                  <TableCell align="right">
+                  {/* <TableCell align="right">
                     <IconButton size="small">
                       <MenuIcon />
                     </IconButton>
-                  </TableCell>
+                  </TableCell> */}
                 </TableRow>
               ))}
             </TableBody>
@@ -352,7 +364,15 @@ const Dashboard = () => {
           borderBottom: '1px solid rgba(0, 0, 0, 0.05)'
         }}>
           <Typography variant="h6" sx={{ fontWeight: 500 }}>
-            Dernières demandes d'accueil
+            {
+              user?.role?.name === RoleEnum.SHELTER ?
+                'Demandes d\'accueil'
+                : user?.role?.name === RoleEnum.FOSTER ?
+                  'Demandes envoyées'
+                  :
+                  'Liste des demandes'
+
+            }
           </Typography>
           <Button
             color="primary"
@@ -371,32 +391,35 @@ const Dashboard = () => {
                 <TableCell>Animal</TableCell>
                 <TableCell>Date de la demande</TableCell>
                 <TableCell>Statut</TableCell>
-                <TableCell align="right">Actions</TableCell>
+                {/* <TableCell align="right">Actions</TableCell> */}
               </TableRow>
             </TableHead>
             <TableBody>
-              {recentRequests.map((request) => (
-                <TableRow key={request.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+              {requests.map((request) => (
+                <TableRow key={request.id} onClick={handleNavigateRequests(request.id)} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} hover>
                   <TableCell>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                       <Avatar
-                        src={request.animalImage}
+                        src={request?.animal.picture}
                         sx={{
                           width: 40,
                           height: 40,
                           borderRadius: 1
                         }}
                       />
-                      {request.animalName}
+                      {request?.animal.name}
                     </Box>
                   </TableCell>
-                  <TableCell>{request.requestDate}</TableCell>
+                  <TableCell>{new Date(request.createdAt).toLocaleDateString()}</TableCell>
                   <TableCell>
                     <Chip
-                      label={request.status}
+                      label={
+                        request.status === RequestStatus.ACCEPTED ? 'Validée' :
+                          request.status === RequestStatus.REFUSED ? 'Refusée' : 'En attente'
+                      }
                       color={
-                        request.status === 'Validé' ? 'success' :
-                          request.status === 'Refusé' ? 'error' : 'warning'
+                        request.status === RequestStatus.ACCEPTED ? 'success' :
+                          request.status === RequestStatus.REFUSED ? 'error' : 'warning'
                       }
                       size="small"
                       sx={{
@@ -406,11 +429,11 @@ const Dashboard = () => {
                       }}
                     />
                   </TableCell>
-                  <TableCell align="right">
+                  {/* <TableCell align="right">
                     <IconButton size="small">
                       <MenuIcon />
                     </IconButton>
-                  </TableCell>
+                  </TableCell> */}
                 </TableRow>
               ))}
             </TableBody>
