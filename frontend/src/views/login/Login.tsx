@@ -1,22 +1,26 @@
 import { Lock, Person, Visibility, VisibilityOff } from '@mui/icons-material';
 import { Box, Button, Container, Stack, Typography } from '@mui/material';
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { Navigate, useNavigate } from 'react-router';
 import logo from '../../assets/logo.png';
 import PetFosterTextField from '../../components/PetFosterTextField/PetFosterTextField';
 import WelcomePanel from '../../components/WelcomePanel/WelcomePanel';
 import { useAuth } from '../../hooks/useAuth';
-import './Login.css';
 import { Path } from '../../interfaces/Path';
+import './Login.css';
 
 const Login = () => {
   const navigate = useNavigate();
-  const { login, error: authError } = useAuth();
+  const { login, error: authError, user } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  if (user) {
+    return <Navigate to="/dashboard" />;
+  }
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

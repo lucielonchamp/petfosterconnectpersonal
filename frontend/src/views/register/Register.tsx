@@ -11,13 +11,13 @@ import {
   Typography,
 } from '@mui/material';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { Navigate, useNavigate } from 'react-router';
 import logo from '../../assets/logo.png';
 import PetFosterTextField from '../../components/PetFosterTextField/PetFosterTextField';
 import WelcomePanel from '../../components/WelcomePanel/WelcomePanel';
 import { useAuth } from '../../hooks/useAuth';
-import './Register.css';
 import { Path } from '../../interfaces/Path';
+import './Register.css';
 
 interface Role {
   id: number;
@@ -28,7 +28,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 const Register = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, user } = useAuth();
   const [activeStep, setActiveStep] = useState(0);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -309,6 +309,10 @@ const Register = () => {
         return null;
     }
   };
+
+  if (user) {
+    return <Navigate to="/dashboard" />;
+  }
 
   return (
     <Box className="register-container" sx={{

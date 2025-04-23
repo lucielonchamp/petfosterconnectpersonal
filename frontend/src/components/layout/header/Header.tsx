@@ -1,16 +1,20 @@
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from 'react';
 import { Link } from 'react-router';
 import logo from '../../../assets/logo.png';
+import { useAuth } from '../../../hooks/useAuth';
 import ButtonPurple from '../../ui/ButtonPurple';
 import './Header.css';
 
+
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-
   const toggleMenu = () => setMenuOpen(!menuOpen);
   const closeMenu = () => setMenuOpen(false);
+  const { user } = useAuth();
+
 
   return (
     <header id="header" className="container">
@@ -41,21 +45,32 @@ function Header() {
             </Link>
           </li>
           <li>
-            <Link to="#" onClick={closeMenu}>
+            <Link to="/animals" onClick={closeMenu}>
               Animaux
             </Link>
           </li>
           <li>
-            <Link to="#" onClick={closeMenu}>
+            <Link to="/association" onClick={closeMenu}>
               Association
             </Link>
           </li>
         </ul>
       </nav>
 
-      {/* Connexion */}
+      {/* Connexion ou Dashboard */}
       <div className="cta-login-container">
-        <ButtonPurple href="/login">Connexion</ButtonPurple>
+        {user ? (
+          <ButtonPurple
+            href="/dashboard"
+            startIcon={<DashboardIcon />}
+          >
+            Dashboard
+          </ButtonPurple>
+        ) : (
+          <ButtonPurple href="/login">
+            Connexion
+          </ButtonPurple>
+        )}
       </div>
     </header>
   );
