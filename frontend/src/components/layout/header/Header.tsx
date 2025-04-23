@@ -1,10 +1,10 @@
-import { Link } from 'react-router';
-import { useState } from 'react';
-import './Header.css';
-import logo from '../../../assets/logo.png';
-import MenuIcon from '@mui/icons-material/Menu';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import MenuIcon from '@mui/icons-material/Menu';
+import { useState } from 'react';
+import { Link } from 'react-router';
+import logo from '../../../assets/logo.png';
 import ButtonPurple from '../../ui/ButtonPurple';
+import './Header.css';
 
 function Header() {
   const [menuOpen, setMenuOpen] = useState(false);

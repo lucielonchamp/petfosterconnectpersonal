@@ -1,15 +1,16 @@
 import { Route, Routes } from 'react-router';
 import './App.css';
+import ConnectedLayout from './components/layout/ConnectedLayout/ConnectedLayout';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
+import { Path } from './interfaces/Path';
+import AnimalDetail from './views/animal-detail/AnimalDetail';
 import Dashboard from './views/dashboard/Dashboard';
+import FosterProfile from './views/foster-profile/FosterProfile';
 import Home from './views/home/Home';
 import Login from './views/login/Login';
+import NotFound from './views/not-found/NotFound';
 import Register from './views/register/Register';
 import ShelterProfile from './views/shelter-profile/ShelterProfile';
-import FosterProfile from './views/foster-profile/FosterProfile';
-import NotFound from './views/not-found/NotFound';
-import ConnectedLayout from './components/layout/ConnectedLayout/ConnectedLayout';
-import { Path } from './interfaces/Path';
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
         <Route path={Path.HOME} element={<Home />} />
         <Route path={Path.LOGIN} element={<Login />} />
         <Route path={Path.REGISTER} element={<Register />} />
-
+        <Route path={Path.ANIMAL_DETAIL} element={<AnimalDetail />} />
 
         <Route
           path={`${Path.DASHBOARD}/*`}
@@ -37,7 +38,7 @@ function App() {
           }
         />
         <Route path="*" element={<NotFound />} />
-      </Routes >
+      </Routes>
     </>
   );
 }

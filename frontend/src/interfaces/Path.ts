@@ -2,6 +2,7 @@ export enum Path {
   HOME = '/',
   LOGIN = '/login',
   REGISTER = '/register',
+  ANIMAL_DETAIL = 'animal/:id',
 
   // Connected Base Route
   DASHBOARD = '/dashboard',
@@ -11,5 +12,6 @@ export enum Path {
   ANIMALS = '/animals',
   REQUESTS = '/requests',
   SHELTER_PROFILE = 'shelter/profile',
-  FOSTER_PROFILE = 'foster/profile'
+  FOSTER_PROFILE = 'foster/profile',
+
 }

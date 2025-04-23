@@ -39,6 +39,17 @@ export async function getAnimalById(request: Request, response: Response): Promi
       where: {
         id: id,
       },
+      include: {
+        specie: true,
+        shelter: {
+          select: {
+            id: true,
+            name: true,
+            location: true,
+            description: true,
+          }
+        },
+      },
     });
 
     if (!animal) {
