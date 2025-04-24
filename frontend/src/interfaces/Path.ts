@@ -4,6 +4,8 @@ export enum Path {
   REGISTER = '/register',
   ANIMAL_DETAIL = '/animal/:id',
   ANIMALS = '/animals',
+  SHELTERS = '/associations',
+  SHELTERBYID = '/association/:id',
 
   // Connected Base Route
   DASHBOARD = '/dashboard',

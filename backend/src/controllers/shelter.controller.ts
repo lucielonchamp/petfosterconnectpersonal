@@ -12,6 +12,9 @@ export async function getShelters(
 ): Promise<void> {
   try {
     const shelters = await prisma.shelter.findMany({
+      where: {
+        isRemoved: false,
+      },
       include: {
         user: {
           select: {
@@ -20,6 +23,11 @@ export async function getShelters(
             roleId: true,
           },
         },
+        animals: {
+          include: {
+            specie: true,
+          }
+        }
       },
     });
 
@@ -42,7 +50,10 @@ export async function getShelterById(
 
   try {
     const shelter = await prisma.shelter.findUnique({
-      where: { id },
+      where: {
+        id,
+        isRemoved: false,
+      },
       include: {
         user: {
           select: {
@@ -51,10 +62,15 @@ export async function getShelterById(
             roleId: true,
           },
         },
+        animals: {
+          include: {
+            specie: true,
+          },
+        },
       },
     });
 
-    if (!shelter) {
+    if (!shelter || shelter.isRemoved) {
       res.status(404).json({
         message: 'Shelter not found',
         error: 'Shelter not found',
@@ -138,7 +154,10 @@ export async function updateShelter(
 
   try {
     const shelter = await prisma.shelter.update({
-      where: { id },
+      where: {
+        id,
+        isRemoved: false,
+      },
       data,
     });
 
@@ -161,7 +180,10 @@ export async function deleteShelter(
 
   try {
     const deletedShelter = await prisma.shelter.delete({
-      where: { id },
+      where: {
+        id,
+        isRemoved: false,
+      },
     });
 
     res.status(200).json({

@@ -13,6 +13,8 @@ import NotFound from './views/not-found/NotFound';
 import Register from './views/register/Register';
 import ShelterProfile from './views/shelter-profile/ShelterProfile';
 import AddRequest from './views/request/AddRequest';
+import ShelterList from './views/shelter/ShelterList';
+import ShelterDetails from './views/shelter/ShelterDetails';
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
         <Route path={Path.REGISTER} element={<Register />} />
         <Route path={Path.ANIMAL_DETAIL} element={<AnimalDetail />} />
         <Route path={Path.ANIMALS} element={<Animals />} />
+        <Route path={Path.SHELTERS} element={<ShelterList />} />
+        <Route path={Path.SHELTERBYID} element={<ShelterDetails />} />
 
         <Route
           path={`${Path.DASHBOARD}/*`}
