@@ -23,6 +23,7 @@ import { useEffect, useState } from 'react';
 import { Shelter } from '../../interfaces/shelter';
 import Header from '../../components/layout/header/Header';
 import { useNavigate } from 'react-router';
+import { Path } from '../../interfaces/Path';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -231,7 +232,7 @@ export default function ShelterList() {
               {filteredShelters.map((shelter) => (
                 <Grid key={shelter.id}>
                   <Card
-                    onClick={() => navigate(`/association/${shelter.id}`)}
+                    onClick={() => navigate(Path.SHELTERBYID.replace(':id', shelter?.id))}
                     sx={{
                       cursor: 'pointer',
                       height: '100%',

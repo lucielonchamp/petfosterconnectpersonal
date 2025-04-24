@@ -187,8 +187,7 @@ const Dashboard = () => {
   };
 
   const handleNavigateRequests = (requestId: string) => () => {
-    // TODO: faire la bonne redirection quand la page détail d'une demande sera créée
-    navigate(`/request/${requestId}`);
+    navigate(`${Path.DASHBOARD}${Path.REQUEST.replace(':requestId', requestId)}`);
   }
 
   if (isLoading || loading) {
@@ -396,7 +395,7 @@ const Dashboard = () => {
             </TableHead>
             <TableBody>
               {requests.map((request) => (
-                <TableRow key={request.id} onClick={handleNavigateRequests(request.id)} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} hover>
+                <TableRow key={request?.id} onClick={handleNavigateRequests(request?.id)} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} hover>
                   <TableCell>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                       <Avatar

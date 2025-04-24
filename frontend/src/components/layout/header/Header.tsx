@@ -7,6 +7,7 @@ import logo from '../../../assets/logo.png';
 import { useAuth } from '../../../hooks/useAuth';
 import ButtonPurple from '../../ui/ButtonPurple';
 import './Header.css';
+import { Path } from '../../../interfaces/Path';
 
 
 function Header() {
@@ -40,17 +41,17 @@ function Header() {
 
         <ul>
           <li>
-            <Link to="/" onClick={closeMenu}>
+            <Link to={Path.HOME} onClick={closeMenu}>
               Accueil
             </Link>
           </li>
           <li>
-            <Link to="/animals" onClick={closeMenu}>
+            <Link to={Path.ANIMALS} onClick={closeMenu}>
               Animaux
             </Link>
           </li>
           <li>
-            <Link to="/association" onClick={closeMenu}>
+            <Link to={Path.SHELTERS} onClick={closeMenu}>
               Association
             </Link>
           </li>
@@ -61,13 +62,13 @@ function Header() {
       <div className="cta-login-container">
         {user ? (
           <ButtonPurple
-            href="/dashboard"
+            href={Path.DASHBOARD}
             startIcon={<DashboardIcon />}
           >
             Dashboard
           </ButtonPurple>
         ) : (
-          <ButtonPurple href="/login">
+          <ButtonPurple href={Path.LOGIN}>
             Connexion
           </ButtonPurple>
         )}

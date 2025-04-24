@@ -13,6 +13,7 @@ export enum Path {
   // --- Nested under DASHBOARD ---
   // Define these as RELATIVE paths
   REQUESTS = '/requests',
+  REQUEST = '/request/:requestId',
   ADD_REQUEST = '/request/add/:animalId',
   SHELTER_PROFILE = 'shelter/profile',
   FOSTER_PROFILE = 'foster/profile',

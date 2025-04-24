@@ -15,6 +15,8 @@ import ShelterProfile from './views/shelter-profile/ShelterProfile';
 import AddRequest from './views/request/AddRequest';
 import ShelterList from './views/shelter/ShelterList';
 import ShelterDetails from './views/shelter/ShelterDetails';
+import RequestDetails from './views/request/RequestDetails';
+import NotFoundPage from './views/not-found/NotFoundPage';
 
 function App() {
   return (
@@ -39,13 +41,14 @@ function App() {
                   <Route path={Path.SHELTER_PROFILE} element={<ShelterProfile />} />
                   <Route path={Path.FOSTER_PROFILE} element={<FosterProfile />} />
                   <Route path={Path.ADD_REQUEST} element={<AddRequest />} />
+                  <Route path={Path.REQUEST} element={<RequestDetails />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </ConnectedLayout>
             </ProtectedRoute>
           }
         />
-        <Route path="*" element={<NotFound />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
   );

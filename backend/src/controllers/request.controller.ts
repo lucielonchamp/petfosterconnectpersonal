@@ -167,9 +167,9 @@ export async function getRequestsByUserId(
     requests = await prisma.request.findMany({
       where: whereClause,
       include: {
-        foster: { select: { id: true, firstName: true, lastName: true } },
-        shelter: { select: { id: true, name: true } },
-        animal: { select: { id: true, name: true, picture: true } },
+        foster: true,
+        shelter: true,
+        animal: true,
       },
       orderBy: { createdAt: 'desc' }
     });
@@ -287,12 +287,33 @@ export async function updateRequest(
       }
     });
 
+    if (updatedRequest && status === RequestStatus.accepted) {
+      try {
+
+        await prisma.animal.update({
+          where: { id: updatedRequest.animalId },
+          data: {
+            status: AnimalStatus.fostered,
+            Foster: {
+              connect: {
+                id: updatedRequest.fosterId
+              }
+            }
+          }
+        })
+
+      } catch (error: any) {
+        throw new Error(error)
+      }
+    }
+
     response.status(200).json({
       success: true,
       message: 'Request successfully updated',
       data: updatedRequest
     });
     return;
+
 
   } catch (error: any) {
     console.error(`Server error updating request ${id}:`, error);

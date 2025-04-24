@@ -1,3 +1,7 @@
+import { Animal } from "./animal";
+import { Foster } from "./foster";
+import { Shelter } from "./shelter";
+
 export enum RequestStatus {
   PENDING = 'pending',
   ACCEPTED = 'accepted',
@@ -18,20 +22,7 @@ export interface Request {
 }
 
 export interface RequestWithRelations extends Request {
-  shelter: {
-    id: string;
-    name: string;
-    location: string;
-  };
-  foster: {
-    id: string;
-    firstName: string;
-    lastName: string;
-  };
-  animal: {
-    id: string;
-    name: string;
-    picture: string;
-    specieId: string;
-  };
+  shelter: Shelter;
+  foster: Foster;
+  animal: Animal;
 }
