@@ -103,7 +103,7 @@ const AnimalCard = ({ animal, variant = 'full' }: AnimalCardProps) => {
             </ButtonBlue>
           )}
           <ButtonPurple
-            href={`/shelter/${animal.shelter?.id}`}
+            href={`${Path.SHELTERBYID.replace(':id', animal.shelter?.id)}`}
             endIcon={<ArrowForwardIcon />}
             className="shelter-button"
           >
