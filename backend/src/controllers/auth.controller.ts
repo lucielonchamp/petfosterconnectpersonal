@@ -165,9 +165,9 @@ export const getMe = async (req: Request, res: Response): Promise<any> => {
 
 export const logout = async (req: Request, res: Response): Promise<any> => {
   try {
-    const logoutCookiesOptions = {
+    const logoutCookiesOptions: { secure: boolean; sameSite: 'none' | 'lax' | 'strict' } = {
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict' as const,
+      sameSite: isProduction ? 'none' : 'lax',
     };
 
     clearAuthCookies(res, logoutCookiesOptions);
