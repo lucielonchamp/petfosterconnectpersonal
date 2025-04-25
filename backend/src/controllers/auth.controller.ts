@@ -11,6 +11,8 @@ const isProduction = process.env.NODE_ENV === 'production'
 
 const LOGIN_COOKIES_OPTIONS = {
   secure: isProduction,
+  sameSite: 'none' as const,
+  httpOnly: true,
   maxAge: 7 * 24 * 60 * 60 * 1000,
 };
 
@@ -106,7 +108,7 @@ export const login = async (req: Request, res: Response): Promise<any> => {
       }
     );
 
-    res.cookie('authToken', authToken, { ...LOGIN_COOKIES_OPTIONS, httpOnly: true, sameSite: isProduction ? 'none' : 'lax' });
+    res.cookie('authToken', authToken, { ...LOGIN_COOKIES_OPTIONS });
 
     res.status(200).json({
       success: true,
