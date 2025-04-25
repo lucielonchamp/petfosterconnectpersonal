@@ -30,7 +30,6 @@ export default function ShelterDetail() {
                 const res = await fetch(`${API_URL}/shelter/${id}`);
                 if (!res.ok) throw new Error('Not found');
                 const data = await res.json();
-                console.log(data);
 
                 if (data?.data?.isRemoved) {
                     navigate("/associations")
@@ -75,9 +74,17 @@ export default function ShelterDetail() {
                         </Breadcrumbs>
 
                         <Box display="flex" flexWrap="wrap" gap={4} my={12}>
-                            <Box flex="1" minWidth="280px" justifyContent="center" display="flex">
+                            <Box flex="1" minWidth="280px" justifyContent="center" display="flex"
+                                sx={{
+                                    '& img': {
+                                        width: '100%',
+                                        height: '500px',
+                                        aspectRatio: '1 / 1',
+                                        objectFit: 'contain',
+                                    }
+                                }}>
                                 <img
-                                    src="https://www.la-spa.fr/app/app/uploads/2021/09/MicrosoftTeams-image-63.png"
+                                    src={shelter.picture}
                                     alt={shelter.name}
                                 />
                             </Box>
@@ -108,7 +115,7 @@ export default function ShelterDetail() {
                         <Typography variant="h2" fontWeight="bold" mb={3}>
                             Nous accueillons ses animaux dans notre refuge
                         </Typography>
-                        {shelter.animals.length === 0 ? (
+                        {shelter?.animals.length === 0 ? (
                             <Typography>Aucun animal actuellement</Typography>
                         ) : (
                             <Box
@@ -125,7 +132,7 @@ export default function ShelterDetail() {
 
                                 }}
                             >
-                                {shelter.animals.map((animal) => (
+                                {shelter?.animals.map((animal) => (
                                     <AnimalCard key={animal.id} animal={animal} variant="mini" />
                                 ))}
                             </Box>

@@ -72,6 +72,7 @@
       "id": "a3b4c5d6-e7f8-9012-3456-01234567890a",
       "name": "Happy Paws Shelter",
       "location": "123 Main St, Anytown",
+      "picture": "/assets/shelter1.png",
       "description": null,
       "userId": "c9d0e1f2-a3b4-5678-9012-cdef01234567"
     },
@@ -79,6 +80,7 @@
       "id": "b4c5d6e7-f8a9-0123-4567-1234567890ab",
       "name": "Kind Hearts Rescue",
       "location": "456 Elm St, Anytown",
+      "picture": "/assets/shelter2.png",
       "description": "Specializes in senior pets.",
       "userId": "d0e1f2a3-b4c5-6789-0123-def012345678"
     }

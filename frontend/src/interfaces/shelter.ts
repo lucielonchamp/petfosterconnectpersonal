@@ -7,6 +7,7 @@ export interface Shelter {
   name: string;
   location: string;
   description: string;
+  picture: string;
 }
 
 export interface ShelterWithUser extends Shelter {

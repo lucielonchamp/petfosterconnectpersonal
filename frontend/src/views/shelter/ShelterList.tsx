@@ -270,7 +270,7 @@ export default function ShelterList() {
                       }}
                     >
                       <img
-                        src="https://www.la-spa.fr/app/app/uploads/2021/09/MicrosoftTeams-image-63.png"
+                        src={shelter.picture}
                         alt={shelter.name}
                         style={{ height: 80, marginBottom: 8 }}
                       />
