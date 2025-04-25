@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from 'express';
 import Token from 'csrf';
+import { NextFunction, Request, Response } from 'express';
 
 const tokens = new Token();
 
@@ -26,7 +26,7 @@ export const generateCsrfToken = (req: Request, res: Response, next: NextFunctio
 
 export const validateCsrfToken = (req: Request, res: Response, next: NextFunction) => {
   if (['POST', 'PUT', 'DELETE', 'PATCH'].includes(req.method)) {
-    if (req.path === '/auth/login' || req.path === '/auth/register') {
+    if (req.path === '/auth/login' || req.path === '/auth/register' || req.path === '/auth/logout') {
       next();
       return;
     }
