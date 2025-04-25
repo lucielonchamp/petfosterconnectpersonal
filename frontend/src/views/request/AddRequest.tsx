@@ -230,7 +230,7 @@ const AddRequest = () => {
         <Stack spacing={1.5} width={{ xs: '100%', md: '60%' }} alignItems={{ xs: "center", md: "flex-start" }} textAlign={{ xs: "center", md: "left" }}>
           <Typography
             variant="h2" component="h2"
-            sx={(theme) => ({
+            sx={() => ({
               fontWeight: 'bold', lineHeight: 1.2, mb: 0.5,
               color: 'var(--color-blue)'
             })}
