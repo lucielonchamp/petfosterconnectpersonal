@@ -7,10 +7,11 @@ import { clearAuthCookies } from '../utils/clearAuthCookies';
 
 const prisma = new PrismaClient();
 
+const isProduction = process.env.NODE_ENV === 'production'
+
 const LOGIN_COOKIES_OPTIONS = {
-  secure: process.env.NODE_ENV === 'production',
-  sameSite: 'strict' as const,
-  maxAge: 60 * 60 * 1000,
+  secure: isProduction,
+  maxAge: 7 * 24 * 60 * 60 * 1000,
 };
 
 export async function register(request: Request, response: Response): Promise<any> {
@@ -105,7 +106,7 @@ export const login = async (req: Request, res: Response): Promise<any> => {
       }
     );
 
-    res.cookie('authToken', authToken, { ...LOGIN_COOKIES_OPTIONS, httpOnly: true });
+    res.cookie('authToken', authToken, { ...LOGIN_COOKIES_OPTIONS, httpOnly: true, sameSite: isProduction ? 'none' : 'lax' });
 
     res.status(200).json({
       success: true,
