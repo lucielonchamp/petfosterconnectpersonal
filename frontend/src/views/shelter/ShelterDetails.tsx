@@ -1,21 +1,18 @@
 import {
-    Box,
-    Chip,
-    Container,
-    Grid,
-    Typography,
-    CircularProgress,
     Alert,
+    Box,
     Breadcrumbs,
+    Chip,
+    CircularProgress,
+    Container,
     Link,
-    Card,
-    CardContent,
+    Typography,
 } from '@mui/material';
-import { useParams, useNavigate } from 'react-router';
 import { useEffect, useState } from 'react';
-import { Shelter } from '../../interfaces/shelter';
+import { useNavigate, useParams } from 'react-router';
+import AnimalCard from '../../components/animal/AnimalCard';
 import Header from '../../components/layout/header/Header';
-import { AnimalStatus } from '../../interfaces/animal';
+import { Shelter } from '../../interfaces/shelter';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -55,11 +52,10 @@ export default function ShelterDetail() {
     return (
         <>
             <Container maxWidth="xl">
-                <Header /> {/* Inclut le Header */}
+                <Header />
             </Container>
 
             <Container maxWidth="xl">
-                {/* Loading */}
                 {loading ? (
                     <Box display="flex" justifyContent="center">
                         <CircularProgress />
@@ -68,7 +64,6 @@ export default function ShelterDetail() {
                     <Alert severity="error">{error}</Alert>
                 ) : (
                     <>
-                        {/* Breadcrumb */}
                         <Breadcrumbs sx={{ my: 4 }}>
                             <Link underline="hover" color="inherit" onClick={() => navigate('/')}>
                                 Accueil
@@ -79,7 +74,6 @@ export default function ShelterDetail() {
                             <Typography color="text.primary">{shelter.name}</Typography>
                         </Breadcrumbs>
 
-                        {/* Refuge Info */}
                         <Box display="flex" flexWrap="wrap" gap={4} my={12}>
                             <Box flex="1" minWidth="280px" justifyContent="center" display="flex">
                                 <img
@@ -111,47 +105,30 @@ export default function ShelterDetail() {
                             </Box>
                         </Box>
 
-                        {/* Animaux */}
                         <Typography variant="h2" fontWeight="bold" mb={3}>
                             Nous accueillons ses animaux dans notre refuge
                         </Typography>
                         {shelter.animals.length === 0 ? (
                             <Typography>Aucun animal actuellement</Typography>
                         ) : (
-                            <Grid container spacing={6} pb={3}>
-                                {shelter.animals.map((animal, i) => (
-                                    <Grid key={i}>
-                                        <Card sx={{ borderRadius: '12px', overflow: 'hidden', boxShadow: '0px 3px 10px 0px rgba(91, 108, 151, 0.2)', }}>
-                                            <Box
-                                                component="img"
-                                                src={animal.picture}
-                                                alt={animal.name}
-                                                sx={{ width: '100%', height: 180, objectFit: 'cover' }}
-                                            />
-                                            <CardContent sx={{ padding: '30px' }}>
-                                                <Typography fontWeight="bold" fontSize="1.1rem">
-                                                    {animal.name}
-                                                </Typography>
-                                                <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-                                                    {animal.specie.name} - {animal.breed} - {animal.age > 1 ? "ans" : "an"}
-                                                </Typography>
-                                                <Box mt={2}>
-                                                    <Chip
-                                                        label={animal.status}
-                                                        color={
-                                                            animal.status === AnimalStatus.FOSTERED ? "success" :
-                                                                animal.status === AnimalStatus.WAITING ? "warning" :
-                                                                    animal.status === AnimalStatus.SHELTERED ? "primary" : "default"
-                                                        }
-                                                        size="small"
-                                                        sx={{ borderRadius: '6px', fontWeight: 500 }}
-                                                    />
-                                                </Box>
-                                            </CardContent>
-                                        </Card>
-                                    </Grid>
+                            <Box
+                                sx={{
+                                    display: 'grid',
+                                    gridTemplateColumns: {
+                                        xs: '1fr',
+                                        sm: 'repeat(3, 1fr)',
+                                        md: 'repeat(4, 1fr)',
+                                        lg: 'repeat(5, 1fr)'
+                                    },
+                                    gap: 2,
+                                    pb: 3,
+
+                                }}
+                            >
+                                {shelter.animals.map((animal) => (
+                                    <AnimalCard key={animal.id} animal={animal} variant="mini" />
                                 ))}
-                            </Grid>
+                            </Box>
                         )}
                     </>
                 )}
