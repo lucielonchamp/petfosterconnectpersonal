@@ -4,17 +4,11 @@ import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { loginSchema, registerSchema } from '../schemas/auth.schema';
 import { clearAuthCookies } from '../utils/clearAuthCookies';
+import { LOGIN_COOKIES_OPTIONS } from '../utils/loginCookiesOptions';
 
 const prisma = new PrismaClient();
 
-const isProduction = process.env.NODE_ENV === 'production'
-
-const LOGIN_COOKIES_OPTIONS = {
-  secure: isProduction,
-  sameSite: isProduction ? 'none' as const : 'lax' as const,
-  httpOnly: true,
-  maxAge: 7 * 24 * 60 * 60 * 1000,
-};
+const isProduction = process.env.NODE_ENV === 'production';
 
 export async function register(request: Request, response: Response): Promise<any> {
   const requestedData = request.body;
@@ -98,25 +92,37 @@ export const login = async (req: Request, res: Response): Promise<any> => {
       return;
     }
 
-    const authToken = jwt.sign(
+    const accessToken = jwt.sign(
       {
         userId: user.id,
       },
-      process.env.JWT_SECRET!,
+      process.env.ACCESS_TOKEN_SECRET!,
       {
-        expiresIn: '24h',
+        expiresIn: '10m',
       }
     );
 
-    res.cookie('authToken', authToken, { ...LOGIN_COOKIES_OPTIONS });
+    const refreshToken = jwt.sign(
+      {
+        userId: user.id,
+      },
+      process.env.REFRESH_TOKEN_SECRET!,
+      {
+        expiresIn: '7d',
+      }
+    );
+
+    res.cookie('accessToken', accessToken, { ...LOGIN_COOKIES_OPTIONS, httpOnly: true });
+    res.cookie('refreshToken', refreshToken, { ...LOGIN_COOKIES_OPTIONS, httpOnly: true });
 
     res.status(200).json({
       success: true,
       message: 'Connexion réussie 😄!',
-      authToken,
+      accessToken,
     });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Erreur serveur' });
+    console.error(error);
   }
 };
 

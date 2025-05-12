@@ -1,51 +1,77 @@
 import { PrismaClient } from '@prisma/client';
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
+import { LOGIN_COOKIES_OPTIONS } from '../utils/loginCookiesOptions';
 
 const prisma = new PrismaClient();
 
-// On étend l'interface Request d'Express pour y ajouter notre userId
-// Ça permet d'avoir l'autocomplétion et le typage sur req.userId
 declare global {
   namespace Express {
     interface Request {
-      userId?: string; // L'ID de l'utilisateur extrait du token JWT
+      userId?: string;
     }
   }
 }
 
-// Middleware principal qui vérifie si l'utilisateur est authentifié
 const authMiddleware = (req: Request, res: Response, next: NextFunction): void => {
-  // Récupère le token depuis les cookies
-  const token = req.cookies.authToken;
+  const { accessToken, refreshToken } = req.cookies;
 
-  // Si pas de token, l'utilisateur n'est pas connecté
-  if (!token) {
-    res.status(401).json({ success: false, message: 'Authentification requise' });
+  if (!accessToken && !refreshToken) {
+    res.status(401).json({
+      success: false,
+      message: 'Authentification requise',
+    });
     return;
   }
 
-  try {
+  if (accessToken) {
+    try {
+      const decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET!) as {
+        userId: string;
+      };
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
-      userId: string;
-    };
-
-    // Stocke l'userId dans la requête pour les middlewares/routes suivants
-    req.userId = decoded.userId;
-    next(); // Passe au middleware/route suivant
-  } catch (error) {
-    // Si le token est invalide ou expiré
-    res.status(401).json({ success: false, message: 'Token invalide' });
-    return;
+      req.userId = decoded.userId;
+      next();
+      return;
+    } catch (error) {
+      if (!(error instanceof jwt.TokenExpiredError)) {
+        res.status(401).json({ success: false, message: "Token d'accès invalide" });
+        console.error(error);
+        return;
+      }
+    }
   }
+
+  if (refreshToken) {
+    try {
+      const verified = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET!) as {
+        userId: string;
+      };
+
+      const newAccessToken = jwt.sign(
+        { userId: verified.userId },
+        process.env.ACCESS_TOKEN_SECRET!,
+        {
+          expiresIn: '10m',
+        }
+      );
+
+      res.cookie('accessToken', newAccessToken, { ...LOGIN_COOKIES_OPTIONS, httpOnly: true });
+      req.userId = verified.userId;
+      next();
+      return;
+    } catch (error) {
+      res.status(401).json({ success: false, message: 'Refresh token invalide' });
+      console.error(error);
+      return;
+    }
+  }
+
+  res.status(401).json({ success: false, message: 'Authentification requise' });
 };
 
-// Middleware qui vérifie si l'utilisateur a les bons rôles
-// Prend en paramètre un tableau des rôles autorisés
 const roleMiddleware = (allowedRoles: string[]) => {
   return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    // Vérifie si l'utilisateur est authentifié
     if (!req.userId) {
       res.status(401).json({
         success: false,
@@ -55,14 +81,11 @@ const roleMiddleware = (allowedRoles: string[]) => {
     }
 
     try {
-      // Récupère les infos de l'utilisateur depuis la base de données
-      // Include: role permet de charger aussi les infos du rôle
       const user = await prisma.user.findUnique({
         where: { id: req.userId },
         include: { role: true },
       });
 
-      // Vérifie si l'utilisateur existe et a un rôle autorisé
       if (!user || !allowedRoles.includes(user.role.name)) {
         res.status(403).json({
           success: false,
@@ -71,7 +94,7 @@ const roleMiddleware = (allowedRoles: string[]) => {
         return;
       }
 
-      next(); // Utilisateur autorisé, passe à la suite
+      next();
     } catch (error) {
       res.status(500).json({
         success: false,
@@ -95,7 +118,6 @@ const isFosterOwnerMiddleware = async (req: Request, res: Response, next: NextFu
   }
 
   try {
-    // Vérifiez si le foster appartient à l'utilisateur
     const foster = await prisma.foster.findUnique({
       where: { id: fosterId },
       select: { userId: true },
@@ -109,7 +131,6 @@ const isFosterOwnerMiddleware = async (req: Request, res: Response, next: NextFu
       return;
     }
 
-    // Vérifie si l'utilisateur est le propriétaire du foster
     if (foster.userId !== userId) {
       res.status(403).json({
         success: false,
@@ -118,7 +139,6 @@ const isFosterOwnerMiddleware = async (req: Request, res: Response, next: NextFu
       return;
     }
 
-    // L'utilisateur est autorisé
     next();
   } catch (error) {
     res.status(500).json({

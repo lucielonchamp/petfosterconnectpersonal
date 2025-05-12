@@ -22,6 +22,7 @@ services:
 
   database:
     image: postgis/postgis
+    platform: linux/x86_64
     ports:
       - 5432:5432
     volumes:

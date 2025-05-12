@@ -29,7 +29,11 @@ export const generateCsrfToken = (req: Request, res: Response, next: NextFunctio
 
 export const validateCsrfToken = (req: Request, res: Response, next: NextFunction) => {
   if (['POST', 'PUT', 'DELETE', 'PATCH'].includes(req.method)) {
-    if (req.path === '/auth/login' || req.path === '/auth/register' || req.path === '/auth/logout') {
+    if (
+      req.path === '/auth/login' ||
+      req.path === '/auth/register' ||
+      req.path === '/auth/logout'
+    ) {
       next();
       return;
     }
