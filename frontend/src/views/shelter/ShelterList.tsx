@@ -24,6 +24,7 @@ import { Shelter } from '../../interfaces/shelter';
 import Header from '../../components/layout/header/Header';
 import { useNavigate } from 'react-router';
 import { Path } from '../../interfaces/Path';
+import Footer from '../../components/layout/footer/Footer';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -86,7 +87,7 @@ export default function ShelterList() {
         <Header />
       </Container>
       <Box sx={{ backgroundColor: '#f5f5f5', py: 4, minHeight: 'calc(100dvh - 191px)' }}>
-        <Container maxWidth="xl">
+        <Container maxWidth="lg">
           {/* Barre de recherche */}
           <Box display="flex" gap={2} flexWrap="wrap" justifyContent="space-between" mb={2}>
             <TextField
@@ -300,6 +301,9 @@ export default function ShelterList() {
           )}
         </Container>
       </Box>
+      <Container maxWidth="xl">
+        <Footer />
+      </Container>
     </>
   );
 }

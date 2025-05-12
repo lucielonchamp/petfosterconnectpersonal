@@ -6,6 +6,8 @@ export enum Path {
   ANIMALS = '/animals',
   SHELTERS = '/associations',
   SHELTERBYID = '/association/:id',
+  CGU = '/cgu',
+  MENTIONSLEGALES = '/mentions-legales',
 
   // Connected Base Route
   DASHBOARD = '/dashboard',

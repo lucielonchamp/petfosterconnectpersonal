@@ -9,6 +9,7 @@ import Header from '../../components/layout/header/Header';
 import { capitalizeFirstLetter, getStatusColor, getStatusLabel } from '../../helpers/statusHelper';
 import { AnimalStatus, AnimalWithRelations } from '../../interfaces/animal';
 import { Specie } from '../../interfaces/specie';
+import Footer from '../../components/layout/footer/Footer';
 
 interface Filters {
     sex: string[];
@@ -156,7 +157,9 @@ const Animals = () => {
 
     return (
         <>
-            <Header />
+            <Container maxWidth="xl">
+                <Header />
+            </Container>
             <Box>
                 <Container>
                     <Box sx={{
@@ -707,6 +710,7 @@ const Animals = () => {
                     </Box>
                 </Container>
             </Box>
+            <Footer />
         </>
     );
 };

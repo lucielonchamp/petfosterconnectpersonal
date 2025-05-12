@@ -10,7 +10,7 @@ import {
 } from '@mui/icons-material';
 import { Alert, AppBar, Avatar, Box, CircularProgress, Container, Drawer, IconButton, InputAdornment, List, ListItemButton, ListItemIcon, ListItemText, TextField, Toolbar, Typography, useTheme } from "@mui/material";
 import React, { ReactNode, useState } from "react";
-import { useLocation, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import logo from '../../../assets/logo.png';
 import { useAuth } from "../../../hooks/useAuth";
 import { Path } from "../../../interfaces/Path";
@@ -74,8 +74,8 @@ const ConnectedLayout = ({ children }: ConnectedLayoutProps) => {
         gap: 2,
         borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
       }}>
-        <img src={logo} alt="Logo" style={{ height: 150 }} />
-        <Typography variant="h6" sx={{ fontWeight: 600 }}>PetFoster</Typography>
+        <Link to={Path.HOME}><img src={logo} alt="Logo" style={{ height: 150 }} /></Link>
+        <Link to={Path.HOME}><Typography variant="h6" sx={{ fontWeight: 600 }}>PetFoster</Typography></Link>
       </Box>
 
       <Box sx={{ flex: 1, p: 2 }}>
@@ -152,7 +152,12 @@ const ConnectedLayout = ({ children }: ConnectedLayoutProps) => {
   }
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{
+      display: 'flex',
+      height: '100dvh',
+      overflowX: 'auto',
+      overflowY: 'hidden',
+    }}>
       {/* Mobile Drawer */}
       <Drawer
         variant="temporary"
@@ -166,6 +171,7 @@ const ConnectedLayout = ({ children }: ConnectedLayoutProps) => {
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             boxSizing: 'border-box',
+            height: '100%',
             bgcolor: 'white',
             color: theme.palette.primary.main
           },
@@ -186,8 +192,7 @@ const ConnectedLayout = ({ children }: ConnectedLayoutProps) => {
             color: theme.palette.primary.main,
             borderRight: 'none',
             boxShadow: theme.shadows[3],
-            height: '100vh',
-            position: 'fixed'
+            height: '100dvh',
           },
         }}
         open
@@ -227,22 +232,7 @@ const ConnectedLayout = ({ children }: ConnectedLayoutProps) => {
             >
               <MenuIcon />
             </IconButton>
-            <TextField
-              placeholder="Rechercher..."
-              size="small"
-              sx={{ flexGrow: 1, maxWidth: 500 }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-              }}
-            />
             <Box sx={{ ml: 'auto', display: 'flex', alignItems: 'center', gap: 2 }}>
-              <IconButton>
-                <NotificationsIcon />
-              </IconButton>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <Avatar>{user.email[0].toUpperCase()}</Avatar>
                 <Box>

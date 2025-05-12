@@ -18,6 +18,8 @@ import WelcomePanel from '../../components/WelcomePanel/WelcomePanel';
 import { useAuth } from '../../hooks/useAuth';
 import { Path } from '../../interfaces/Path';
 import './Register.css';
+import Header from '../../components/layout/header/Header';
+import Footer from '../../components/layout/footer/Footer';
 
 interface Role {
   id: number;
@@ -315,190 +317,205 @@ const Register = () => {
   }
 
   return (
-    <Box className="register-container" sx={{
-      display: 'flex',
-      minHeight: '100vh',
-      width: '100vw',
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      margin: 0,
-      padding: 0,
-      flexDirection: { xs: 'column', md: 'row' }
-    }}
-    >
-      <Box flex="0 0 60%" display="flex" justifyContent="center" alignItems="center">
-        <Container maxWidth="sm">
-          <Stack spacing={2} alignItems="center">
-            <Box
-              component="img"
-              src={logo}
-              alt="PetFoster Connect"
-              sx={{ width: 120, pointerEvents: 'none' }}
-            />
-            <Typography variant="h4" component="h1" color="#333" sx={{ fontWeight: 'bold' }}>
-              INSCRIPTION
-            </Typography>
-            <Typography variant="subtitle1" component="h2" color="#666" mb={3}>
-              Créez votre compte pour rejoindre notre communauté
-            </Typography>
-
-            <Box width="100%" mb={3}>
-              <Box display="flex" justifyContent="space-between" mb={1}>
-                {steps.map((label, index) => (
-                  <Typography
-                    key={label}
-                    variant="body2"
-                    sx={{
-                      color: index <= activeStep ? '#5B6B94' : '#B7C1D3',
-                      fontWeight: index <= activeStep ? 'bold' : 'normal',
-                    }}
-                  >
-                    {label}
-                  </Typography>
-                ))}
-              </Box>
-              <LinearProgress
-                variant="determinate"
-                value={(activeStep + 1) * (100 / steps.length)}
-                sx={{
-                  height: 6,
-                  borderRadius: 3,
-                  backgroundColor: '#B7C1D3',
-                  '& .MuiLinearProgress-bar': {
-                    backgroundColor: '#5B6B94',
-                    borderRadius: 3,
-                  },
-                }}
+    <>
+      <Container sx={{
+        display: 'flex',
+        alignItems: 'center',
+        width: '100%',
+      }}>
+        <Header />
+      </Container>
+      <Box className="register-container" sx={{
+        display: 'flex',
+        minHeight: '90vh',
+        width: '100vw',
+        top: 0,
+        left: 0,
+        margin: 0,
+        padding: 0,
+        flexDirection: { xs: 'column', md: 'row' }
+      }}
+      >
+        <Box flex="0 0 60%" display="flex" justifyContent="center" alignItems="center">
+          <Container maxWidth="sm">
+            <Stack spacing={2} alignItems="center">
+              <Box
+                component="img"
+                src={logo}
+                alt="PetFoster Connect"
+                sx={{ width: 120, pointerEvents: 'none' }}
               />
-            </Box>
-
-            <Box component="form" onSubmit={handleSubmit} width="100%">
-              {error && (
-                <Typography color="error" textAlign="center" mb={2}>
-                  {error}
-                </Typography>
-              )}
-
-              {renderStepContent(activeStep)}
-
-              <Stack direction="row" spacing={2} justifyContent="center" mt={3}>
-                {activeStep > 0 && (
-                  <Button
-                    onClick={handleBack}
-                    sx={{
-                      color: '#5B6B94',
-                      borderRadius: '12px',
-                      borderColor: '#5B6B94',
-                      '&:hover': {
-                        borderColor: '#4a5a83',
-                        backgroundColor: 'transparent',
-                      },
-                    }}
-                    variant="outlined"
-                  >
-                    Retour
-                  </Button>
-                )}
-                <Button
-                  type={activeStep === steps.length - 1 ? 'submit' : 'button'}
-                  variant="contained"
-                  onClick={activeStep === steps.length - 1 ? undefined : handleNext}
-                  disabled={loading}
-                  sx={{
-                    bgcolor: '#5B6B94',
-                    '&:hover': {
-                      bgcolor: '#4a5a83',
-                    },
-                    py: 1.5,
-                    px: 3,
-                    borderRadius: '12px',
-                    width: 'auto',
-                    minWidth: '200px',
-                  }}
-                >
-                  {activeStep === steps.length - 1
-                    ? (loading ? 'Inscription...' : 'M\'inscrire')
-                    : 'Suivant'}
-                </Button>
-              </Stack>
-
-              <Typography variant="body2" color="#666" align="center" mt={2}>
-                Déjà un compte ?{' '}
-                <Button
-                  variant="text"
-                  sx={{
-                    color: '#5B6B94',
-                    textTransform: 'none',
-                    p: 0,
-                    minWidth: 'auto',
-                    '&:hover': {
-                      bgcolor: 'transparent',
-                      color: '#4a5a83',
-                    }
-                  }}
-                  onClick={() => navigate(Path.LOGIN)}
-                >
-                  Se connecter
-                </Button>
+              <Typography variant="h4" component="h1" color="#333" sx={{ fontWeight: 'bold' }}>
+                INSCRIPTION
+              </Typography>
+              <Typography variant="subtitle1" component="h2" color="#666" mb={3}>
+                Créez votre compte pour rejoindre notre communauté
               </Typography>
 
-              <Typography
-                variant="body2"
-                color="#666"
-                align="center"
-                sx={{
-                  position: 'relative',
-                  mt: 2,
-                  '& .decorative-text': {
-                    position: 'relative',
-                    display: 'inline-block',
-                    '&::before, &::after': {
-                      content: '""',
-                      position: 'absolute',
-                      top: '50%',
-                      width: '40px',
-                      height: '1px',
-                      backgroundColor: '#333',
-                      opacity: 0.5,
+              <Box width="100%" mb={3}>
+                <Box display="flex" justifyContent="space-between" mb={1}>
+                  {steps.map((label, index) => (
+                    <Typography
+                      key={label}
+                      variant="body2"
+                      sx={{
+                        color: index <= activeStep ? '#5B6B94' : '#B7C1D3',
+                        fontWeight: index <= activeStep ? 'bold' : 'normal',
+                      }}
+                    >
+                      {label}
+                    </Typography>
+                  ))}
+                </Box>
+                <LinearProgress
+                  variant="determinate"
+                  value={(activeStep + 1) * (100 / steps.length)}
+                  sx={{
+                    height: 6,
+                    borderRadius: 3,
+                    backgroundColor: '#B7C1D3',
+                    '& .MuiLinearProgress-bar': {
+                      backgroundColor: '#5B6B94',
+                      borderRadius: 3,
                     },
-                    '&::before': {
-                      left: '-50px',
-                    },
-                    '&::after': {
-                      right: '-50px',
-                    }
-                  }
-                }}
-              >
-                <span className="decorative-text">
+                  }}
+                />
+              </Box>
+
+              <Box component="form" onSubmit={handleSubmit} width="100%">
+                {error && (
+                  <Typography color="error" textAlign="center" mb={2}>
+                    {error}
+                  </Typography>
+                )}
+
+                {renderStepContent(activeStep)}
+
+                <Stack direction="row" spacing={2} justifyContent="center" mt={3}>
+                  {activeStep > 0 && (
+                    <Button
+                      onClick={handleBack}
+                      sx={{
+                        color: '#5B6B94',
+                        borderRadius: '12px',
+                        borderColor: '#5B6B94',
+                        '&:hover': {
+                          borderColor: '#4a5a83',
+                          backgroundColor: 'transparent',
+                        },
+                      }}
+                      variant="outlined"
+                    >
+                      Retour
+                    </Button>
+                  )}
+                  <Button
+                    type={activeStep === steps.length - 1 ? 'submit' : 'button'}
+                    variant="contained"
+                    onClick={activeStep === steps.length - 1 ? undefined : handleNext}
+                    disabled={loading}
+                    sx={{
+                      bgcolor: '#5B6B94',
+                      '&:hover': {
+                        bgcolor: '#4a5a83',
+                      },
+                      py: 1.5,
+                      px: 3,
+                      borderRadius: '12px',
+                      width: 'auto',
+                      minWidth: '200px',
+                    }}
+                  >
+                    {activeStep === steps.length - 1
+                      ? (loading ? 'Inscription...' : 'M\'inscrire')
+                      : 'Suivant'}
+                  </Button>
+                </Stack>
+
+                <Typography variant="body2" color="#666" align="center" mt={2}>
+                  Déjà un compte ?{' '}
                   <Button
                     variant="text"
                     sx={{
-                      color: '#333',
+                      color: '#5B6B94',
                       textTransform: 'none',
                       p: 0,
                       minWidth: 'auto',
-                      position: 'relative',
                       '&:hover': {
                         bgcolor: 'transparent',
+                        color: '#4a5a83',
                       }
                     }}
-                    onClick={() => navigate(Path.HOME)}
+                    onClick={() => navigate(Path.LOGIN)}
                   >
-                    <span style={{ fontWeight: 'bold' }}>Retour&nbsp;</span> sur l'accueil
+                    Se connecter
                   </Button>
-                </span>
-              </Typography>
-            </Box>
-          </Stack>
-        </Container>
-      </Box>
+                </Typography>
 
-      <WelcomePanel
-        title="Bienvenue parmi nous !"
-      />
-    </Box>
+                <Typography
+                  variant="body2"
+                  color="#666"
+                  align="center"
+                  sx={{
+                    position: 'relative',
+                    mt: 2,
+                    '& .decorative-text': {
+                      position: 'relative',
+                      display: 'inline-block',
+                      '&::before, &::after': {
+                        content: '""',
+                        position: 'absolute',
+                        top: '50%',
+                        width: '40px',
+                        height: '1px',
+                        backgroundColor: '#333',
+                        opacity: 0.5,
+                      },
+                      '&::before': {
+                        left: '-50px',
+                      },
+                      '&::after': {
+                        right: '-50px',
+                      }
+                    }
+                  }}
+                >
+                  <span className="decorative-text">
+                    <Button
+                      variant="text"
+                      sx={{
+                        color: '#333',
+                        textTransform: 'none',
+                        p: 0,
+                        minWidth: 'auto',
+                        position: 'relative',
+                        '&:hover': {
+                          bgcolor: 'transparent',
+                        }
+                      }}
+                      onClick={() => navigate(Path.HOME)}
+                    >
+                      <span style={{ fontWeight: 'bold' }}>Retour&nbsp;</span> sur l'accueil
+                    </Button>
+                  </span>
+                </Typography>
+              </Box>
+            </Stack>
+          </Container>
+        </Box>
+
+        <WelcomePanel
+          title="Bienvenue parmi nous !"
+        />
+      </Box>
+      <Container sx={{
+        display: 'flex',
+        alignItems: 'center',
+        width: '100%',
+      }}>
+        <Footer />
+      </Container>
+    </>
   );
 };
 

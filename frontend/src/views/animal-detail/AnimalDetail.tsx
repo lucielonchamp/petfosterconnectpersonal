@@ -13,6 +13,7 @@ import AnimalCard from '../../components/animal/AnimalCard';
 import Header from '../../components/layout/header/Header';
 import { AnimalWithRelations } from '../../interfaces/animal';
 import './AnimalDetail.css';
+import Footer from '../../components/layout/footer/Footer';
 
 interface ApiResponse {
   success: boolean;
@@ -114,6 +115,7 @@ const AnimalDetail = () => {
           )}
         </Container>
       </div>
+      <Footer />
     </>
   );
 };

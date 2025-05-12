@@ -1,0 +1,18 @@
+#footer nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 7px 40px;
+}
+
+#footer {
+    padding: 20px 0;
+}
+
+#footer nav ul li,
+#footer nav ul li a {
+    color: var(--color-text) !important;
+    font-family: var(--font);
+    font-weight: 400;
+}

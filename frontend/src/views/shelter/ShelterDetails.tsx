@@ -13,6 +13,7 @@ import { useNavigate, useParams } from 'react-router';
 import AnimalCard from '../../components/animal/AnimalCard';
 import Header from '../../components/layout/header/Header';
 import { Shelter } from '../../interfaces/shelter';
+import Footer from '../../components/layout/footer/Footer';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -139,6 +140,9 @@ export default function ShelterDetail() {
                         )}
                     </>
                 )}
+            </Container>
+            <Container maxWidth="xl">
+                <Footer />
             </Container>
         </>
     );

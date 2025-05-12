@@ -216,7 +216,8 @@ const Dashboard = () => {
       sx={{
         py: 4,
         px: { xs: 2, sm: 4 },
-        flex: 1
+        flex: 1,
+        overflow: 'scroll',
       }}
     >
       <Typography variant="h4" sx={{ mb: 4, fontWeight: 500 }}>
