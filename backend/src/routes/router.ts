@@ -1,11 +1,12 @@
 import express from 'express';
+import animalRoute from './animal.routes';
 import authRoute from './auth.routes';
-import userRoute from './user.routes';
+import fosterRoute from './foster.routes';
 import requestRoute from './request.routes';
 import roleRoute from './role.routes';
 import shelterRoute from './shelter.routes';
-import animalRoute from './animal.routes';
-import fosterRoute from './foster.routes';
+import specieRoute from './specie.routes';
+import userRoute from './user.routes';
 
 const router = express.Router();
 
@@ -16,6 +17,7 @@ router.use('/role', roleRoute);
 router.use('/animal', animalRoute);
 router.use('/shelter', shelterRoute);
 router.use('/foster', fosterRoute);
+router.use('/species', specieRoute);
 
 // 404
 router.get('*', function (req, res) {

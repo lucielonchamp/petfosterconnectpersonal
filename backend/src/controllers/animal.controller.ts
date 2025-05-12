@@ -1,5 +1,7 @@
-import { PrismaClient } from '@prisma/client';
+import { AnimalStatus, PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
+import { deleteFromS3, generateFileName, upload, uploadToS3 } from '../utils/s3upload';
+
 
 const prisma = new PrismaClient();
 
@@ -172,50 +174,68 @@ export async function getAnimalById(request: Request, response: Response): Promi
   }
 }
 
-export async function createAnimal(request: Request, response: Response): Promise<any> {
-  const { name, age, specie, breed, description, picture, sex, status } = request.body;
+export const createAnimal = [
+  upload.single('picture'),
+  async (request: Request & { user?: { id: string } }, response: Response): Promise<any> => {
+    const { name, age, specieId, breed, description, sex, shelterId } = request.body;
 
-  if (!name || !age || !specie || !breed || !description) {
-    return response.status(400).json({
-      success: false,
-      message: 'All fields are required',
-    });
-  }
+    if (!name || !age || !specieId || !breed || !description || !sex || !shelterId) {
+      return response.status(400).json({
+        success: false,
+        message: 'Tous les champs sont requis',
+      });
+    }
 
-  try {
-    const animal = await prisma.animal.create({
-      data: {
-        name,
-        age,
-        breed,
-        description,
-        // Add these required fields:
-        picture: request.body.picture, // Or provide a default value
-        sex: request.body.sex, // Or provide a default value
-        status: request.body.status, // Must be a valid AnimalStatus enum value
-        // For relation fields, use connect to link existing records
-        specie: {
-          connect: { id: specie }, // Assuming 'specie' is the ID of an existing specie
+    try {
+      let pictureUrl = '';
+
+      if (request.file) {
+        try {
+          const fileName = generateFileName(name, request.file.originalname);
+          pictureUrl = await uploadToS3(request.file, 'animals', fileName);
+        } catch (uploadError) {
+          console.error('Erreur upload S3:', uploadError);
+          return response.status(500).json({
+            success: false,
+            message: 'Erreur lors de l\'upload de l\'image',
+            error: uploadError,
+          });
+        }
+      }
+
+      const animal = await prisma.animal.create({
+        data: {
+          name,
+          age: parseInt(age),
+          breed,
+          description,
+          picture: pictureUrl,
+          sex,
+          status: AnimalStatus.sheltered,
+          specie: {
+            connect: { id: specieId },
+          },
+          shelter: {
+            connect: { id: shelterId },
+          },
         },
-        shelter: {
-          connect: { id: request.body.shelterId }, // Assuming you have a shelterId in the request
-        },
-      },
-    });
+      });
 
-    return response.status(201).json({
-      success: true,
-      message: 'Animal created successfully',
-      data: animal,
-    });
-  } catch (error) {
-    return response.status(500).json({
-      success: false,
-      message: 'Error creating animal',
-      error: error,
-    });
+      return response.status(201).json({
+        success: true,
+        message: 'Animal créé avec succès',
+        data: animal,
+      });
+    } catch (error) {
+      console.error('Erreur lors de la création:', error);
+      return response.status(500).json({
+        success: false,
+        message: 'Erreur lors de la création de l\'animal',
+        error: error,
+      });
+    }
   }
-}
+];
 
 export async function getAnimalsByShelter(request: Request, response: Response): Promise<any> {
   const { shelterId } = request.params;
@@ -294,6 +314,140 @@ export async function getAnimalsByFoster(request: Request, response: Response): 
     return response.status(500).json({
       success: false,
       message: 'Error fetching animals',
+      error: error,
+    });
+  }
+}
+
+export const updateAnimal = [
+  upload.single('picture'),
+  async (request: Request & { user?: { id: string } }, response: Response): Promise<any> => {
+    const { id } = request.params;
+    const { name, age, specieId, breed, description, sex, shelterId } = request.body;
+    const userId = request.user?.id;
+
+    if (!id) {
+      return response.status(400).json({
+        success: false,
+        message: 'ID de l\'animal requis',
+      });
+    }
+
+    try {
+      let pictureUrl = '';
+      let oldPictureUrl = '';
+
+      // Récupérer l'ancienne image
+      const existingAnimal = await prisma.animal.findUnique({
+        where: { id },
+        select: { picture: true },
+      });
+
+      if (existingAnimal?.picture) {
+        oldPictureUrl = existingAnimal.picture;
+      }
+
+      if (request.file) {
+        try {
+          const fileName = generateFileName(name, request.file.originalname);
+          pictureUrl = await uploadToS3(request.file, 'animals', fileName);
+
+          // Supprimer l'ancienne image si elle existe
+          if (oldPictureUrl) {
+            await deleteFromS3(oldPictureUrl);
+          }
+        } catch (uploadError) {
+          console.error('Erreur upload S3:', uploadError);
+          return response.status(500).json({
+            success: false,
+            message: 'Erreur lors de l\'upload de l\'image',
+            error: uploadError,
+          });
+        }
+      }
+
+      const updateData: any = {
+        name,
+        age: parseInt(age),
+        breed,
+        description,
+        sex,
+        specie: {
+          connect: { id: specieId },
+        },
+        shelter: {
+          connect: { id: shelterId },
+        },
+      };
+
+      if (pictureUrl) {
+        updateData.picture = pictureUrl;
+      }
+
+      const animal = await prisma.animal.update({
+        where: { id },
+        data: updateData,
+      });
+
+      return response.status(200).json({
+        success: true,
+        message: 'Animal mis à jour avec succès',
+        data: animal,
+      });
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour:', error);
+      return response.status(500).json({
+        success: false,
+        message: 'Erreur lors de la mise à jour de l\'animal',
+        error: error,
+      });
+    }
+  }
+];
+
+export async function deleteAnimal(request: Request, response: Response): Promise<any> {
+  const { id } = request.params;
+
+  if (!id) {
+    return response.status(400).json({
+      success: false,
+      message: 'ID de l\'animal requis',
+    });
+  }
+
+  try {
+    // Récupérer l'animal pour avoir l'URL de l'image
+    const animal = await prisma.animal.findUnique({
+      where: { id },
+      select: { picture: true },
+    });
+
+    if (!animal) {
+      return response.status(404).json({
+        success: false,
+        message: 'Animal non trouvé',
+      });
+    }
+
+    // Supprimer l'image S3 si elle existe
+    if (animal.picture) {
+      await deleteFromS3(animal.picture);
+    }
+
+    // Supprimer l'animal
+    await prisma.animal.delete({
+      where: { id },
+    });
+
+    return response.status(200).json({
+      success: true,
+      message: 'Animal supprimé avec succès',
+    });
+  } catch (error) {
+    console.error('Erreur lors de la suppression:', error);
+    return response.status(500).json({
+      success: false,
+      message: 'Erreur lors de la suppression de l\'animal',
       error: error,
     });
   }

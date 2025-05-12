@@ -15,7 +15,9 @@ export enum Path {
   REQUESTS = '/requests',
   REQUEST = '/request/:requestId',
   ADD_REQUEST = '/request/add/:animalId',
-  SHELTER_PROFILE = 'shelter/profile',
-  FOSTER_PROFILE = 'foster/profile',
+  SHELTER_PROFILE = '/shelter/profile',
+  FOSTER_PROFILE = '/foster/profile',
+  ANIMAL_EDIT = '/animal/edit/:id',
+  ANIMAL_CREATE = '/animal/create',
 
 }

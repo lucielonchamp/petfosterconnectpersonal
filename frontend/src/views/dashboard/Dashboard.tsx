@@ -1,5 +1,6 @@
 import {
   CalendarMonth as CalendarIcon,
+  Edit as EditIcon,
   Home as HomeIcon,
   Person as PersonIcon,
   Pets as PetsIcon
@@ -21,14 +22,14 @@ import {
   Typography
 } from '@mui/material';
 import { JSX, useEffect, useState } from 'react';
-import { useAuth } from '../../hooks/useAuth';
-import { RoleEnum } from '../../interfaces/role';
-import { AnimalStatus, AnimalWithRelations } from '../../interfaces/animal';
-import { RequestStatus, RequestWithRelations } from '../../interfaces/request';
-import { LoaderPetFoster } from '../../components/Loader/LoaderPetFoster';
 import { useNavigate } from 'react-router';
+import { LoaderPetFoster } from '../../components/Loader/LoaderPetFoster';
 import { getStatusColor, getStatusLabel } from '../../helpers/statusHelper';
+import { useAuth } from '../../hooks/useAuth';
+import { AnimalStatus, AnimalWithRelations } from '../../interfaces/animal';
 import { Path } from '../../interfaces/Path';
+import { RequestStatus, RequestWithRelations } from '../../interfaces/request';
+import { RoleEnum } from '../../interfaces/role';
 
 // Types
 interface User {
@@ -182,13 +183,14 @@ const Dashboard = () => {
     setIsLoading(false);
   }, [user])
 
-  const handleNavigateAnimals = (animalId: string) => () => {
-    navigate(Path.ANIMAL_DETAIL.replace(':id', animalId));
-  };
 
   const handleNavigateRequests = (requestId: string) => () => {
     navigate(`${Path.DASHBOARD}${Path.REQUEST.replace(':requestId', requestId)}`);
   }
+
+  const handleNavigateAnimals = (animalId: string) => () => {
+    navigate(`${Path.ANIMAL_DETAIL.replace(':id', animalId)}`);
+  };
 
   if (isLoading || loading) {
     return (
@@ -283,18 +285,32 @@ const Dashboard = () => {
                   'Animaux chez vous'
                   :
                   'Liste des animaux'
-
             }
           </Typography>
-          <Button
-            color="primary"
-            sx={{
-              textTransform: 'none',
-              fontWeight: 500
-            }}
-          >
-            Voir plus
-          </Button>
+          <Box sx={{ display: 'flex', gap: 2 }}>
+            {user?.role?.name === RoleEnum.SHELTER && (
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => navigate(`${Path.DASHBOARD}${Path.ANIMAL_CREATE}`)}
+                sx={{
+                  textTransform: 'none',
+                  fontWeight: 500
+                }}
+              >
+                Ajouter un animal
+              </Button>
+            )}
+            <Button
+              color="primary"
+              sx={{
+                textTransform: 'none',
+                fontWeight: 500
+              }}
+            >
+              Voir plus
+            </Button>
+          </Box>
         </Box>
         <TableContainer>
           <Table>
@@ -306,12 +322,19 @@ const Dashboard = () => {
                 <TableCell>Race</TableCell>
                 <TableCell>Âge</TableCell>
                 <TableCell>Statut</TableCell>
-                {/* <TableCell align="right">Actions</TableCell> */}
               </TableRow>
             </TableHead>
             <TableBody>
               {animals.map((animal) => (
-                <TableRow key={animal.id} onClick={handleNavigateAnimals(animal.id)} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} hover>
+                <TableRow
+                  key={animal.id}
+                  onClick={handleNavigateAnimals(animal.id)}
+                  sx={{
+                    '&:last-child td, &:last-child th': { border: 0 },
+                    cursor: 'pointer'
+                  }}
+                  hover
+                >
                   <TableCell>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                       <Avatar
@@ -337,15 +360,30 @@ const Dashboard = () => {
                         backgroundColor: getStatusColor(animal.status),
                         borderRadius: 1,
                         textTransform: 'none',
+                        color: 'white',
                         fontWeight: 500
                       }}
                     />
                   </TableCell>
-                  {/* <TableCell align="right">
-                    <IconButton size="small">
-                      <MenuIcon />
-                    </IconButton>
-                  </TableCell> */}
+                  <TableCell align="right">
+                    {user?.role?.name === RoleEnum.SHELTER && (
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        startIcon={<EditIcon />}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`${Path.DASHBOARD}${Path.ANIMAL_EDIT.replace(':id', animal.id)}`);
+                        }}
+                        sx={{
+                          textTransform: 'none',
+                          fontWeight: 500
+                        }}
+                      >
+                        Modifier
+                      </Button>
+                    )}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

@@ -3,25 +3,28 @@ import { NextFunction, Request, Response } from 'express';
 
 const tokens = new Token();
 
-const secret = process.env.CSRF_SECRET;
+const secret = process.env.CSRF_SECRET || 'gros_secret';
 
 export const generateCsrfToken = (req: Request, res: Response, next: NextFunction) => {
-  if (!secret) {
+  try {
+    if (!secret) {
+      throw new Error('CSRF_SECRET non défini');
+    }
+    const token = tokens.create(secret);
+
+    res.status(200).json({
+      success: true,
+      message: 'CSRF token généré avec succès',
+      token: token,
+    });
+  } catch (error) {
+    console.error('Erreur lors de la génération du token CSRF:', error);
     res.status(500).json({
       success: false,
-      message: 'CSRF secret not set',
+      message: 'Erreur lors de la génération du token CSRF',
+      error: error instanceof Error ? error.message : 'Erreur inconnue'
     });
-    return;
   }
-
-  const token = tokens.create(secret);
-  const tokenString = Array.isArray(token) ? token[0] : String(token);
-
-  res.status(200).json({
-    success: true,
-    message: 'CSRF token generated',
-    token: tokenString,
-  });
 };
 
 export const validateCsrfToken = (req: Request, res: Response, next: NextFunction) => {
@@ -32,43 +35,44 @@ export const validateCsrfToken = (req: Request, res: Response, next: NextFunctio
     }
 
     const token = req.headers['x-csrf-token'];
-    const tokenString = Array.isArray(token) ? token[0] : String(token);
+    const tokenString = Array.isArray(token) ? token[0] : token;
 
-    if (!token) {
+    if (!tokenString) {
       res.status(403).json({
         success: false,
-        message: 'CSRF token missing',
+        message: 'Token CSRF manquant',
       });
       return;
     }
 
     try {
       if (!secret) {
-        res.status(500).json({
-          success: false,
-          message: 'CSRF secret not set',
-        });
-        return;
+        throw new Error('CSRF_SECRET non défini');
       }
-
       const isValid = tokens.verify(secret, tokenString);
 
       if (!isValid) {
         res.status(403).json({
           success: false,
-          message: 'CSRF invalid.',
+          message: 'Token CSRF invalide',
         });
         return;
       }
       next();
     } catch (error) {
+      console.error('Erreur lors de la vérification du token CSRF:', error);
       res.status(403).json({
         success: false,
-        message: 'Error verifying CSRF token',
+        message: 'Erreur lors de la vérification du token CSRF',
+        error: error instanceof Error ? error.message : 'Erreur inconnue'
       });
-      return;
     }
   } else {
     next();
   }
 };
+
+
+
+
+

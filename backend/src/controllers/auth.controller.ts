@@ -11,7 +11,7 @@ const isProduction = process.env.NODE_ENV === 'production'
 
 const LOGIN_COOKIES_OPTIONS = {
   secure: isProduction,
-  sameSite: 'none' as const,
+  sameSite: 'lax' as const,
   httpOnly: true,
   maxAge: 7 * 24 * 60 * 60 * 1000,
 };

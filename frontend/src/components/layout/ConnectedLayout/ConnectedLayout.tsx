@@ -1,8 +1,3 @@
-import { Alert, AppBar, Avatar, Box, CircularProgress, Container, Drawer, IconButton, InputAdornment, List, ListItemButton, ListItemIcon, ListItemText, TextField, Toolbar, Typography, useTheme } from "@mui/material";
-import React, { ReactNode, useState } from "react";
-import { useNavigate } from "react-router";
-import { useAuth } from "../../../hooks/useAuth";
-import { User } from "../../../types/auth.types";
 import {
   CalendarMonth as CalendarIcon,
   Dashboard as DashboardIcon,
@@ -13,10 +8,14 @@ import {
   Pets as PetsIcon,
   Search as SearchIcon
 } from '@mui/icons-material';
+import { Alert, AppBar, Avatar, Box, CircularProgress, Container, Drawer, IconButton, InputAdornment, List, ListItemButton, ListItemIcon, ListItemText, TextField, Toolbar, Typography, useTheme } from "@mui/material";
+import React, { ReactNode, useState } from "react";
+import { useLocation, useNavigate } from "react-router";
 import logo from '../../../assets/logo.png';
-import { RoleEnum } from "../../../interfaces/role";
+import { useAuth } from "../../../hooks/useAuth";
 import { Path } from "../../../interfaces/Path";
-import { useLocation } from "react-router";
+import { RoleEnum } from "../../../interfaces/role";
+import { User } from "../../../types/auth.types";
 
 interface ConnectedLayoutProps {
   children: React.ReactNode
@@ -48,12 +47,12 @@ const ConnectedLayout = ({ children }: ConnectedLayoutProps) => {
     path: string
   }[] = user ? [
     { text: 'Dashboard', icon: <DashboardIcon />, path: Path.DASHBOARD },
-    { text: 'Mes animaux', icon: <PetsIcon />, path: `${Path.DASHBOARD}/${Path.ANIMALS}` },
-    { text: "Demandes d'accueil", icon: <CalendarIcon />, path: `${Path.DASHBOARD}/${Path.REQUESTS}` },
+    { text: 'Mes animaux', icon: <PetsIcon />, path: `${Path.DASHBOARD}${Path.ANIMALS}` },
+    { text: "Demandes d'accueil", icon: <CalendarIcon />, path: `${Path.DASHBOARD}${Path.REQUESTS}` },
     {
       text: 'Mon profil', icon: <Person />, path: user.role.name === RoleEnum.FOSTER
-        ? `${Path.DASHBOARD}/${Path.FOSTER_PROFILE}`
-        : `${Path.DASHBOARD}/${Path.SHELTER_PROFILE}`
+        ? `${Path.DASHBOARD}${Path.FOSTER_PROFILE}`
+        : `${Path.DASHBOARD}${Path.SHELTER_PROFILE}`
     }
   ] : [
       { text: 'Dashboard', icon: <DashboardIcon />, path: Path.DASHBOARD },

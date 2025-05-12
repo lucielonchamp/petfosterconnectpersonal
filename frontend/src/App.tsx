@@ -4,19 +4,20 @@ import ConnectedLayout from './components/layout/ConnectedLayout/ConnectedLayout
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import { Path } from './interfaces/Path';
 import AnimalDetail from './views/animal-detail/AnimalDetail';
+import AnimalForm from './views/animals/AnimalForm';
 import Animals from './views/animals/Animals';
 import Dashboard from './views/dashboard/Dashboard';
 import FosterProfile from './views/foster-profile/FosterProfile';
 import Home from './views/home/Home';
 import Login from './views/login/Login';
 import NotFound from './views/not-found/NotFound';
-import Register from './views/register/Register';
-import ShelterProfile from './views/shelter-profile/ShelterProfile';
-import AddRequest from './views/request/AddRequest';
-import ShelterList from './views/shelter/ShelterList';
-import ShelterDetails from './views/shelter/ShelterDetails';
-import RequestDetails from './views/request/RequestDetails';
 import NotFoundPage from './views/not-found/NotFoundPage';
+import Register from './views/register/Register';
+import AddRequest from './views/request/AddRequest';
+import RequestDetails from './views/request/RequestDetails';
+import ShelterProfile from './views/shelter-profile/ShelterProfile';
+import ShelterDetails from './views/shelter/ShelterDetails';
+import ShelterList from './views/shelter/ShelterList';
 
 function App() {
   return (
@@ -42,6 +43,8 @@ function App() {
                   <Route path={Path.FOSTER_PROFILE} element={<FosterProfile />} />
                   <Route path={Path.ADD_REQUEST} element={<AddRequest />} />
                   <Route path={Path.REQUEST} element={<RequestDetails />} />
+                  <Route path={Path.ANIMAL_CREATE} element={<AnimalForm />} />
+                  <Route path={Path.ANIMAL_EDIT} element={<AnimalForm />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </ConnectedLayout>
