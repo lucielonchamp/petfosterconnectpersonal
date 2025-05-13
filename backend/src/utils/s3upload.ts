@@ -32,7 +32,7 @@ export const upload = multer({
         fileSize: 5 * 1024 * 1024, // Limite à 5MB
     },
     fileFilter: (_req, file, cb) => {
-        const allowedTypes = ['.jpg', '.jpeg', '.png', '.gif'];
+        const allowedTypes = ['.jpg', '.jpeg', '.png', '.gif', '.webp'];
         const ext = path.extname(file.originalname).toLowerCase();
 
         if (allowedTypes.includes(ext)) {
@@ -50,9 +50,21 @@ export const generateFileName = (animalName: string, originalName: string): stri
     return `animals/${sanitizedAnimalName}_${timestamp}${extension}`;
 };
 
+export const generateShelterLogoFileName = (shelterName: string, originalName: string): string => {
+    const timestamp = Date.now();
+    const extension = path.extname(originalName);
+    const sanitizedShelterName = shelterName.replace(/[^a-zA-Z0-9]/g, '_');
+    return `shelters/${sanitizedShelterName}_${timestamp}${extension}`;
+};
+
 export const uploadToS3 = async (file: Express.Multer.File, folder: string, fileName?: string): Promise<string> => {
     if (!process.env.AWS_S3_BUCKET) {
         throw new Error('AWS_BUCKET_NAME n\'est pas défini');
+    }
+
+    if (!file || !file.buffer) {
+        console.error('Fichier invalide:', file);
+        throw new Error('Fichier invalide');
     }
 
     const key = fileName || `${folder}/${Date.now()}_${file.originalname}`;
@@ -67,10 +79,12 @@ export const uploadToS3 = async (file: Express.Multer.File, folder: string, file
 
     try {
         await s3Client.send(command);
-        return `https://${process.env.AWS_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`;
+
+        const url = `https://${process.env.AWS_S3_BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`;
+        return url;
     } catch (error) {
-        console.error('Erreur lors de l\'upload vers S3:', error);
-        throw new Error('Erreur lors de l\'upload du fichier vers S3');
+        console.error('Erreur détaillée lors de l\'upload vers S3:', error);
+        throw new Error(`Erreur lors de l'upload du fichier vers S3: ${error instanceof Error ? error.message : 'Erreur inconnue'}`);
     }
 };
 
@@ -80,14 +94,19 @@ export const deleteFromS3 = async (url: string): Promise<void> => {
     }
 
     try {
-        const key = url.split('.com/')[1];
+        // Extraction du nom de fichier de l'URL
+        const urlParts = url.split('/');
+        const key = urlParts.slice(3).join('/'); // Ignore le protocole, le domaine et le bucket
+
+
         const command = new DeleteObjectCommand({
             Bucket: process.env.AWS_S3_BUCKET,
             Key: key,
         });
+
         await s3Client.send(command);
     } catch (error) {
         console.error('Erreur lors de la suppression du fichier S3:', error);
-        throw new Error('Erreur lors de la suppression du fichier S3');
+        throw new Error(`Erreur lors de la suppression du fichier S3: ${error instanceof Error ? error.message : 'Erreur inconnue'}`);
     }
 };

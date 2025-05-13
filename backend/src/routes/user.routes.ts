@@ -1,5 +1,6 @@
 import express from 'express';
 import * as Controller from '../controllers/user.controller';
+import { upload } from '../utils/s3upload';
 const router = express.Router();
 
 /**
@@ -70,18 +71,17 @@ router.get('/:id/shelter', Controller.getUserWithShelter);
  *    requestBody:
  *      required: true
  *      content:
- *        application/json:
+ *        multipart/form-data:
  *          schema:
  *            type: object
  *            properties:
- *              email:
+ *              picture:
  *                type: string
- *              password:
- *                type: string
- *              roleId:
+ *                format: binary
+ *              name:
  *                type: string
  */
-router.patch('/:id/shelter', Controller.updateUserWithShelter);
+router.patch('/:id/shelter', upload.single('picture'), Controller.updateUserWithShelter);
 
 /**
  * @swagger

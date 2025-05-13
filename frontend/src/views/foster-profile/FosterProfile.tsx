@@ -1,12 +1,13 @@
-import { Container, Stack, Typography, Snackbar, Alert, Slide, SlideProps } from "@mui/material";
-import React, { ChangeEvent, useEffect, useState } from "react";
-import { FosterWithUser } from "../../interfaces/foster";
-import ButtonPurple from "../../components/ui/ButtonPurple";
-import PetFosterTextField from "../../components/PetFosterTextField/PetFosterTextField";
-import { LoaderPetFoster } from "../../components/Loader/LoaderPetFoster";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { Alert, Container, Slide, SlideProps, Snackbar, Stack, Typography } from "@mui/material";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import heart from "../../assets/heart.png";
+import { LoaderPetFoster } from "../../components/Loader/LoaderPetFoster";
+import PetFosterTextField from "../../components/PetFosterTextField/PetFosterTextField";
+import ButtonPurple from "../../components/ui/ButtonPurple";
 import { useAuth } from "../../hooks/useAuth";
+import { useCsrf } from "../../hooks/useCsrf";
+import { FosterWithUser } from "../../interfaces/foster";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -20,6 +21,7 @@ interface FormErrors {
 }
 
 const FosterProfile = () => {
+
   const [fosterWithUser, setFosterWithUser] = useState<Partial<FosterWithUser>>({
     firstName: undefined,
     lastName: undefined,
@@ -47,6 +49,7 @@ const FosterProfile = () => {
   const [formErrors, setFormErrors] = useState<FormErrors>({});
 
   const { user } = useAuth();
+  const { csrfToken, isLoading: isCsrfLoading } = useCsrf();
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -112,8 +115,15 @@ const FosterProfile = () => {
   };
 
   const getUserInformations = async () => {
+    if (isCsrfLoading) return;
+
     try {
-      const response = await fetch(`${API_URL}/user/${user?.id}/foster`);
+      const response = await fetch(`${API_URL}/user/${user?.id}/foster`, {
+        credentials: 'include',
+        headers: {
+          'X-CSRF-Token': csrfToken
+        }
+      });
 
       const { data } = await response.json();
 
@@ -151,7 +161,10 @@ const FosterProfile = () => {
     try {
       const response = await fetch(`${API_URL}/user/${user?.id}/foster`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': csrfToken
+        },
         body: JSON.stringify(fosterWithUser),
         credentials: 'include',
       });
@@ -175,7 +188,7 @@ const FosterProfile = () => {
   useEffect(() => {
     setLoading(true);
     getUserInformations();
-  }, []);
+  }, [isCsrfLoading]);
 
   function SlideTransition(props: SlideProps) {
     return <Slide {...props} direction="down" />;

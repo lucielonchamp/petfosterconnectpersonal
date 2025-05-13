@@ -1,15 +1,15 @@
+import { Prisma, PrismaClient, Shelter, User } from '@prisma/client';
+import bcrypt from 'bcryptjs';
 import { Request, Response } from 'express';
-import { PrismaClient, Shelter, Foster, User, Prisma } from '@prisma/client';
+import { z } from 'zod';
+import { ApiResponse, ErrorResponse } from '../interfaces/response';
 import {
+  updateShelterLogoSchema,
+  updateUserFosterSchema,
   updateUserSchema,
   updateUserShelterSchema,
-  updateUserFosterSchema,
 } from '../schemas/user.schema';
-import bcrypt from 'bcryptjs';
-import { ApiResponse, ErrorResponse } from '../interfaces/response';
-import { z } from 'zod';
-import { ShelterWithUser } from '../interfaces/shelter';
-import { RoleEnum } from '../interfaces/role';
+import { deleteFromS3, generateShelterLogoFileName, uploadToS3 } from '../utils/s3upload';
 
 const prisma = new PrismaClient();
 
@@ -150,14 +150,81 @@ export async function deleteUser(request: Request, response: Response): Promise<
 }
 
 export async function updateUserWithShelter(
-  req: Request<{ id: string }, {}, z.infer<typeof updateUserShelterSchema>>,
+  req: Request<{ id: string }, {}, z.infer<typeof updateUserShelterSchema> | z.infer<typeof updateShelterLogoSchema>>,
   res: Response<ApiResponse<User & { Shelter: Shelter | null }> | ApiResponse<null>>
 ): Promise<void> {
   const { id } = req.params;
   const requestedData = req.body;
+  const file = req.file;
 
+  // Si c'est un upload de logo (pas de données utilisateur)
+  const logoValidation = updateShelterLogoSchema.safeParse(requestedData);
+  if (logoValidation.success) {
+    try {
+      if (!file) {
+        throw new Error('Aucun fichier n\'a été fourni');
+      }
+
+      ;
+
+      // Récupérer l'ancien logo avant de le supprimer
+      const currentUser = await prisma.user.findUnique({
+        where: { id: id },
+        include: { Shelter: true }
+      });
+
+      const fileName = generateShelterLogoFileName(requestedData.name || 'shelter', file.originalname);
+      const pictureUrl = await uploadToS3(file, 'shelters', fileName);
+
+      if (!pictureUrl) {
+        throw new Error('L\'URL de l\'image n\'a pas été générée');
+      }
+
+
+      // Si un ancien logo existe, le supprimer
+      if (currentUser?.Shelter?.picture) {
+        try {
+          await deleteFromS3(currentUser.Shelter.picture);
+        } catch (deleteError) {
+          console.error('Erreur lors de la suppression de l\'ancien logo:', deleteError);
+          // On continue même si la suppression échoue
+        }
+      }
+
+      const updatedUserWithShelter = await prisma.user.update({
+        where: { id: id },
+        data: {
+          Shelter: {
+            update: {
+              picture: pictureUrl,
+            }
+          }
+        },
+        include: {
+          Shelter: true
+        }
+      });
+
+
+      res.status(200).json({
+        success: true,
+        message: 'Shelter logo updated successfully',
+        data: updatedUserWithShelter,
+      });
+      return;
+    } catch (error: any) {
+      console.error(`Error updating shelter logo:`, error);
+      res.status(500).json({
+        success: false,
+        message: error.message || 'Error updating logo',
+        error: error.message
+      });
+      return;
+    }
+  }
+
+  // Sinon, c'est une mise à jour normale du profil
   const validationResult = updateUserShelterSchema.safeParse(requestedData);
-
   if (!validationResult.success) {
     res.status(400).json({
       success: false,
@@ -178,16 +245,33 @@ export async function updateUserWithShelter(
       userDataForUpdate.password = await bcrypt.hash(data.user.password, Number(process.env.SALT_ROUNDS) || 10);
     }
 
+    let pictureUrl = data.picture;
+
+    if (file) {
+      const fileName = generateShelterLogoFileName(data.name || 'shelter', file.originalname);
+      pictureUrl = await uploadToS3(file, 'shelters', fileName);
+
+      // Si un ancien logo existe, le supprimer
+      if (data.picture) {
+        const oldFileName = data.picture.split('/').pop();
+        if (oldFileName) {
+          await deleteFromS3(oldFileName);
+        }
+      }
+    }
+
     const shelterCreateData: Prisma.ShelterCreateWithoutUserInput = {
       name: data.name ?? 'Nom manquant',
       location: data.location ?? 'Lieu manquant',
-      description: data.description, // Nullable, so undefined is okay
+      description: data.description,
+      picture: pictureUrl || '',
     };
 
     const shelterUpdateData: Prisma.ShelterUpdateWithoutUserInput = {
       name: data.name,
       location: data.location,
       description: data.description,
+      picture: pictureUrl,
     };
 
     const updatedUserWithShelter = await prisma.user.update({
@@ -261,7 +345,6 @@ export async function getUserWithShelter(request: Request, response: Response): 
 
     const { password, ...userWithoutPassword } = user;
 
-    console.log('user', userWithoutPassword);
 
     return response
       .status(200)
@@ -342,7 +425,6 @@ export async function updateUserWithFoster(
     });
     return;
   } catch (error) {
-    console.log(error);
     res.status(500).json({ success: false, message: 'Error updating profile', error });
   }
 }
@@ -363,8 +445,6 @@ export async function getUserWithFoster(request: Request, response: Response): P
     }
 
     const { password, ...userWithoutPassword } = user;
-
-    console.log('user', userWithoutPassword);
 
     return response
       .status(200)
