@@ -308,6 +308,7 @@ const Dashboard = () => {
                 textTransform: 'none',
                 fontWeight: 500
               }}
+              onClick={() => navigate(`${Path.DASHBOARD}${Path.ANIMALS}`)}
             >
               Voir plus
             </Button>
@@ -418,6 +419,7 @@ const Dashboard = () => {
               textTransform: 'none',
               fontWeight: 500
             }}
+            onClick={() => navigate(`${Path.DASHBOARD}${Path.REQUEST}`)}
           >
             Voir plus
           </Button>

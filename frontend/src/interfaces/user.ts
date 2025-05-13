@@ -1,3 +1,5 @@
+import { RoleEnum } from "./role";
+
 export interface User {
   id: string;
   email: string;
@@ -12,3 +14,18 @@ export interface UserWithRole extends User {
     name: string;
   };
 }
+
+export interface UserWithRelations extends User {
+  role: {
+    id: string;
+    name: RoleEnum;
+  };
+  shelter: {
+    id: string;
+    name: string;
+    address: string;
+  };
+  foster: {
+    id: string;
+  };
+};

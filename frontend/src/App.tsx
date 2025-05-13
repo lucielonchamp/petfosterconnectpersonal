@@ -18,6 +18,7 @@ import RequestDetails from './views/request/RequestDetails';
 import ShelterProfile from './views/shelter-profile/ShelterProfile';
 import ShelterDetails from './views/shelter/ShelterDetails';
 import ShelterList from './views/shelter/ShelterList';
+import { MyAnimals } from './views/foster-profile/MyAnimals';
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
                   <Route path={Path.REQUEST} element={<RequestDetails />} />
                   <Route path={Path.ANIMAL_CREATE} element={<AnimalForm />} />
                   <Route path={Path.ANIMAL_EDIT} element={<AnimalForm />} />
+                  <Route path={Path.ANIMALS} element={<MyAnimals />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </ConnectedLayout>

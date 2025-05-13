@@ -1,9 +1,12 @@
+import { RoleEnum } from "../interfaces/role";
+import { UserWithRelations } from "../interfaces/user";
+
 export interface User {
   id: string;
   email: string;
   role: {
     id: string;
-    name: string;
+    name: RoleEnum;
   };
 }
 
@@ -11,12 +14,12 @@ export interface AuthResponse {
   success: boolean;
   message: string;
   token?: string;
-  user?: User;
-  data?: User;
+  user?: UserWithRelations;
+  data?: UserWithRelations;
 }
 
 export interface AuthContextType {
-  user: User | null;
+  user: UserWithRelations | null;
   loading: boolean;
   error: string | null;
   login: (email: string, password: string) => Promise<void>;

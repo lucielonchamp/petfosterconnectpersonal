@@ -155,6 +155,8 @@ export const getMe = async (req: Request, res: Response): Promise<any> => {
         id: user.id,
         email: user.email,
         role: user.role,
+        shelter: user.Shelter,
+        foster: user.Foster,
       },
     });
   } catch (error) {
