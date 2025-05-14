@@ -112,6 +112,7 @@
   #header nav .mobile-menu-header {
     display: flex;
     justify-content: flex-start;
+    align-items: center;
     margin: 2rem 0;
   }
 
@@ -140,6 +141,12 @@
   }
 
   #header .mobile-menu-header>* {
-    width: calc(34% - 15px);
+    width: calc(35% - 15px);
+  }
+}
+
+@media (max-width: 450px) {
+  #header .mobile-menu-header>* {
+    width: calc(37% - 15px);
   }
 }

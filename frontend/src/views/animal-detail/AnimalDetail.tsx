@@ -14,6 +14,7 @@ import Header from '../../components/layout/header/Header';
 import { AnimalWithRelations } from '../../interfaces/animal';
 import './AnimalDetail.css';
 import Footer from '../../components/layout/footer/Footer';
+import SEO from '../../components/layout/seo/SEO';
 
 interface ApiResponse {
   success: boolean;
@@ -72,6 +73,10 @@ const AnimalDetail = () => {
 
   return (
     <>
+      <SEO
+        title={`${animal.name} - PetFoster`}
+        description={`Découvrez ${animal.name}, un animal disponible à l'adoption sur PetFoster.`}
+      />
       <Header />
       <div className="animal-detail">
         <Container>

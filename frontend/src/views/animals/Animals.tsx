@@ -11,6 +11,7 @@ import { Specie } from '../../interfaces/specie';
 import Footer from '../../components/layout/footer/Footer';
 import { AnimalListCard } from '../../components/animal/AnimalListCard';
 import BoxStyle from '../../components/style/BoxStyle';
+import SEO from '../../components/layout/seo/SEO';
 
 interface Filters {
   sex: string[];
@@ -157,6 +158,10 @@ const Animals = () => {
 
   return (
     <>
+      <SEO
+        title="Tous les Animaux - PetFoster"
+        description="Parcourez la liste des animaux disponibles à l'adoption sur PetFoster."
+      />
       <Container maxWidth="xl">
         <Header />
       </Container>
