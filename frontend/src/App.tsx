@@ -19,6 +19,9 @@ import ShelterProfile from './views/shelter-profile/ShelterProfile';
 import ShelterDetails from './views/shelter/ShelterDetails';
 import ShelterList from './views/shelter/ShelterList';
 import { MyAnimals } from './views/foster-profile/MyAnimals';
+import TermsOfService from './views/terms/TermsOfService';
+import LegalNotice from './views/terms/LegalNotice';
+import PrivacyPolicy from './views/terms/PrivacyPolicy';
 
 function App() {
   return (
@@ -31,6 +34,9 @@ function App() {
         <Route path={Path.ANIMALS} element={<Animals />} />
         <Route path={Path.SHELTERS} element={<ShelterList />} />
         <Route path={Path.SHELTERBYID} element={<ShelterDetails />} />
+        <Route path={Path.TERMSSERVICE} element={<TermsOfService />} />
+        <Route path={Path.LEGALNOTICE} element={<LegalNotice />} />
+        <Route path={Path.PRIVACYPOLICY} element={<PrivacyPolicy />} />
 
         <Route
           path={`${Path.DASHBOARD}/*`}

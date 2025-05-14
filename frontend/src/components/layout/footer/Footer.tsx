@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import { Path } from "../../../interfaces/Path";
 import './Footer.css';
-import { Container } from "@mui/material";
+import { Container, Typography } from "@mui/material";
 
 function Footer() {
   const currentYear = new Date().getFullYear();
@@ -12,20 +12,23 @@ function Footer() {
         <nav>
           <ul>
             <li>
-              <Link to={Path.CGU}>
+              <Link to={Path.TERMSSERVICE}>
                 Conditions générales d'utilisation
               </Link>
             </li>
             <li>
-              Copyright © PetFoster - {currentYear}
+              <Link to={Path.LEGALNOTICE}>
+                Mentions légales
+              </Link>
             </li>
             <li>
-              <Link to={Path.MENTIONSLEGALES}>
-                Mentions légales
+              <Link to={Path.PRIVACYPOLICY}>
+                Politique de Confidentialité
               </Link>
             </li>
           </ul>
         </nav>
+        <Typography sx={{ display: 'flex', justifyContent: 'center', mt: '10px', fontSize: '12px' }}>Copyright © PetFoster - {currentYear}</Typography>
       </footer>
     </Container>
   );

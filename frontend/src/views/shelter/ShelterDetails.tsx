@@ -8,12 +8,16 @@ import {
     Link,
     Typography,
 } from '@mui/material';
+import {
+    Home as HomeIcon
+} from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import AnimalCard from '../../components/animal/AnimalCard';
 import Header from '../../components/layout/header/Header';
 import { Shelter } from '../../interfaces/shelter';
 import Footer from '../../components/layout/footer/Footer';
+import '../animal-detail/AnimalDetail.css';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -51,9 +55,7 @@ export default function ShelterDetail() {
 
     return (
         <>
-            <Container maxWidth="xl">
-                <Header />
-            </Container>
+            <Header />
 
             <Container maxWidth="xl">
                 {loading ? (
@@ -63,9 +65,10 @@ export default function ShelterDetail() {
                 ) : error || !shelter ? (
                     <Alert severity="error">{error}</Alert>
                 ) : (
-                    <>
-                        <Breadcrumbs sx={{ my: 4 }}>
-                            <Link underline="hover" color="inherit" onClick={() => navigate('/')}>
+                    <Container sx={{ padding: 0 }}>
+                        <Breadcrumbs sx={{ marginBottom: '20px' }}>
+                            <Link underline="hover" color="inherit" onClick={() => navigate('/')} sx={{ display: 'flex', alignItems: 'center' }}>
+                                <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
                                 Accueil
                             </Link>
                             <Link underline="hover" color="inherit" onClick={() => navigate('/associations')}>
@@ -79,7 +82,7 @@ export default function ShelterDetail() {
                                 sx={{
                                     '& img': {
                                         width: '100%',
-                                        height: '500px',
+                                        height: { xs: '200px', xl: '500px' },
                                         aspectRatio: '1 / 1',
                                         objectFit: 'contain',
                                     }
@@ -113,34 +116,21 @@ export default function ShelterDetail() {
                             </Box>
                         </Box>
 
-                        <Typography variant="h2" fontWeight="bold" mb={3}>
+                        <Typography variant="h3" fontWeight="bold" mb={3}>
                             Nous accueillons ses animaux dans notre refuge
                         </Typography>
                         {shelter?.animals.length === 0 ? (
                             <Typography>Aucun animal actuellement</Typography>
                         ) : (
-                            <Box
-                                sx={{
-                                    display: 'grid',
-                                    gridTemplateColumns: {
-                                        xs: '1fr',
-                                        sm: 'repeat(3, 1fr)',
-                                        md: 'repeat(4, 1fr)',
-                                        lg: 'repeat(5, 1fr)'
-                                    },
-                                    gap: 2,
-                                    pb: 3,
-
-                                }}
-                            >
+                            <div className="animals-grid">
                                 {shelter?.animals.map((animal) => (
                                     <AnimalCard key={animal.id} animal={animal} variant="mini" />
                                 ))}
-                            </Box>
+                            </div>
                         )}
-                    </>
+                    </Container>
                 )}
-            </Container>
+            </Container >
             <Container maxWidth="xl">
                 <Footer />
             </Container>

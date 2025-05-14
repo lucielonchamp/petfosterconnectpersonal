@@ -86,7 +86,7 @@ export default function ShelterList() {
       <Container maxWidth="xl">
         <Header />
       </Container>
-      <Box sx={{ backgroundColor: '#f5f5f5', py: 4, minHeight: 'calc(100dvh - 191px)' }}>
+      <Box sx={{ backgroundColor: '#f5f5f5', py: 4, minHeight: 'calc(100dvh - 191px - 33px)' }}>
         <Container maxWidth="lg">
           {/* Barre de recherche */}
           <Box display="flex" gap={2} flexWrap="wrap" justifyContent="space-between" mb={2}>

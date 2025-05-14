@@ -78,6 +78,18 @@ const ConnectedLayout = ({ children }: ConnectedLayoutProps) => {
         <Link to={Path.HOME}><Typography variant="h6" sx={{ fontWeight: 600 }}>PetFoster</Typography></Link>
       </Box>
 
+      <Box sx={{ m: 'auto', display: 'flex', alignItems: 'center', gap: 2 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Avatar>{user?.email[0].toUpperCase()}</Avatar>
+          <Box>
+            <Typography variant="subtitle2">{user?.email}</Typography>
+            <Typography variant="caption" color="textSecondary">
+              {user?.role.name}
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
+
       <Box sx={{ flex: 1, p: 2 }}>
         <List sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
           {sidebarItems.map((item) => (
@@ -219,7 +231,8 @@ const ConnectedLayout = ({ children }: ConnectedLayoutProps) => {
           elevation={0}
           sx={{
             borderBottom: `1px solid ${theme.palette.divider}`,
-            bgcolor: 'white'
+            bgcolor: 'white',
+            display: { xs: 'block', sm: 'none' },
           }}
         >
           <Toolbar>
@@ -232,17 +245,7 @@ const ConnectedLayout = ({ children }: ConnectedLayoutProps) => {
             >
               <MenuIcon />
             </IconButton>
-            <Box sx={{ ml: 'auto', display: 'flex', alignItems: 'center', gap: 2 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <Avatar>{user.email[0].toUpperCase()}</Avatar>
-                <Box>
-                  <Typography variant="subtitle2">{user.email}</Typography>
-                  <Typography variant="caption" color="textSecondary">
-                    {user.role.name}
-                  </Typography>
-                </Box>
-              </Box>
-            </Box>
+
           </Toolbar>
         </AppBar>
 

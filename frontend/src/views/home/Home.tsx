@@ -17,7 +17,7 @@ function Home() {
       <Container maxWidth="xl">
         <Header />
       </Container>
-      <Container maxWidth="xl">
+      <Container maxWidth="xl" sx={{ height: 'fit-content' }}>
         <section id="home">
           <div>
             <div className="img-left">
