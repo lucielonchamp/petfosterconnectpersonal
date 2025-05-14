@@ -25,6 +25,7 @@ import Header from '../../components/layout/header/Header';
 import { useNavigate } from 'react-router';
 import { Path } from '../../interfaces/Path';
 import Footer from '../../components/layout/footer/Footer';
+import SEO from '../../components/layout/seo/SEO';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -86,6 +87,10 @@ export default function ShelterList() {
 
   return (
     <>
+      <SEO
+        title="Associations - PetFoster"
+        description="Découvrez toutes les associations partenaires de PetFoster."
+      />
       <Container maxWidth="xl">
         <Header />
       </Container>

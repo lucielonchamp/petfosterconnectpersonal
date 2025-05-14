@@ -18,6 +18,7 @@ import Header from '../../components/layout/header/Header';
 import { Shelter } from '../../interfaces/shelter';
 import Footer from '../../components/layout/footer/Footer';
 import '../animal-detail/AnimalDetail.css';
+import SEO from '../../components/layout/seo/SEO';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -55,8 +56,11 @@ export default function ShelterDetail() {
 
     return (
         <>
+            <SEO
+                title={`${shelter?.name} - Association - PetFoster`}
+                description={`En savoir plus sur l'association ${shelter?.name}, partenaire de PetFoster.`}
+            />
             <Header />
-
             <Container maxWidth="xl">
                 {loading ? (
                     <Box display="flex" justifyContent="center">
