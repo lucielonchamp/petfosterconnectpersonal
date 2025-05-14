@@ -3,12 +3,10 @@ import {
   Dashboard as DashboardIcon,
   Logout as LogoutIcon,
   Menu as MenuIcon,
-  Notifications as NotificationsIcon,
   Person,
-  Pets as PetsIcon,
-  Search as SearchIcon
+  Pets as PetsIcon
 } from '@mui/icons-material';
-import { Alert, AppBar, Avatar, Box, CircularProgress, Container, Drawer, IconButton, InputAdornment, List, ListItemButton, ListItemIcon, ListItemText, TextField, Toolbar, Typography, useTheme } from "@mui/material";
+import { Alert, AppBar, Avatar, Box, CircularProgress, Container, Drawer, IconButton, List, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography, useTheme } from "@mui/material";
 import React, { ReactNode, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import logo from '../../../assets/logo.png';

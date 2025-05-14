@@ -1,6 +1,7 @@
 import { ReactNode, useEffect, useState } from 'react';
-import { AuthResponse, User } from '../types/auth.types';
+import { AuthResponse } from '../types/auth.types';
 import { AuthContext } from './AuthContext';
+import { UserWithRelations } from '../interfaces/user';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
 
@@ -9,7 +10,7 @@ interface AuthProviderProps {
 }
 
 export default function AuthProvider({ children }: AuthProviderProps) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<UserWithRelations | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
