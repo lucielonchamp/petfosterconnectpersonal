@@ -3,6 +3,7 @@ import {
     Box,
     Button,
     CircularProgress,
+    Container,
     FormControl,
     InputLabel,
     MenuItem,
@@ -249,149 +250,153 @@ const AnimalForm = () => {
     };
 
     return (
-        <Box sx={{ maxWidth: 800, mx: 'auto', p: 3 }}>
-            <Paper sx={{ p: 3 }}>
-                <Typography variant="h4" sx={{ mb: 3 }}>
-                    {id ? 'Modifier l\'animal' : 'Créer un nouvel animal'}
-                </Typography>
+        <>
+            <Container sx={{ backgroundColor: '#f5f5f5' }}>
+                <Box sx={{ maxWidth: 800, mx: 'auto', p: 3 }}>
+                    <Paper sx={{ p: 3 }}>
+                        <Typography variant="h4" sx={{ mb: 3 }}>
+                            {id ? 'Modifier l\'animal' : 'Créer un nouvel animal'}
+                        </Typography>
 
-                {error && (
-                    <Alert severity="error" sx={{ mb: 2 }}>
-                        {error}
-                    </Alert>
-                )}
+                        {error && (
+                            <Alert severity="error" sx={{ mb: 2 }}>
+                                {error}
+                            </Alert>
+                        )}
 
-                {success && (
-                    <Alert severity="success" sx={{ mb: 2 }}>
-                        {success}
-                    </Alert>
-                )}
+                        {success && (
+                            <Alert severity="success" sx={{ mb: 2 }}>
+                                {success}
+                            </Alert>
+                        )}
 
-                <form onSubmit={handleSubmit}>
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-                        <TextField
-                            fullWidth
-                            label="Nom"
-                            name="name"
-                            value={formData.name}
-                            onChange={handleInputChange}
-                            required
-                        />
-
-                        <TextField
-                            fullWidth
-                            label="Âge"
-                            name="age"
-                            type="number"
-                            value={formData.age}
-                            onChange={handleInputChange}
-                            required
-                        />
-
-                        <TextField
-                            fullWidth
-                            label="Race"
-                            name="breed"
-                            value={formData.breed}
-                            onChange={handleInputChange}
-                            required
-                        />
-
-                        <FormControl fullWidth required>
-                            <InputLabel>Sexe</InputLabel>
-                            <Select
-                                name="sex"
-                                value={formData.sex}
-                                onChange={handleSelectChange}
-                                label="Sexe"
-                            >
-                                <MenuItem value="Male">Mâle</MenuItem>
-                                <MenuItem value="Female">Femelle</MenuItem>
-                            </Select>
-                        </FormControl>
-
-                        <FormControl fullWidth required>
-                            <InputLabel>Espèce</InputLabel>
-                            <Select
-                                name="specieId"
-                                value={formData.specieId}
-                                onChange={handleSelectChange}
-                                label="Espèce"
-                            >
-                                {species.map((specie) => (
-                                    <MenuItem key={specie.id} value={specie.id}>
-                                        {specie.name}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-
-                        <TextField
-                            fullWidth
-                            label="Description"
-                            name="description"
-                            multiline
-                            rows={4}
-                            value={formData.description}
-                            onChange={handleInputChange}
-                            required
-                        />
-
-                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                            <Button
-                                variant="contained"
-                                component="label"
-                                sx={{ alignSelf: 'flex-start' }}
-                            >
-                                Choisir une photo
-                                <input
-                                    type="file"
-                                    hidden
-                                    accept="image/*"
-                                    onChange={handleFileChange}
+                        <form onSubmit={handleSubmit}>
+                            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                                <TextField
+                                    fullWidth
+                                    label="Nom"
+                                    name="name"
+                                    value={formData.name}
+                                    onChange={handleInputChange}
+                                    required
                                 />
-                            </Button>
-                            {previewUrl && (
-                                <Box sx={{ mt: 2 }}>
-                                    <img
-                                        src={previewUrl}
-                                        alt="Preview"
-                                        style={{ maxWidth: '200px', maxHeight: '200px', objectFit: 'cover' }}
-                                    />
-                                </Box>
-                            )}
-                        </Box>
 
-                        <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end', mt: 2 }}>
-                            <Button
-                                variant="outlined"
-                                onClick={() => navigate(Path.DASHBOARD)}
-                            >
-                                Annuler
-                            </Button>
-                            {id && (
-                                <Button
-                                    variant="contained"
-                                    color="error"
-                                    onClick={handleDelete}
-                                    disabled={loading}
-                                >
-                                    Supprimer
-                                </Button>
-                            )}
-                            <Button
-                                type="submit"
-                                variant="contained"
-                                color="primary"
-                                disabled={loading}
-                            >
-                                {loading ? <CircularProgress size={24} /> : id ? 'Modifier' : 'Créer'}
-                            </Button>
-                        </Box>
-                    </Box>
-                </form>
-            </Paper>
-        </Box>
+                                <TextField
+                                    fullWidth
+                                    label="Âge"
+                                    name="age"
+                                    type="number"
+                                    value={formData.age}
+                                    onChange={handleInputChange}
+                                    required
+                                />
+
+                                <TextField
+                                    fullWidth
+                                    label="Race"
+                                    name="breed"
+                                    value={formData.breed}
+                                    onChange={handleInputChange}
+                                    required
+                                />
+
+                                <FormControl fullWidth required>
+                                    <InputLabel>Sexe</InputLabel>
+                                    <Select
+                                        name="sex"
+                                        value={formData.sex}
+                                        onChange={handleSelectChange}
+                                        label="Sexe"
+                                    >
+                                        <MenuItem value="Male">Mâle</MenuItem>
+                                        <MenuItem value="Female">Femelle</MenuItem>
+                                    </Select>
+                                </FormControl>
+
+                                <FormControl fullWidth required>
+                                    <InputLabel>Espèce</InputLabel>
+                                    <Select
+                                        name="specieId"
+                                        value={formData.specieId}
+                                        onChange={handleSelectChange}
+                                        label="Espèce"
+                                    >
+                                        {species.map((specie) => (
+                                            <MenuItem key={specie.id} value={specie.id}>
+                                                {specie.name}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+
+                                <TextField
+                                    fullWidth
+                                    label="Description"
+                                    name="description"
+                                    multiline
+                                    rows={4}
+                                    value={formData.description}
+                                    onChange={handleInputChange}
+                                    required
+                                />
+
+                                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                                    <Button
+                                        variant="contained"
+                                        component="label"
+                                        sx={{ alignSelf: 'flex-start' }}
+                                    >
+                                        Choisir une photo
+                                        <input
+                                            type="file"
+                                            hidden
+                                            accept="image/*"
+                                            onChange={handleFileChange}
+                                        />
+                                    </Button>
+                                    {previewUrl && (
+                                        <Box sx={{ mt: 2 }}>
+                                            <img
+                                                src={previewUrl}
+                                                alt="Preview"
+                                                style={{ maxWidth: '200px', maxHeight: '200px', objectFit: 'cover' }}
+                                            />
+                                        </Box>
+                                    )}
+                                </Box>
+
+                                <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end', mt: 2 }}>
+                                    <Button
+                                        variant="outlined"
+                                        onClick={() => navigate(Path.DASHBOARD)}
+                                    >
+                                        Annuler
+                                    </Button>
+                                    {id && (
+                                        <Button
+                                            variant="contained"
+                                            color="error"
+                                            onClick={handleDelete}
+                                            disabled={loading}
+                                        >
+                                            Supprimer
+                                        </Button>
+                                    )}
+                                    <Button
+                                        type="submit"
+                                        variant="contained"
+                                        color="primary"
+                                        disabled={loading}
+                                    >
+                                        {loading ? <CircularProgress size={24} /> : id ? 'Modifier' : 'Créer'}
+                                    </Button>
+                                </Box>
+                            </Box>
+                        </form>
+                    </Paper>
+                </Box>
+            </Container>
+        </>
     );
 };
 

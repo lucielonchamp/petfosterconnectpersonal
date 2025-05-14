@@ -211,14 +211,15 @@ const Dashboard = () => {
   }
 
   return (
-    <Container
+    < Container
       maxWidth={false}
       sx={{
         py: 4,
         px: { xs: 2, sm: 4 },
         flex: 1,
         overflow: 'scroll',
-      }}
+      }
+      }
     >
       <Typography variant="h4" sx={{ mb: 4, fontWeight: 500 }}>
         Tableau de bord
@@ -480,7 +481,7 @@ const Dashboard = () => {
           </Table>
         </TableContainer>
       </Paper>
-    </Container>
+    </Container >
   );
 };
 
