@@ -22,6 +22,7 @@ import { MyAnimals } from './views/foster-profile/MyAnimals';
 import TermsOfService from './views/terms/TermsOfService';
 import LegalNotice from './views/terms/LegalNotice';
 import PrivacyPolicy from './views/terms/PrivacyPolicy';
+import { RequestList } from './views/request/RequestList';
 
 function App() {
   return (
@@ -53,6 +54,7 @@ function App() {
                   <Route path={Path.ANIMAL_CREATE} element={<AnimalForm />} />
                   <Route path={Path.ANIMAL_EDIT} element={<AnimalForm />} />
                   <Route path={Path.ANIMALS} element={<MyAnimals />} />
+                  <Route path={Path.REQUESTS} element={<RequestList />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </ConnectedLayout>

@@ -51,7 +51,6 @@ export const MyAnimals = () => {
   }, [user]);
 
   const getButton = (role: RoleEnum, animal: Animal) => {
-    console.log(animal);
     if (role === RoleEnum.SHELTER) {
       return <ButtonBlue onClick={() => {
         navigate(`${Path.DASHBOARD}${Path.ANIMAL_EDIT.replace(':id', animal.id)}`)

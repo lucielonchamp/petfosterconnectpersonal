@@ -99,6 +99,7 @@ const RequestDetails = () => {
           const errData = await response.json();
           errMsg = errData.message || errMsg;
         } catch (e) {
+          console.error("Error parsing error response:", e);
           throw new Error(errMsg);
         }
       }
@@ -132,7 +133,7 @@ const RequestDetails = () => {
     return (
       <Container maxWidth="md" sx={{ marginTop: 4 }}>
         <Alert severity="error">{error}</Alert>
-        <ButtonPurple variant="outlined" onClick={() => navigate(Path.REQUESTS)} sx={{ marginTop: 2 }}>
+        <ButtonPurple variant="outlined" onClick={() => navigate(`${Path.DASHBOARD}${Path.REQUESTS}`)} sx={{ marginTop: 2 }}>
           Retour à la liste des demandes
         </ButtonPurple>
       </Container>
@@ -143,7 +144,7 @@ const RequestDetails = () => {
     return (
       <Container maxWidth="md" sx={{ marginTop: 4 }}>
         <Alert severity="warning">Impossible de charger les détails de la demande.</Alert>
-        <ButtonPurple variant="outlined" onClick={() => navigate(Path.REQUESTS)} sx={{ marginTop: 2 }}>
+        <ButtonPurple variant="outlined" onClick={() => navigate(`${Path.DASHBOARD}${Path.REQUESTS}`)} sx={{ marginTop: 2 }}>
           Retour à la liste des demandes
         </ButtonPurple>
       </Container>
@@ -162,7 +163,7 @@ const RequestDetails = () => {
         <Typography variant="h4" component="h1">
           Détails de la Demande
         </Typography>
-        <ButtonPurple variant="outlined" onClick={() => navigate(Path.REQUESTS)} >
+        <ButtonPurple variant="outlined" onClick={() => navigate(`${Path.DASHBOARD}${Path.REQUESTS}`)} >
           Retour à la liste
         </ButtonPurple>
       </Stack>

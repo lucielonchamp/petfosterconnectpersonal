@@ -328,67 +328,72 @@ const Dashboard = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {animals.map((animal) => (
-                <TableRow
-                  key={animal.id}
-                  onClick={handleNavigateAnimals(animal.id)}
-                  sx={{
-                    '&:last-child td, &:last-child th': { border: 0 },
-                    cursor: 'pointer'
-                  }}
-                  hover
-                >
-                  <TableCell>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                      <Avatar
-                        src={animal.picture}
-                        sx={{
-                          width: 40,
-                          height: 40,
-                          borderRadius: 1
-                        }}
-                      />
-                      {animal.name}
-                    </Box>
-                  </TableCell>
-                  <TableCell>{new Date(animal.createdAt).toLocaleDateString()}</TableCell>
-                  <TableCell>{animal?.specie?.name}</TableCell>
-                  <TableCell>{animal.breed}</TableCell>
-                  <TableCell>{animal.age}</TableCell>
-                  <TableCell>
-                    <Chip
-                      label={getStatusLabel(animal.status)}
-                      size="small"
+              {animals.map((animal, index) => {
+                if (index < 4) {
+                  return (
+                    <TableRow
+                      key={animal.id}
+                      onClick={handleNavigateAnimals(animal.id)}
                       sx={{
-                        backgroundColor: getStatusColor(animal.status),
-                        borderRadius: 1,
-                        textTransform: 'none',
-                        color: 'white',
-                        fontWeight: 500
+                        '&:last-child td, &:last-child th': { border: 0 },
+                        cursor: 'pointer'
                       }}
-                    />
-                  </TableCell>
-                  <TableCell align="right">
-                    {user?.role?.name === RoleEnum.SHELTER && (
-                      <Button
-                        variant="outlined"
-                        size="small"
-                        startIcon={<EditIcon />}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          navigate(`${Path.DASHBOARD}${Path.ANIMAL_EDIT.replace(':id', animal.id)}`);
-                        }}
-                        sx={{
-                          textTransform: 'none',
-                          fontWeight: 500
-                        }}
-                      >
-                        Modifier
-                      </Button>
-                    )}
-                  </TableCell>
-                </TableRow>
-              ))}
+                      hover
+                    >
+                      <TableCell>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                          <Avatar
+                            src={animal.picture}
+                            sx={{
+                              width: 40,
+                              height: 40,
+                              borderRadius: 1
+                            }}
+                          />
+                          {animal.name}
+                        </Box>
+                      </TableCell>
+                      <TableCell>{new Date(animal.createdAt).toLocaleDateString()}</TableCell>
+                      <TableCell>{animal?.specie?.name}</TableCell>
+                      <TableCell>{animal.breed}</TableCell>
+                      <TableCell>{animal.age}</TableCell>
+                      <TableCell>
+                        <Chip
+                          label={getStatusLabel(animal.status)}
+                          size="small"
+                          sx={{
+                            backgroundColor: getStatusColor(animal.status),
+                            borderRadius: 1,
+                            textTransform: 'none',
+                            color: 'white',
+                            fontWeight: 500
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell align="right">
+                        {user?.role?.name === RoleEnum.SHELTER && (
+                          <Button
+                            variant="outlined"
+                            size="small"
+                            startIcon={<EditIcon />}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              navigate(`${Path.DASHBOARD}${Path.ANIMAL_EDIT.replace(':id', animal.id)}`);
+                            }}
+                            sx={{
+                              textTransform: 'none',
+                              fontWeight: 500
+                            }}
+                          >
+                            Modifier
+                          </Button>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  )
+                }
+                return null;
+              })}
             </TableBody>
           </Table>
         </TableContainer>
@@ -420,7 +425,7 @@ const Dashboard = () => {
               textTransform: 'none',
               fontWeight: 500
             }}
-            onClick={() => navigate(`${Path.DASHBOARD}${Path.REQUEST}`)}
+            onClick={() => navigate(`${Path.DASHBOARD}${Path.REQUESTS}`)}
           >
             Voir plus
           </Button>
@@ -436,47 +441,52 @@ const Dashboard = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {requests.map((request) => (
-                <TableRow key={request?.id} onClick={handleNavigateRequests(request?.id)} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} hover>
-                  <TableCell>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                      <Avatar
-                        src={request?.animal.picture}
-                        sx={{
-                          width: 40,
-                          height: 40,
-                          borderRadius: 1
-                        }}
-                      />
-                      {request?.animal.name}
-                    </Box>
-                  </TableCell>
-                  <TableCell>{new Date(request.createdAt).toLocaleDateString()}</TableCell>
-                  <TableCell>
-                    <Chip
-                      label={
-                        request.status === RequestStatus.ACCEPTED ? 'Validée' :
-                          request.status === RequestStatus.REFUSED ? 'Refusée' : 'En attente'
-                      }
-                      color={
-                        request.status === RequestStatus.ACCEPTED ? 'success' :
-                          request.status === RequestStatus.REFUSED ? 'error' : 'warning'
-                      }
-                      size="small"
-                      sx={{
-                        borderRadius: 1,
-                        textTransform: 'none',
-                        fontWeight: 500
-                      }}
-                    />
-                  </TableCell>
-                  {/* <TableCell align="right">
-                    <IconButton size="small">
-                      <MenuIcon />
-                    </IconButton>
-                  </TableCell> */}
-                </TableRow>
-              ))}
+              {requests.map((request, index) => {
+                if (index < 4) {
+                  return (
+                    <TableRow key={request?.id} onClick={handleNavigateRequests(request?.id)} sx={{ '&:last-child td, &:last-child th': { border: 0 } }} hover>
+                      <TableCell>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                          <Avatar
+                            src={request?.animal.picture}
+                            sx={{
+                              width: 40,
+                              height: 40,
+                              borderRadius: 1
+                            }}
+                          />
+                          {request?.animal.name}
+                        </Box>
+                      </TableCell>
+                      <TableCell>{new Date(request.createdAt).toLocaleDateString()}</TableCell>
+                      <TableCell>
+                        <Chip
+                          label={
+                            request.status === RequestStatus.ACCEPTED ? 'Validée' :
+                              request.status === RequestStatus.REFUSED ? 'Refusée' : 'En attente'
+                          }
+                          color={
+                            request.status === RequestStatus.ACCEPTED ? 'success' :
+                              request.status === RequestStatus.REFUSED ? 'error' : 'warning'
+                          }
+                          size="small"
+                          sx={{
+                            borderRadius: 1,
+                            textTransform: 'none',
+                            fontWeight: 500
+                          }}
+                        />
+                      </TableCell>
+                      {/* <TableCell align="right">
+                        <IconButton size="small">
+                          <MenuIcon />
+                        </IconButton>
+                      </TableCell> */}
+                    </TableRow>
+                  )
+                }
+                return null;
+              })}
             </TableBody>
           </Table>
         </TableContainer>
