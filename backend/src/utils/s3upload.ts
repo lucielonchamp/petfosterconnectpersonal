@@ -90,14 +90,31 @@ export const uploadToS3 = async (file: Express.Multer.File, folder: string, file
 
 export const deleteFromS3 = async (url: string): Promise<void> => {
     if (!process.env.AWS_S3_BUCKET) {
-        throw new Error('AWS_BUCKET_NAME n\'est pas défini');
+        console.warn('AWS_BUCKET_NAME n\'est pas défini, suppression S3 annulée.');
+        return;
+    }
+
+    // Vérifier si l'URL est plausiblement une URL S3 que nous gérons
+    // Ceci est une vérification simple ; des chemins locaux ou des URL mal formées pourraient encore causer des problèmes à S3
+    if (!url || (!url.includes('.s3.') && !url.includes('amazonaws.com'))) {
+        console.warn(`URL non S3 ou non valide fournie à deleteFromS3: ${url}. Suppression S3 ignorée.`);
+        return;
     }
 
     try {
         // Extraction du nom de fichier de l'URL
         const urlParts = url.split('/');
-        const key = urlParts.slice(3).join('/'); // Ignore le protocole, le domaine et le bucket
+        // S'assurer qu'il y a suffisamment de parties pour une URL S3 (https://bucket.s3.region.amazonaws.com/key)
+        if (urlParts.length < 4) {
+            console.warn(`URL S3 mal formée fournie à deleteFromS3: ${url}. Impossible d'extraire la clé. Suppression S3 ignorée.`);
+            return;
+        }
+        const key = urlParts.slice(3).join('/');
 
+        if (!key) {
+            console.warn(`Clé S3 vide dérivée de l'URL: ${url}. Suppression S3 ignorée.`);
+            return;
+        }
 
         const command = new DeleteObjectCommand({
             Bucket: process.env.AWS_S3_BUCKET,
@@ -105,8 +122,9 @@ export const deleteFromS3 = async (url: string): Promise<void> => {
         });
 
         await s3Client.send(command);
+        console.log(`Fichier S3 supprimé avec succès (ou n'existait pas) : ${key}`);
     } catch (error) {
-        console.error('Erreur lors de la suppression du fichier S3:', error);
-        throw new Error(`Erreur lors de la suppression du fichier S3: ${error instanceof Error ? error.message : 'Erreur inconnue'}`);
+        console.error(`Erreur lors de la tentative de suppression du fichier S3 (${url}):`, error);
+        // Ne pas relancer l'erreur, pour que le processus appelant puisse continuer
     }
 };
