@@ -159,19 +159,19 @@ export async function updateUserWithShelter(
 
   // Si c'est un upload de logo (pas de données utilisateur)
   const logoValidation = updateShelterLogoSchema.safeParse(requestedData);
-  if (logoValidation.success) {
+  if (logoValidation.success && file) {
     try {
-      if (!file) {
-        throw new Error('Aucun fichier n\'a été fourni');
-      }
-
-      ;
+      // if (!file) {
+      //   throw new Error('Aucun fichier n\'a été fourni');
+      // };
 
       // Récupérer l'ancien logo avant de le supprimer
       const currentUser = await prisma.user.findUnique({
         where: { id: id },
         include: { Shelter: true }
       });
+
+
 
       const fileName = generateShelterLogoFileName(requestedData.name || 'shelter', file.originalname);
       const pictureUrl = await uploadToS3(file, 'shelters', fileName);
