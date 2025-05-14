@@ -65,8 +65,14 @@ export const MyAnimals = () => {
 
 
   return (
-    <Container>
-      <Typography variant="h4" component="h1" gutterBottom> Mes animaux</Typography>
+    <Container
+      sx={{
+        py: 4,
+        px: { xs: 2, sm: 4 },
+        flex: 1,
+        overflow: 'scroll',
+      }}>
+      <Typography variant="h4" component="h1" sx={{ mb: 4, fontWeight: 500 }} gutterBottom> Mes animaux</Typography>
       <BoxStyle>
         {animals?.map((animal: AnimalWithRelations) => (
           <Stack gap={2} key={animal.id}>

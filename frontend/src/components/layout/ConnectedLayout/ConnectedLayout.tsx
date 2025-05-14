@@ -165,8 +165,8 @@ const ConnectedLayout = ({ children }: ConnectedLayoutProps) => {
     <Box sx={{
       display: 'flex',
       height: '100dvh',
-      overflowX: 'auto',
-      overflowY: 'hidden',
+      // overflowX: 'auto',
+      // overflowY: 'hidden',
     }}>
       {/* Mobile Drawer */}
       <Drawer

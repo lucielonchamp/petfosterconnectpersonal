@@ -58,27 +58,30 @@ export default function ShelterList() {
   }, []);
 
   useEffect(() => {
-    let result = shelters;
-    result = result.filter(shelter => !shelter.isRemoved);
+    const delayDebounceFn = setTimeout(() => {
+      let result = shelters;
+      result = result.filter(shelter => !shelter.isRemoved);
 
+      if (searchTerm) {
+        result = result.filter(s =>
+          s.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+      }
 
-    if (searchTerm) {
-      result = result.filter(s =>
-        s.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
+      if (selectedCities.length > 0) {
+        result = result.filter(s => selectedCities.includes(s.location));
+      }
 
-    if (selectedCities.length > 0) {
-      result = result.filter(s => selectedCities.includes(s.location));
-    }
+      if (sortBy === 'name') {
+        result = [...result].sort((a, b) => a.name.localeCompare(b.name));
+      } else if (sortBy === 'location') {
+        result = [...result].sort((a, b) => a.location.localeCompare(b.location));
+      }
 
-    if (sortBy === 'name') {
-      result = [...result].sort((a, b) => a.name.localeCompare(b.name));
-    } else if (sortBy === 'location') {
-      result = [...result].sort((a, b) => a.location.localeCompare(b.location));
-    }
+      setFilteredShelters(result);
+    }, 200);
 
-    setFilteredShelters(result);
+    return () => clearTimeout(delayDebounceFn);
   }, [searchTerm, selectedCities, sortBy, shelters]);
 
   return (

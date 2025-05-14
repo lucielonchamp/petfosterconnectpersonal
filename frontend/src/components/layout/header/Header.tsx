@@ -35,7 +35,7 @@ function Header() {
         <nav className={menuOpen ? 'open' : ''}>
           {/* Mobile Menu Header */}
           <div className="mobile-menu-header">
-            <a className="back-arrow" onClick={closeMenu}>
+            <a className="back-arrow" rel="nofollow" onClick={closeMenu}>
               <ArrowBackIosIcon sx={{ color: '#5B6C97', fontSize: '30px' }} />
             </a>
             <span className="menu-title">Menu</span>
