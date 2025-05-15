@@ -1,6 +1,7 @@
 import { DeleteObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import multer from 'multer';
 import path from 'path';
+import sharp from 'sharp';
 
 // Vérification des variables d'environnement
 if (!process.env.AWS_S3_BUCKET) {
@@ -67,13 +68,22 @@ export const uploadToS3 = async (file: Express.Multer.File, folder: string, file
         throw new Error('Fichier invalide');
     }
 
-    const key = fileName || `${folder}/${Date.now()}_${file.originalname}`;
+    // Conversion et compression en WebP
+    const webpBuffer = await sharp(file.buffer)
+        .webp({ quality: 80 }) // ajuste la qualité si besoin
+        .toBuffer();
+
+    // Génère un nom de fichier en .webp
+    const baseName = fileName
+        ? fileName.replace(/\.[^/.]+$/, '') // retire l'extension si présente
+        : `${folder}/${Date.now()}_${path.parse(file.originalname).name}`;
+    const key = `${baseName}.webp`;
 
     const command = new PutObjectCommand({
         Bucket: process.env.AWS_S3_BUCKET,
         Key: key,
-        Body: file.buffer,
-        ContentType: file.mimetype,
+        Body: webpBuffer,
+        ContentType: 'image/webp',
         ACL: 'public-read',
     });
 
