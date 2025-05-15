@@ -22,7 +22,7 @@ const AnimalCard = ({ animal, variant = 'full' }: AnimalCardProps) => {
     return (
       <Link to={`/animal/${animal.id}`} className="animal-card-mini">
         <div className="animal-card-mini-image">
-          <img width='200px' height='200px' loading="lazy" src={animal.picture} alt={animal.name} />
+          <img width='200px' height='200px' src={animal.picture} alt={animal.name} />
         </div>
         <div className="animal-info">
           <h3>{animal.name}</h3>
@@ -40,6 +40,7 @@ const AnimalCard = ({ animal, variant = 'full' }: AnimalCardProps) => {
               fontSize: '11px',
               height: '20px',
               fontWeight: 500,
+              lineHeight: 1
             }}
           />
         </div>

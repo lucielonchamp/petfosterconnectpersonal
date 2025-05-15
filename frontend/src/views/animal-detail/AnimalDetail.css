@@ -9,7 +9,8 @@
 
 .animal-detail {
   background-color: var(--color-white);
-  min-height: calc(100vh - 64px); /* Hauteur de la page moins le header */
+  min-height: calc(100vh - 64px);
+  /* Hauteur de la page moins le header */
   display: flex;
   flex-direction: column;
 }

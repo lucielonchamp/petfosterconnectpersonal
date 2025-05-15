@@ -60,7 +60,7 @@ function Home() {
               <div>
                 <img src={corgi} alt="" />
               </div>
-              <img src={doggi} alt="" />
+              <img src={doggi} loading="eager" alt="" />
               <div>
                 <img src={cat} className="cat" alt="" />
               </div>

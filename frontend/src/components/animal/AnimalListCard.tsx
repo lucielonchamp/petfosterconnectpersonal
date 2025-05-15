@@ -30,7 +30,6 @@ export const AnimalListCard = ({ animal }: { animal: AnimalWithRelations }) => {
       <Box sx={{ position: 'relative', padding: '25%' }}>
         <CardMedia
           component="img"
-          loading="lazy"
           image={animal.picture || '/no-image.png'}
           width='200px'
           height='200px'
@@ -64,6 +63,7 @@ export const AnimalListCard = ({ animal }: { animal: AnimalWithRelations }) => {
       </Box>
       <CardContent sx={{ p: 2 }}>
         <Typography
+          component="p"
           variant="h6"
           sx={{
             fontSize: '1.125rem',
@@ -79,13 +79,13 @@ export const AnimalListCard = ({ animal }: { animal: AnimalWithRelations }) => {
             label={capitalizeFirstLetter(animal.specie.name)}
             size="small"
             sx={{
-              backgroundColor: 'var(--color-background, #f1f5f9)',
-              color: 'var(--color-text, #64748b)',
+              backgroundColor: 'var(--color-purple)',
+              color: 'var(--color-white)',
               borderRadius: '4px',
               height: '24px',
               fontSize: '12px',
               fontWeight: 500,
-              border: '1px solid var(--color-border, #e2e8f0)'
+              borderWidth: '0',
             }}
           />
           <Chip
@@ -93,26 +93,29 @@ export const AnimalListCard = ({ animal }: { animal: AnimalWithRelations }) => {
             icon={animal.sex === 'Male' ? <MaleIcon /> : <FemaleIcon />}
             size="small"
             sx={{
-              backgroundColor: 'var(--color-background, #f1f5f9)',
-              color: 'var(--color-text, #64748b)',
+              backgroundColor: 'var(--color-purple)',
+              color: 'var(--color-white)',
               borderRadius: '4px',
               height: '24px',
               fontSize: '12px',
               fontWeight: 500,
-              border: '1px solid var(--color-border, #e2e8f0)'
+              border: '1px solid var(--color-border, #e2e8f0)',
+              '& svg': {
+                fill: 'var(--color-white)',
+              },
             }}
           />
           <Chip
             label={`${animal.age} ${animal.age > 1 ? 'ans' : 'an'}`}
             size="small"
             sx={{
-              backgroundColor: 'var(--color-background, #f1f5f9)',
-              color: 'var(--color-text, #64748b)',
+              backgroundColor: 'var(--color-purple)',
+              color: 'var(--color-white)',
               borderRadius: '4px',
               height: '24px',
               fontSize: '12px',
               fontWeight: 500,
-              border: '1px solid var(--color-border, #e2e8f0)'
+              borderWidth: '0',
             }}
           />
         </Box>

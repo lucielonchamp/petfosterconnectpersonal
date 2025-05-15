@@ -20,6 +20,7 @@ import { Path } from '../../interfaces/Path';
 import './Register.css';
 import Header from '../../components/layout/header/Header';
 import Footer from '../../components/layout/footer/Footer';
+import SEO from '../../components/layout/seo/SEO';
 
 interface Role {
   id: number;
@@ -195,7 +196,7 @@ const Register = () => {
       case 0:
         return (
           <Box>
-            <Typography variant="subtitle1" color="#666" mb={2}>
+            <Typography component="p" variant="subtitle1" color="#666" mb={2}>
               Choisissez votre rôle
             </Typography>
             <Box
@@ -229,6 +230,9 @@ const Register = () => {
                   >
                     <Radio
                       checked={selectedRole === role.id.toString()}
+                      inputProps={{
+                        "aria-label": role.name.toLowerCase() === "shelter" ? "Refuge" : "Famille d'accueil",
+                      }}
                       sx={{
                         color: '#5B6B94',
                         '&.Mui-checked': {
@@ -240,7 +244,7 @@ const Register = () => {
                     {role.name.toLowerCase() === 'shelter' ? (
                       <>
                         <Home sx={{ fontSize: 32, color: '#5B6B94', my: 1 }} />
-                        <Typography variant="h6" textAlign="center" color="#333" fontSize="1rem">
+                        <Typography component="p" variant="h6" textAlign="center" color="#333" fontSize="1rem" id="shelter-label">
                           Refuge
                         </Typography>
                         <Typography variant="body2" textAlign="center" color="#666" mt={0.5}>
@@ -250,7 +254,7 @@ const Register = () => {
                     ) : (
                       <>
                         <Pets sx={{ fontSize: 32, color: '#5B6B94', my: 1 }} />
-                        <Typography variant="h6" textAlign="center" color="#333" fontSize="1rem">
+                        <Typography component="p" variant="h6" textAlign="center" color="#333" fontSize="1rem" id="foster-label">
                           Famille d'accueil
                         </Typography>
                         <Typography variant="body2" textAlign="center" color="#666" mt={0.5}>
@@ -318,6 +322,10 @@ const Register = () => {
 
   return (
     <>
+      <SEO
+        title={"Inscription à notre compte client - PetFoster"}
+        description={"Inscrivez-vous à PetFoster afin d'obtenir une administration de votre association."}
+      />
       <Container sx={{
         display: 'flex',
         alignItems: 'center',
@@ -359,7 +367,7 @@ const Register = () => {
                       key={label}
                       variant="body2"
                       sx={{
-                        color: index <= activeStep ? '#5B6B94' : '#B7C1D3',
+                        color: index <= activeStep ? '#5B6B94' : '#5B6B94',
                         fontWeight: index <= activeStep ? 'bold' : 'normal',
                       }}
                     >
@@ -368,6 +376,7 @@ const Register = () => {
                   ))}
                 </Box>
                 <LinearProgress
+                  aria-label="Barre de recherche"
                   variant="determinate"
                   value={(activeStep + 1) * (100 / steps.length)}
                   sx={{

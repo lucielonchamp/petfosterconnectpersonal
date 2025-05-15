@@ -9,15 +9,15 @@ interface StatusConfig {
 const STATUS_CONFIG: Record<AnimalStatus, StatusConfig> = {
   [AnimalStatus.FOSTERED]: {
     label: 'En famille d\'accueil',
-    color: '#10B981', // vert
+    color: '#007F3E', // vert
   },
   [AnimalStatus.WAITING]: {
     label: 'En attente',
-    color: '#F59E0B', // orange
+    color: '#E65100', // orange
   },
   [AnimalStatus.SHELTERED]: {
     label: 'Au refuge',
-    color: '#5B6C97', // bleu
+    color: '#005B96', // bleu
   },
 };
 

@@ -104,17 +104,17 @@ export default function ShelterDetail() {
                                 <Typography variant="body1" mb={3}>
                                     {shelter.description}
                                 </Typography>
-                                <Typography variant="subtitle1" fontWeight={600}>
+                                <Typography component="p" variant="subtitle1" fontWeight={600}>
                                     Adresse
                                 </Typography>
-                                <Chip label={shelter.location} sx={{ mb: 2, mt: 1 }} />
+                                <Chip label={shelter.location} sx={{ mb: 2, mt: 1, backgroundColor: 'var(--color-purple)', color: '#fff' }} />
 
-                                <Typography variant="subtitle1" fontWeight={600}>
+                                <Typography component="p" variant="subtitle1" fontWeight={600}>
                                     Espèces présentes :
                                 </Typography>
                                 <Box display="flex" gap={1} flexWrap="wrap" mt={1}>
                                     {uniqueSpecies.map((specie, i) => (
-                                        <Chip key={i} label={specie} sx={{ backgroundColor: '#C6CBD8', color: '#fff' }} />
+                                        <Chip key={i} label={specie} sx={{ backgroundColor: 'var(--color-purple)', color: '#fff' }} />
                                     ))}
                                 </Box>
                             </Box>
