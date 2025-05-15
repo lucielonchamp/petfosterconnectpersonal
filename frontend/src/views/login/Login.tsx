@@ -10,6 +10,7 @@ import { Path } from '../../interfaces/Path';
 import './Login.css';
 import Header from '../../components/layout/header/Header';
 import Footer from '../../components/layout/footer/Footer';
+import SEO from '../../components/layout/seo/SEO';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -61,6 +62,10 @@ const Login = () => {
 
   return (
     <>
+      <SEO
+        title={"Connexion à votre compte client - PetFoster"}
+        description={"Connecter vous à votre compte client afin de gérer vos animaux"}
+      />
       <Container sx={{
         display: 'flex',
         alignItems: 'center',
@@ -109,6 +114,7 @@ const Login = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     startIcon={<Lock sx={{ color: 'var(--color-purple)' }} />}
+                    name="show password"
                     endIcon={showPassword ? <VisibilityOff /> : <Visibility />}
                     onEndIconClick={() => setShowPassword(!showPassword)}
                   />
@@ -212,7 +218,7 @@ const Login = () => {
               </Box>
             </Stack>
           </Container>
-        <Footer />
+          <Footer />
 
         </Box>
 

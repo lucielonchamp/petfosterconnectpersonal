@@ -260,7 +260,7 @@ export default function ShelterList() {
                         position: 'absolute',
                         top: 12,
                         right: 12,
-                        backgroundColor: '#C6CBD8',
+                        backgroundColor: 'var(--color-purple)',
                         color: '#fff',
                         padding: '15px 0',
                         zIndex: 1,
@@ -293,7 +293,7 @@ export default function ShelterList() {
                             label={specieName}
                             size="small"
                             sx={{
-                              backgroundColor: '#C6CBD8',
+                              backgroundColor: 'var(--color-purple)',
                               color: '#fff',
                               padding: '5px 0',
                               zIndex: 1,

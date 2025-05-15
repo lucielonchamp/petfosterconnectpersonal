@@ -12,6 +12,7 @@ const WelcomePanel = ({ title }: WelcomePanelProps) => {
       <Box className="welcome-content">
         <Box className="welcome-text-container">
           <Typography
+            component="p"
             variant="h5"
             className="welcome-title"
             sx={{

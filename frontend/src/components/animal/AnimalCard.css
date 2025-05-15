@@ -60,14 +60,18 @@
 }
 
 .info-tag.MuiChip-root {
-  background-color: var(--color-background);
-  color: var(--color-text);
+  background-color: var(--color-purple) !important;
+  color: var(--color-white) !important;
   border-radius: 8px;
   height: 32px;
   padding: 0 12px;
   font-size: 14px;
   font-weight: 500;
-  border: 1px solid var(--color-border);
+  border-width: 0 !important;
+
+  & svg {
+    fill: var(--color-white);
+  }
 }
 
 .description {
