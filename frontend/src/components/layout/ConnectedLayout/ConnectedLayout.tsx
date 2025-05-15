@@ -9,7 +9,7 @@ import {
 import { Alert, AppBar, Avatar, Box, CircularProgress, Container, Drawer, IconButton, List, ListItemButton, ListItemIcon, ListItemText, Toolbar, Typography, useTheme } from "@mui/material";
 import React, { ReactNode, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
-import logo from '../../../assets/logo.png';
+import logo from '../../../assets/logo.webp';
 import { useAuth } from "../../../hooks/useAuth";
 import { Path } from "../../../interfaces/Path";
 import { RoleEnum } from "../../../interfaces/role";

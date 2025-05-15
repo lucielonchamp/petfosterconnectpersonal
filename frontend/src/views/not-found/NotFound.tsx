@@ -1,6 +1,6 @@
 import { Container, Typography, Stack } from "@mui/material";
 import { useNavigate } from "react-router";
-import notFoundImage from "../../assets/404.png";
+import notFoundImage from "../../assets/404.webp";
 import ButtonPurple from "../../components/ui/ButtonPurple";
 import { Path } from "../../interfaces/Path";
 

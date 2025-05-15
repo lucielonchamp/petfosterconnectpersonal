@@ -1,4 +1,4 @@
-import dogImage from '@/assets/dog-login.png?url';
+import dogImage from '@/assets/dog-login.webp?url';
 import { Box, Typography } from '@mui/material';
 import './WelcomePanel.css';
 
