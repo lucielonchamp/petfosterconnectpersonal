@@ -251,7 +251,7 @@ const AnimalForm = () => {
 
     return (
         <>
-            <Container sx={{ backgroundColor: '#f5f5f5' }}>
+            <Container maxWidth={false} sx={{ backgroundColor: '#f5f5f5' }}>
                 <Box sx={{ maxWidth: 800, mx: 'auto', p: 3 }}>
                     <Paper sx={{ p: 3 }}>
                         <Typography variant="h4" sx={{ mb: 3 }}>
