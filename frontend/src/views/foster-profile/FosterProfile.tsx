@@ -203,7 +203,7 @@ const FosterProfile = () => {
   }
 
   return (
-    <Container>
+    <Container sx={{ bgcolor: '#f5f5f5' }}>
 
       <Snackbar
         open={snackbar.open}
