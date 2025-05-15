@@ -30,6 +30,7 @@ export const AnimalListCard = ({ animal }: { animal: AnimalWithRelations }) => {
       <Box sx={{ position: 'relative', padding: '25%' }}>
         <CardMedia
           component="img"
+          loading="lazy"
           image={animal.picture || '/no-image.png'}
           width='200px'
           height='200px'
