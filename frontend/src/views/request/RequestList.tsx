@@ -39,7 +39,8 @@ export const RequestList = () => {
         py: 4,
         px: { xs: 2, sm: 4 },
         flex: 1,
-        overflow: 'scroll',
+        // overflow: 'scroll',
+        bgcolor: '#f5f5f5',
       }}>
 
       <Typography variant="h4" component="h1" sx={{ mb: 4, fontWeight: 500 }} gutterBottom>

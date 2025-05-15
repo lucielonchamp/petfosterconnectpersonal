@@ -217,7 +217,8 @@ const Dashboard = () => {
         py: 4,
         px: { xs: 2, sm: 4 },
         flex: 1,
-        overflow: 'scroll',
+        // overflow: 'scroll',
+        bgcolor: '#f5f5f5'
       }
       }
     >

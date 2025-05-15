@@ -251,7 +251,7 @@ const ShelterProfile = () => {
   }
 
   return (
-    <Container>
+    <Container sx={{ bgcolor: '#f5f5f5' }}>
       <Snackbar
         open={snackbar.open}
         autoHideDuration={3000}
@@ -283,7 +283,7 @@ const ShelterProfile = () => {
         </Alert>
       </Snackbar>
 
-      <Stack direction="row" spacing={4} margin={4}>
+      <Stack spacing={4} margin={4} sx={{ display: 'flex', flexDirection: { sm: 'column', lg: 'row' } }}>
         <Stack flex={1}>
           <Stack marginBottom={4}>
             <Typography variant="h1">Profil de ma structure</Typography>
