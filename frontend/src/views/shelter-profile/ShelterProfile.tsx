@@ -1,5 +1,5 @@
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { Alert, Box, Button, Container, Slide, SlideProps, Snackbar, Stack, Typography } from "@mui/material";
+import { Edit as EditIcon, Visibility, VisibilityOff } from "@mui/icons-material";
+import { Alert, Avatar, Box, Button, Card, CardContent, Fade, Paper, Slide, SlideProps, Snackbar, Typography, useMediaQuery, useTheme } from "@mui/material";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import dog from "../../assets/dog.webp";
 import { LoaderPetFoster } from "../../components/Loader/LoaderPetFoster";
@@ -22,6 +22,9 @@ interface FormErrors {
 const ShelterProfile = () => {
   const { user } = useAuth();
   const { csrfToken, isLoading: isCsrfLoading } = useCsrf();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
   const [shelterWithUser, setShelterWithUser] = useState<Partial<ShelterWithUser>>({
     name: undefined,
     location: undefined,
@@ -244,175 +247,225 @@ const ShelterProfile = () => {
 
   if (loading) {
     return (
-      <Container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
         <LoaderPetFoster />
-      </Container>
+      </Box>
     );
   }
 
   return (
-    <Container sx={{ bgcolor: '#f5f5f5' }}>
+    <>
       <Snackbar
         open={snackbar.open}
         autoHideDuration={3000}
         onClose={handleCloseSnackbar}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         TransitionComponent={SlideTransition}
-        sx={{
-          '& .MuiAlert-root': {
-            minWidth: '300px',
-            boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
-            borderRadius: '8px',
-          },
-        }}
       >
         <Alert
           onClose={handleCloseSnackbar}
           severity={snackbar.severity}
-          sx={{
-            width: '100%',
-            '& .MuiAlert-icon': {
-              fontSize: '1.5rem',
-            },
-            '& .MuiAlert-message': {
-              fontSize: '0.9rem',
-            },
-          }}
+          variant="filled"
+          sx={{ width: '100%' }}
         >
           {snackbar.message}
         </Alert>
       </Snackbar>
 
-      <Stack spacing={4} margin={4} sx={{ display: 'flex', flexDirection: { sm: 'column', lg: 'row' } }}>
-        <Stack flex={1}>
-          <Stack marginBottom={4}>
-            <Typography variant="h1">Profil de ma structure</Typography>
-            <Typography variant="h2">{shelterWithUser.name}</Typography>
-          </Stack>
-
-          <Stack
-            component="form"
-            onSubmit={handleSubmit}
-            spacing={4}
-          >
-            <Stack direction={{ xs: 'column', md: 'row' }} width="100%" spacing={6} margin="auto">
-              <Stack spacing={2} width="100%" alignItems="center" justifyContent="center">
-                <PetFosterTextField
-                  label="Mon email"
-                  type="email"
-                  value={shelterWithUser.user?.email}
-                  onChange={handleEmailChange}
-                  error={!!formErrors.email}
-                  helperText={formErrors.email}
-                  disabled={isSubmitting}
-                />
-
-                <PetFosterTextField
-                  type={showPassword ? 'text' : 'password'}
-                  label="Mot de passe"
-                  value={shelterWithUser.user?.password}
-                  onChange={e => {
-                    setIsEditing(true);
-                    setShelterWithUser(prev => ({
-                      ...prev,
-                      user: prev.user
-                        ? { ...prev.user, password: e.target.value }
-                        : { id: '', email: '', password: '' },
-                    }));
+      <Paper
+        elevation={0}
+        sx={{
+          p: { xs: 2, md: 4 },
+          borderRadius: 2,
+          backgroundColor: 'rgba(255,255,255,0.8)',
+          backdropFilter: 'blur(10px)',
+          mb: 4
+        }}
+      >
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+          {/* En-tête du profil */}
+          <Box>
+            <Box sx={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: isMobile ? 'center' : 'flex-start', gap: 3, }}>
+              <Box sx={{ position: 'relative' }}>
+                <Avatar
+                  src={logoPreview || shelterWithUser.picture || dog}
+                  alt="Logo de la structure"
+                  sx={{
+                    width: { xs: 120, md: 80 },
+                    height: { xs: 120, md: 80 },
+                    border: '4px solid white',
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
                   }}
-                  endIcon={showPassword ? <VisibilityOff /> : <Visibility />}
-                  onEndIconClick={() => setShowPassword(!showPassword)}
-                  error={!!formErrors.password}
-                  helperText={formErrors.password}
-                  disabled={isSubmitting}
                 />
-              </Stack>
-
-              <Stack spacing={2} width="100%" alignItems="center" justifyContent="center">
-                <PetFosterTextField
-                  label="Nom de ma structure"
-                  type="text"
-                  value={shelterWithUser.name}
-                  onChange={e => {
-                    setIsEditing(true);
-                    setShelterWithUser({ ...shelterWithUser, name: e.target.value });
+                <Button
+                  variant="contained"
+                  component="label"
+                  size="small"
+                  sx={{
+                    position: 'absolute',
+                    bottom: 5,
+                    right: 5,
+                    minWidth: 0,
+                    width: 36,
+                    height: 36,
+                    borderRadius: '50%'
                   }}
-                  error={!!formErrors.name}
-                  helperText={formErrors.name}
-                  disabled={isSubmitting}
-                />
-                <PetFosterTextField
-                  label="Localisation"
-                  type="text"
-                  value={shelterWithUser.location}
-                  onChange={e => {
-                    setIsEditing(true);
-                    setShelterWithUser({ ...shelterWithUser, location: e.target.value });
-                  }}
-                  error={!!formErrors.location}
-                  helperText={formErrors.location}
-                  disabled={isSubmitting}
-                />
-              </Stack>
-            </Stack>
+                >
+                  <EditIcon fontSize="small" />
+                  <input
+                    type="file"
+                    hidden
+                    accept="image/*"
+                    onChange={handleLogoUpload}
+                  />
+                </Button>
+              </Box>
 
-            <PetFosterTextField
-              label="Description"
-              type="text"
-              multiline
-              rows={4}
-              value={shelterWithUser.description}
-              onChange={e => {
-                setIsEditing(true);
-                setShelterWithUser({ ...shelterWithUser, description: e.target.value });
-              }}
-              error={!!formErrors.description}
-              helperText={formErrors.description}
-              disabled={isSubmitting}
-            />
+              <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', textAlign: isMobile ? 'center' : 'left' }}>
+                <Typography variant="h4" component="h1" fontWeight="bold" gutterBottom>
+                  {shelterWithUser.name || 'Ma structure'}
+                </Typography>
+                <Typography variant="body1" color="text.secondary" gutterBottom>
+                  {shelterWithUser.location || 'Localisation non définie'}
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
 
-            <ButtonPurple
-              type="submit"
-              variant="contained"
-              color="primary"
-              sx={{ width: 'fit-content' }}
-              disabled={!isEditing || isSubmitting}
-            >
-              {isSubmitting ? 'Enregistrement...' : 'Enregistrer les modifications'}
-            </ButtonPurple>
-          </Stack>
-        </Stack>
+          {/* Formulaire */}
 
-        <Stack spacing={2} alignItems="center" sx={{ width: 300 }}>
-          <Box
-            component="img"
-            src={logoPreview || shelterWithUser.picture || dog}
-            alt="Logo de la structure"
-            sx={{
-              width: 200,
-              height: 200,
-              objectFit: 'cover',
-              borderRadius: '50%',
-              border: '2px solid white',
-              marginBottom: 2
-            }}
-          />
-          <Button
-            variant="contained"
-            component="label"
-            sx={{ width: 'fit-content' }}
-          >
-            {shelterWithUser.picture ? 'Changer le logo' : 'Ajouter un logo'}
-            <input
-              type="file"
-              hidden
-              accept="image/*"
-              onChange={handleLogoUpload}
-            />
-          </Button>
-        </Stack>
-      </Stack>
-    </Container>
+
+          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
+            <Fade in={true} timeout={800}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                <Box sx={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: 3 }}>
+                  <Card variant="outlined" sx={{ flex: 1, borderRadius: 2 }}>
+                    <CardContent>
+                      <Typography variant="h6" gutterBottom>
+                        Identifiants
+                      </Typography>
+                      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
+                        <PetFosterTextField
+                          label="Adresse email"
+                          type="email"
+                          fullWidth
+                          value={shelterWithUser.user?.email}
+                          onChange={handleEmailChange}
+                          error={!!formErrors.email}
+                          helperText={formErrors.email}
+                          disabled={isSubmitting}
+                          size="small"
+                        />
+
+                        <PetFosterTextField
+                          type={showPassword ? 'text' : 'password'}
+                          label="Mot de passe"
+                          fullWidth
+                          value={shelterWithUser.user?.password}
+                          placeholder="Laisser vide pour conserver le mot de passe actuel"
+                          onChange={e => {
+                            setIsEditing(true);
+                            setShelterWithUser(prev => ({
+                              ...prev,
+                              user: prev.user
+                                ? { ...prev.user, password: e.target.value }
+                                : { id: '', email: '', password: '' },
+                            }));
+                          }}
+                          endIcon={showPassword ? <VisibilityOff /> : <Visibility />}
+                          onEndIconClick={() => setShowPassword(!showPassword)}
+                          error={!!formErrors.password}
+                          helperText={formErrors.password}
+                          disabled={isSubmitting}
+                          size="small"
+                        />
+                      </Box>
+                    </CardContent>
+                  </Card>
+
+                  <Card variant="outlined" sx={{ flex: 1, borderRadius: 2 }}>
+                    <CardContent>
+                      <Typography variant="h6" gutterBottom>
+                        Informations structure
+                      </Typography>
+                      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 2 }}>
+                        <PetFosterTextField
+                          label="Nom de la structure"
+                          type="text"
+                          fullWidth
+                          value={shelterWithUser.name}
+                          onChange={e => {
+                            setIsEditing(true);
+                            setShelterWithUser({ ...shelterWithUser, name: e.target.value });
+                          }}
+                          error={!!formErrors.name}
+                          helperText={formErrors.name}
+                          disabled={isSubmitting}
+                          size="small"
+                        />
+
+                        <PetFosterTextField
+                          label="Localisation"
+                          type="text"
+                          fullWidth
+                          value={shelterWithUser.location}
+                          onChange={e => {
+                            setIsEditing(true);
+                            setShelterWithUser({ ...shelterWithUser, location: e.target.value });
+                          }}
+                          error={!!formErrors.location}
+                          helperText={formErrors.location}
+                          disabled={isSubmitting}
+                          size="small"
+                        />
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </Box>
+
+                <Card variant="outlined" sx={{ borderRadius: 2 }}>
+                  <CardContent>
+                    <Typography variant="h6" gutterBottom>
+                      Description
+                    </Typography>
+                    <Box sx={{ mt: 2 }}>
+                      <PetFosterTextField
+                        label="Présentez votre structure"
+                        type="text"
+                        multiline
+                        rows={4}
+                        fullWidth
+                        value={shelterWithUser.description}
+                        onChange={e => {
+                          setIsEditing(true);
+                          setShelterWithUser({ ...shelterWithUser, description: e.target.value });
+                        }}
+                        error={!!formErrors.description}
+                        helperText={formErrors.description}
+                        disabled={isSubmitting}
+                      />
+                    </Box>
+                  </CardContent>
+                </Card>
+
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+                  <ButtonPurple
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    disabled={!isEditing || isSubmitting}
+                    sx={{ px: 4 }}
+                  >
+                    {isSubmitting ? 'Enregistrement...' : 'Enregistrer les modifications'}
+                  </ButtonPurple>
+                </Box>
+              </Box>
+            </Fade>
+          </Box>
+        </Box>
+
+      </Paper>
+    </>
   );
 };
 

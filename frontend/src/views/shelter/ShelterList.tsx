@@ -1,31 +1,31 @@
-import {
-  Box,
-  Grid,
-  TextField,
-  Chip,
-  Card,
-  CardContent,
-  Typography,
-  MenuItem,
-  Select,
-  InputLabel,
-  FormControl,
-  CircularProgress,
-  Alert,
-  Container,
-  InputAdornment,
-  Checkbox,
-  ListItemText
-} from '@mui/material';
 import PlaceIcon from '@mui/icons-material/Place';
 import SearchIcon from '@mui/icons-material/Search';
+import {
+  Alert,
+  Box,
+  Card,
+  CardContent,
+  Checkbox,
+  Chip,
+  CircularProgress,
+  Container,
+  FormControl,
+  Grid,
+  InputAdornment,
+  InputLabel,
+  ListItemText,
+  MenuItem,
+  Select,
+  TextField,
+  Typography
+} from '@mui/material';
 import { useEffect, useState } from 'react';
-import { Shelter } from '../../interfaces/shelter';
-import Header from '../../components/layout/header/Header';
 import { useNavigate } from 'react-router';
-import { Path } from '../../interfaces/Path';
 import Footer from '../../components/layout/footer/Footer';
+import Header from '../../components/layout/header/Header';
 import SEO from '../../components/layout/seo/SEO';
+import { Path } from '../../interfaces/Path';
+import { Shelter } from '../../interfaces/shelter';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -94,7 +94,7 @@ export default function ShelterList() {
       <Container maxWidth="xl">
         <Header />
       </Container>
-      <Box sx={{ backgroundColor: '#f5f5f5', py: 4, minHeight: 'calc(100dvh - 191px - 33px)' }}>
+      <Box sx={{ py: 4, minHeight: 'calc(100dvh - 191px - 33px)' }}>
         <Container maxWidth="lg">
           {/* Barre de recherche */}
           <Box display="flex" gap={2} flexWrap="wrap" justifyContent="space-between" mb={2}>

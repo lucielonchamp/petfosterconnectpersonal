@@ -69,7 +69,7 @@ const Login = () => {
         <Header />
       </Container>
       <Box className="login-container">
-        <Box flex="0 0 60%" display="flex" justifyContent="center" alignItems="center">
+        <Box flex="0 0 60%">
           <Container maxWidth="sm">
             <Stack spacing={2} alignItems="center">
               <Box
@@ -100,7 +100,7 @@ const Login = () => {
                     onChange={handleEmailChange}
                     error={!!emailError}
                     helperText={emailError}
-                    startIcon={<Person sx={{ color: '#fff' }} />}
+                    startIcon={<Person sx={{ color: 'var(--color-purple)' }} />}
                   />
 
                   <PetFosterTextField
@@ -108,7 +108,7 @@ const Login = () => {
                     placeholder="Mot de passe"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    startIcon={<Lock sx={{ color: '#fff' }} />}
+                    startIcon={<Lock sx={{ color: 'var(--color-purple)' }} />}
                     endIcon={showPassword ? <VisibilityOff /> : <Visibility />}
                     onEndIconClick={() => setShowPassword(!showPassword)}
                   />
@@ -116,7 +116,7 @@ const Login = () => {
                   <Box alignSelf="flex-end">
                     <Button
                       variant="text"
-                      sx={{ color: '#333', textTransform: 'none' }}
+                      sx={{ color: 'var(--color-purple)', textTransform: 'none' }}
                     >
                       Mot de passe oublié ?
                     </Button>
@@ -212,6 +212,8 @@ const Login = () => {
               </Box>
             </Stack>
           </Container>
+        <Footer />
+
         </Box>
 
         <WelcomePanel
@@ -223,7 +225,6 @@ const Login = () => {
         alignItems: 'center',
         width: '100vw',
       }}>
-        <Footer />
       </Container>
     </>
   );

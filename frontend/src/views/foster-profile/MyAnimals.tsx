@@ -1,13 +1,13 @@
+import { Container, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import { AnimalListCard } from "../../components/animal/AnimalListCard";
+import BoxStyle from "../../components/style/BoxStyle";
+import ButtonPurple from "../../components/ui/ButtonPurple";
 import { useAuth } from "../../hooks/useAuth";
 import { Animal, AnimalWithRelations } from "../../interfaces/animal";
-import { Container, Stack, Typography } from "@mui/material";
-import BoxStyle from "../../components/style/BoxStyle";
-import { RoleEnum } from "../../interfaces/role";
-import ButtonBlue from "../../components/ui/ButtonBlue";
-import { useNavigate } from "react-router";
 import { Path } from "../../interfaces/Path";
+import { RoleEnum } from "../../interfaces/role";
 
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
@@ -52,11 +52,11 @@ export const MyAnimals = () => {
 
   const getButton = (role: RoleEnum, animal: Animal) => {
     if (role === RoleEnum.SHELTER) {
-      return <ButtonBlue onClick={() => {
+      return <ButtonPurple onClick={() => {
         navigate(`${Path.DASHBOARD}${Path.ANIMAL_EDIT.replace(':id', animal.id)}`)
       }}>
         Modifier l'animal
-      </ButtonBlue>;
+      </ButtonPurple>;
     }
 
     return null;
@@ -67,11 +67,11 @@ export const MyAnimals = () => {
     <Container
       maxWidth={false}
       sx={{
+        bgcolor: 'rgba(255,255,255,0.8)',
         py: 4,
         px: { xs: 2, sm: 4 },
         flex: 1,
-        // overflow: 'scroll',
-        bgcolor: '#f5f5f5'
+        overflow: 'scroll',
       }}>
       <Typography variant="h4" component="h1" sx={{ mb: 4, fontWeight: 500 }} gutterBottom> Mes animaux</Typography>
       <BoxStyle>

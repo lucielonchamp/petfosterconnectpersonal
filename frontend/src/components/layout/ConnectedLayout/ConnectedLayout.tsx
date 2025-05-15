@@ -73,20 +73,9 @@ const ConnectedLayout = ({ children }: ConnectedLayoutProps) => {
         borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
       }}>
         <Link to={Path.HOME}><img src={logo} alt="Logo" style={{ height: 150 }} /></Link>
-        <Link to={Path.HOME}><Typography variant="h6" sx={{ fontWeight: 600 }}>PetFoster</Typography></Link>
       </Box>
 
-      <Box sx={{ m: 'auto', display: 'flex', alignItems: 'center', gap: 2 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Avatar>{user?.email[0].toUpperCase()}</Avatar>
-          <Box>
-            <Typography variant="subtitle2">{user?.email}</Typography>
-            <Typography variant="caption" color="textSecondary">
-              {user?.role.name}
-            </Typography>
-          </Box>
-        </Box>
-      </Box>
+
 
       <Box sx={{ flex: 1, p: 2 }}>
         <List sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
@@ -108,14 +97,15 @@ const ConnectedLayout = ({ children }: ConnectedLayoutProps) => {
               }}
               selected={location.pathname === item.path || (item.path !== Path.DASHBOARD && location.pathname.startsWith(item.path))}
             >
-              <ListItemIcon sx={{ color: theme.palette.primary.main, minWidth: 40 }}>
+              <ListItemIcon sx={{ color: 'var(--color-purple)', minWidth: 40 }}>
                 {item.icon}
               </ListItemIcon>
               <ListItemText
                 primary={item.text}
                 sx={{
                   '& .MuiListItemText-primary': {
-                    fontWeight: 500
+                    fontWeight: 500,
+                    color: 'var(--color-purple)'
                   }
                 }}
               />
@@ -124,7 +114,16 @@ const ConnectedLayout = ({ children }: ConnectedLayoutProps) => {
         </List>
       </Box>
 
-      <Box sx={{ p: 2, borderTop: '1px solid rgba(255, 255, 255, 0.1)' }}>
+      <Box sx={{ m: 'auto', display: 'flex', alignItems: 'center', gap: 2 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Avatar sx={{ bgcolor: 'var(--color-purple)' }}>{user?.email[0].toUpperCase()}</Avatar>
+          <Box>
+            <Typography variant="subtitle2" sx={{ color: 'var(--color-purple)' }}>{user?.email}</Typography>
+          </Box>
+        </Box>
+      </Box>
+
+      <Box sx={{ p: 2 }}>
         <ListItemButton
           onClick={handleLogout}
           sx={{
@@ -134,10 +133,10 @@ const ConnectedLayout = ({ children }: ConnectedLayoutProps) => {
             }
           }}
         >
-          <ListItemIcon sx={{ color: theme.palette.primary.main, minWidth: 40 }}>
+          <ListItemIcon sx={{ color: '#ff3333', minWidth: 40 }}>
             <LogoutIcon />
           </ListItemIcon>
-          <ListItemText primary="Déconnexion" />
+          <ListItemText sx={{ color: '#ff3333' }} primary="Déconnexion" />
         </ListItemButton>
       </Box>
     </Box>
@@ -217,7 +216,7 @@ const ConnectedLayout = ({ children }: ConnectedLayoutProps) => {
           flexGrow: 1,
           ml: { sm: `${drawerWidth}px` },
           minHeight: '100vh',
-          bgcolor: '#f5f5f5',
+          bgcolor: 'rgba(255,255,255,0.8)',
           display: 'flex',
           flexDirection: 'column'
         }}

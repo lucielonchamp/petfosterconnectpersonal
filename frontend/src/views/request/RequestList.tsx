@@ -1,10 +1,10 @@
-import { Paper, Box, Typography, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Avatar, Chip, Container } from "@mui/material";
+import { Avatar, Box, Chip, Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import { useAuth } from "../../hooks/useAuth";
 import { Path } from "../../interfaces/Path";
 import { RequestStatus, RequestWithRelations } from "../../interfaces/request";
 import { RoleEnum } from "../../interfaces/role";
-import { useNavigate } from "react-router";
-import { useAuth } from "../../hooks/useAuth";
 
 const API_URL = import.meta.env.VITE_API_URL;
 export const RequestList = () => {
@@ -39,8 +39,8 @@ export const RequestList = () => {
         py: 4,
         px: { xs: 2, sm: 4 },
         flex: 1,
-        // overflow: 'scroll',
-        bgcolor: '#f5f5f5',
+        overflow: 'scroll',
+        bgcolor: 'rgba(255,255,255,0.8)',
       }}>
 
       <Typography variant="h4" component="h1" sx={{ mb: 4, fontWeight: 500 }} gutterBottom>
@@ -54,7 +54,14 @@ export const RequestList = () => {
 
         }</Typography>
 
-      <Paper sx={{ borderRadius: 2, overflow: 'hidden', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
+      <Paper variant='outlined' sx={{
+        mb: 4,
+        borderRadius: 2,
+        overflow: 'hidden',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+        backgroundColor: 'rgba(255,255,255,0.8)',
+        backdropFilter: 'blur(10px)'
+      }}>
         <TableContainer>
           <Table>
             <TableHead>

@@ -1,16 +1,21 @@
+import { ArrowBack, Delete, PhotoCamera, Save } from '@mui/icons-material';
 import {
     Alert,
     Box,
     Button,
+    Card,
     CircularProgress,
     Container,
+    Divider,
     FormControl,
     InputLabel,
     MenuItem,
     Paper,
     Select,
     TextField,
-    Typography
+    Typography,
+    useMediaQuery,
+    useTheme
 } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
 import { useEffect, useState } from 'react';
@@ -54,6 +59,8 @@ const AnimalForm = () => {
         specieId: '',
     });
     const [previewUrl, setPreviewUrl] = useState<string>('');
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
     useEffect(() => {
         if (user?.role?.name !== RoleEnum.SHELTER) {
@@ -134,7 +141,7 @@ const AnimalForm = () => {
                     breed: data.breed,
                     description: data.description,
                     sex: data.sex || 'Male',
-                    status: AnimalStatus.SHELTERED,
+                    status: data.status || AnimalStatus.SHELTERED,
                     shelterId: data.shelterId,
                     specieId: data.specieId,
                 });
@@ -250,103 +257,135 @@ const AnimalForm = () => {
     };
 
     return (
-        <>
-            <Container maxWidth={false} sx={{ backgroundColor: '#f5f5f5' }}>
-                <Box sx={{ maxWidth: 800, mx: 'auto', p: 3 }}>
-                    <Paper sx={{ p: 3 }}>
-                        <Typography variant="h4" sx={{ mb: 3 }}>
-                            {id ? 'Modifier l\'animal' : 'Créer un nouvel animal'}
-                        </Typography>
+        <Container maxWidth="lg" sx={{ py: 4 }}>
+            <Paper
+                elevation={0}
+                sx={{
+                    p: { xs: 2, md: 4 },
+                    borderRadius: 2,
+                    backgroundColor: 'rgba(255,255,255,0.8)',
+                    backdropFilter: 'blur(10px)',
+                    mb: 4
+                }}
+            >
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                    {/* En-tête */}
+                    <Box>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                flexDirection: isMobile ? 'column' : 'row',
+                                gap: isMobile ? 2 : 0,
+                                mb: 3
+                            }}
+                        >
+                            <Typography variant="h4" component="h1" fontWeight="bold">
+                                {id ? 'Modifier un animal' : 'Ajouter un nouvel animal'}
+                            </Typography>
+                            <Button
+                                variant="outlined"
+                                startIcon={<ArrowBack />}
+                                onClick={() => navigate(Path.DASHBOARD)}
+                                sx={{
+                                    borderRadius: '8px',
+                                    borderColor: 'var(--color-primary, #5b6c97)',
+                                    color: 'var(--color-primary, #5b6c97)'
+                                }}
+                            >
+                                Retour
+                            </Button>
+                        </Box>
+                        <Divider sx={{ mb: 3 }} />
+                    </Box>
 
-                        {error && (
-                            <Alert severity="error" sx={{ mb: 2 }}>
-                                {error}
-                            </Alert>
-                        )}
+                    {/* Alertes */}
+                    {error && (
+                        <Alert
+                            severity="error"
+                            sx={{
+                                borderRadius: 2,
+                                boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
+                            }}
+                        >
+                            {error}
+                        </Alert>
+                    )}
 
-                        {success && (
-                            <Alert severity="success" sx={{ mb: 2 }}>
-                                {success}
-                            </Alert>
-                        )}
+                    {success && (
+                        <Alert
+                            severity="success"
+                            sx={{
+                                borderRadius: 2,
+                                boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
+                            }}
+                        >
+                            {success}
+                        </Alert>
+                    )}
 
-                        <form onSubmit={handleSubmit}>
-                            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-                                <TextField
-                                    fullWidth
-                                    label="Nom"
-                                    name="name"
-                                    value={formData.name}
-                                    onChange={handleInputChange}
-                                    required
-                                />
-
-                                <TextField
-                                    fullWidth
-                                    label="Âge"
-                                    name="age"
-                                    type="number"
-                                    value={formData.age}
-                                    onChange={handleInputChange}
-                                    required
-                                />
-
-                                <TextField
-                                    fullWidth
-                                    label="Race"
-                                    name="breed"
-                                    value={formData.breed}
-                                    onChange={handleInputChange}
-                                    required
-                                />
-
-                                <FormControl fullWidth required>
-                                    <InputLabel>Sexe</InputLabel>
-                                    <Select
-                                        name="sex"
-                                        value={formData.sex}
-                                        onChange={handleSelectChange}
-                                        label="Sexe"
+                    {/* Formulaire */}
+                    <form onSubmit={handleSubmit}>
+                        <Box sx={{ display: 'flex', flexDirection: isMobile ? 'column' : 'row', gap: 3 }}>
+                            {/* Section gauche - image */}
+                            <Box sx={{ flex: isMobile ? '1 1 auto' : '1' }}>
+                                <Card
+                                    elevation={0}
+                                    variant="outlined"
+                                    sx={{
+                                        borderRadius: 2,
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                        p: 3,
+                                        backgroundColor: 'rgba(0,0,0,0.02)'
+                                    }}
+                                >
+                                    <Box
+                                        sx={{
+                                            width: '100%',
+                                            height: 200,
+                                            borderRadius: 2,
+                                            backgroundColor: previewUrl ? 'transparent' : 'rgba(0,0,0,0.05)',
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            overflow: 'hidden',
+                                            mb: 2,
+                                            border: '1px dashed rgba(0,0,0,0.2)'
+                                        }}
                                     >
-                                        <MenuItem value="Male">Mâle</MenuItem>
-                                        <MenuItem value="Female">Femelle</MenuItem>
-                                    </Select>
-                                </FormControl>
-
-                                <FormControl fullWidth required>
-                                    <InputLabel>Espèce</InputLabel>
-                                    <Select
-                                        name="specieId"
-                                        value={formData.specieId}
-                                        onChange={handleSelectChange}
-                                        label="Espèce"
-                                    >
-                                        {species.map((specie) => (
-                                            <MenuItem key={specie.id} value={specie.id}>
-                                                {specie.name}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-
-                                <TextField
-                                    fullWidth
-                                    label="Description"
-                                    name="description"
-                                    multiline
-                                    rows={4}
-                                    value={formData.description}
-                                    onChange={handleInputChange}
-                                    required
-                                />
-
-                                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                                        {previewUrl ? (
+                                            <img
+                                                src={previewUrl}
+                                                alt="Aperçu"
+                                                style={{
+                                                    width: '100%',
+                                                    height: '100%',
+                                                    objectFit: 'cover',
+                                                    borderRadius: '8px'
+                                                }}
+                                            />
+                                        ) : (
+                                            <Typography color="text.secondary">
+                                                Aucune image sélectionnée
+                                            </Typography>
+                                        )}
+                                    </Box>
                                     <Button
                                         variant="contained"
                                         component="label"
-                                        sx={{ alignSelf: 'flex-start' }}
+                                        startIcon={<PhotoCamera />}
+                                        sx={{
+                                            borderRadius: '8px',
+                                            backgroundColor: 'var(--color-primary, #5b6c97)',
+                                            '&:hover': {
+                                                backgroundColor: 'var(--color-primary-dark, #4a5a7d)'
+                                            }
+                                        }}
                                     >
-                                        Choisir une photo
+                                        {previewUrl ? 'Changer la photo' : 'Ajouter une photo'}
                                         <input
                                             type="file"
                                             hidden
@@ -354,49 +393,169 @@ const AnimalForm = () => {
                                             onChange={handleFileChange}
                                         />
                                     </Button>
-                                    {previewUrl && (
-                                        <Box sx={{ mt: 2 }}>
-                                            <img
-                                                src={previewUrl}
-                                                alt="Preview"
-                                                style={{ maxWidth: '200px', maxHeight: '200px', objectFit: 'cover' }}
-                                            />
-                                        </Box>
-                                    )}
-                                </Box>
+                                </Card>
+                            </Box>
 
-                                <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end', mt: 2 }}>
-                                    <Button
-                                        variant="outlined"
-                                        onClick={() => navigate(Path.DASHBOARD)}
-                                    >
-                                        Annuler
-                                    </Button>
-                                    {id && (
-                                        <Button
-                                            variant="contained"
-                                            color="error"
-                                            onClick={handleDelete}
-                                            disabled={loading}
-                                        >
-                                            Supprimer
-                                        </Button>
-                                    )}
-                                    <Button
-                                        type="submit"
-                                        variant="contained"
-                                        color="primary"
-                                        disabled={loading}
-                                    >
-                                        {loading ? <CircularProgress size={24} /> : id ? 'Modifier' : 'Créer'}
-                                    </Button>
+                            {/* Section droite - champs */}
+                            <Box sx={{ flex: isMobile ? '1 1 auto' : '2', display: 'flex', flexDirection: 'column', gap: 3 }}>
+                                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+                                    <Box sx={{ flex: '1 1 calc(50% - 8px)', minWidth: '200px' }}>
+                                        <TextField
+                                            fullWidth
+                                            label="Nom"
+                                            name="name"
+                                            value={formData.name}
+                                            onChange={handleInputChange}
+                                            required
+                                            variant="outlined"
+                                            InputProps={{ sx: { borderRadius: '8px' } }}
+                                        />
+                                    </Box>
+
+                                    <Box sx={{ flex: '1 1 calc(50% - 8px)', minWidth: '200px' }}>
+                                        <FormControl fullWidth required>
+                                            <InputLabel>Espèce</InputLabel>
+                                            <Select
+                                                name="specieId"
+                                                value={formData.specieId}
+                                                onChange={handleSelectChange}
+                                                label="Espèce"
+                                                sx={{ borderRadius: '8px' }}
+                                            >
+                                                {species.map((specie) => (
+                                                    <MenuItem key={specie.id} value={specie.id}>
+                                                        {specie.name}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                    </Box>
+
+                                    <Box sx={{ flex: '1 1 calc(50% - 8px)', minWidth: '200px' }}>
+                                        <TextField
+                                            fullWidth
+                                            label="Race"
+                                            name="breed"
+                                            value={formData.breed}
+                                            onChange={handleInputChange}
+                                            required
+                                            variant="outlined"
+                                            InputProps={{ sx: { borderRadius: '8px' } }}
+                                        />
+                                    </Box>
+
+                                    <Box sx={{ flex: '1 1 calc(50% - 8px)', minWidth: '200px' }}>
+                                        <TextField
+                                            fullWidth
+                                            label="Âge"
+                                            name="age"
+                                            type="number"
+                                            value={formData.age}
+                                            onChange={handleInputChange}
+                                            required
+                                            InputProps={{ sx: { borderRadius: '8px' } }}
+                                        />
+                                    </Box>
+
+                                    <Box sx={{ flex: '1 1 calc(50% - 8px)', minWidth: '200px' }}>
+                                        <FormControl fullWidth required>
+                                            <InputLabel>Sexe</InputLabel>
+                                            <Select
+                                                name="sex"
+                                                value={formData.sex}
+                                                onChange={handleSelectChange}
+                                                label="Sexe"
+                                                sx={{ borderRadius: '8px' }}
+                                            >
+                                                <MenuItem value="Male">Mâle</MenuItem>
+                                                <MenuItem value="Female">Femelle</MenuItem>
+                                            </Select>
+                                        </FormControl>
+                                    </Box>
+
+                                    <Box sx={{ flex: '1 1 calc(50% - 8px)', minWidth: '200px' }}>
+                                        <FormControl fullWidth required>
+                                            <InputLabel>Statut</InputLabel>
+                                            <Select
+                                                name="status"
+                                                value={formData.status}
+                                                onChange={handleSelectChange}
+                                                label="Statut"
+                                                sx={{ borderRadius: '8px' }}
+                                            >
+                                                <MenuItem value={AnimalStatus.SHELTERED}>Au refuge</MenuItem>
+                                                <MenuItem value={AnimalStatus.FOSTERED}>En famille d'accueil</MenuItem>
+                                                <MenuItem value={AnimalStatus.WAITING}>En attente</MenuItem>
+                                            </Select>
+                                        </FormControl>
+                                    </Box>
+
+                                    <Box sx={{ flex: '1 1 100%' }}>
+                                        <TextField
+                                            fullWidth
+                                            label="Description"
+                                            name="description"
+                                            multiline
+                                            rows={6}
+                                            value={formData.description}
+                                            onChange={handleInputChange}
+                                            required
+                                            variant="outlined"
+                                            InputProps={{ sx: { borderRadius: '8px' } }}
+                                        />
+                                    </Box>
                                 </Box>
                             </Box>
-                        </form>
-                    </Paper>
+                        </Box>
+
+                        {/* Boutons d'action */}
+                        <Box sx={{ mt: 3 }}>
+                            <Divider sx={{ my: 2 }} />
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'flex-end',
+                                    gap: 2,
+                                    flexDirection: isMobile ? 'column-reverse' : 'row'
+                                }}
+                            >
+                                {id && (
+                                    <Button
+                                        variant="outlined"
+                                        color="error"
+                                        onClick={handleDelete}
+                                        disabled={loading}
+                                        startIcon={<Delete />}
+                                        sx={{
+                                            borderRadius: '8px',
+                                            [isMobile ? 'width' : '']: '100%'
+                                        }}
+                                    >
+                                        Supprimer
+                                    </Button>
+                                )}
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    disabled={loading}
+                                    startIcon={loading ? <CircularProgress size={20} color="inherit" /> : <Save />}
+                                    sx={{
+                                        borderRadius: '8px',
+                                        backgroundColor: 'var(--color-primary, #5b6c97)',
+                                        '&:hover': {
+                                            backgroundColor: 'var(--color-primary-dark, #4a5a7d)'
+                                        },
+                                        [isMobile ? 'width' : '']: '100%'
+                                    }}
+                                >
+                                    {id ? 'Enregistrer les modifications' : 'Créer l\'animal'}
+                                </Button>
+                            </Box>
+                        </Box>
+                    </form>
                 </Box>
-            </Container>
-        </>
+            </Paper>
+        </Container>
     );
 };
 

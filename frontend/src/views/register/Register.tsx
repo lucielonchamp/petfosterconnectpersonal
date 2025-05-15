@@ -279,7 +279,7 @@ const Register = () => {
               onChange={handleEmailChange}
               error={!!emailError}
               helperText={emailError}
-              startIcon={<Person sx={{ color: '#fff' }} />}
+              startIcon={<Person sx={{ color: '#5B6B94' }} />}
             />
 
             <PetFosterTextField
@@ -289,7 +289,7 @@ const Register = () => {
               onChange={handlePasswordChange}
               error={!!passwordError}
               helperText={passwordError}
-              startIcon={<Lock sx={{ color: '#fff' }} />}
+              startIcon={<Lock sx={{ color: '#5B6B94' }} />}
               endIcon={showPassword ? <VisibilityOff /> : <Visibility />}
               onEndIconClick={() => setShowPassword(!showPassword)}
             />
@@ -301,7 +301,7 @@ const Register = () => {
               onChange={handleConfirmPasswordChange}
               error={!!confirmPasswordError}
               helperText={confirmPasswordError}
-              startIcon={<Lock sx={{ color: '#fff' }} />}
+              startIcon={<Lock sx={{ color: '#5B6B94' }} />}
               endIcon={showConfirmPassword ? <VisibilityOff /> : <Visibility />}
               onEndIconClick={() => setShowConfirmPassword(!showConfirmPassword)}
             />
@@ -336,7 +336,7 @@ const Register = () => {
         flexDirection: { xs: 'column', md: 'row' }
       }}
       >
-        <Box flex="0 0 60%" display="flex" justifyContent="center" alignItems="center">
+        <Box flex="0 0 60%"  justifyContent="center" alignItems="center">
           <Container maxWidth="sm">
             <Stack spacing={2} alignItems="center">
               <Box
@@ -501,8 +501,12 @@ const Register = () => {
                 </Typography>
               </Box>
             </Stack>
+
           </Container>
+        <Footer />
+          
         </Box>
+        
 
         <WelcomePanel
           title="Bienvenue parmi nous !"
@@ -513,7 +517,6 @@ const Register = () => {
         alignItems: 'center',
         width: '100%',
       }}>
-        <Footer />
       </Container>
     </>
   );

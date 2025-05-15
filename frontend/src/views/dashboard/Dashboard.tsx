@@ -217,11 +217,12 @@ const Dashboard = () => {
         py: 4,
         px: { xs: 2, sm: 4 },
         flex: 1,
-        // overflow: 'scroll',
-        bgcolor: '#f5f5f5'
+        overflow: 'auto',
       }
       }
     >
+
+
       <Typography variant="h4" sx={{ mb: 4, fontWeight: 500 }}>
         Tableau de bord
       </Typography>
@@ -240,11 +241,13 @@ const Dashboard = () => {
         {stats.map((stat, index) => (
           <Paper
             key={index}
+            variant='outlined'
             sx={{
               p: 3,
               borderRadius: 2,
-              boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
-              background: '#fff'
+              boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+              backgroundColor: 'rgba(255,255,255,0.8)',
+              backdropFilter: 'blur(10px)',
             }}
           >
             <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
@@ -272,7 +275,13 @@ const Dashboard = () => {
       </Box>
 
       {/* Recent animals table */}
-      <Paper sx={{ mb: 4, borderRadius: 2, overflow: 'hidden', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
+      <Paper variant='outlined' sx={{  mb: 4, 
+      
+    borderRadius: 2, 
+    overflow: 'hidden', 
+    boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+    backgroundColor: 'rgba(255,255,255,0.8)',
+    backdropFilter: 'blur(10px)',}}>
         <Box sx={{
           p: 3,
           display: 'flex',
@@ -294,9 +303,11 @@ const Dashboard = () => {
             {user?.role?.name === RoleEnum.SHELTER && (
               <Button
                 variant="contained"
+
                 color="primary"
                 onClick={() => navigate(`${Path.DASHBOARD}${Path.ANIMAL_CREATE}`)}
                 sx={{
+                  borderRadius: 2,
                   textTransform: 'none',
                   fontWeight: 500
                 }}
@@ -383,7 +394,7 @@ const Dashboard = () => {
                             }}
                             sx={{
                               textTransform: 'none',
-                              fontWeight: 500
+                              fontWeight: 500,
                             }}
                           >
                             Modifier
@@ -401,7 +412,14 @@ const Dashboard = () => {
       </Paper>
 
       {/* Recent requests table */}
-      <Paper sx={{ borderRadius: 2, overflow: 'hidden', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>
+      <Paper variant='outlined' sx={{
+        mb: 4,
+        borderRadius: 2,
+        overflow: 'hidden',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+        backgroundColor: 'rgba(255,255,255,0.8)',
+        backdropFilter: 'blur(10px)',
+      }}>
         <Box sx={{
           p: 3,
           display: 'flex',
@@ -492,6 +510,7 @@ const Dashboard = () => {
           </Table>
         </TableContainer>
       </Paper>
+
     </Container >
   );
 };
