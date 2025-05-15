@@ -31,6 +31,8 @@ export const AnimalListCard = ({ animal }: { animal: AnimalWithRelations }) => {
         <CardMedia
           component="img"
           image={animal.picture || '/no-image.png'}
+          width='200px'
+          height='200px'
           alt={animal.name}
           sx={{
             position: 'absolute',

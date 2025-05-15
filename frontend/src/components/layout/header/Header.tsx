@@ -3,7 +3,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from 'react';
 import { Link } from 'react-router';
-import logo from '../../../assets/logo.png';
+import logo from '../../../assets/logo.webp';
 import { useAuth } from '../../../hooks/useAuth';
 import ButtonPurple from '../../ui/ButtonPurple';
 import './Header.css';

@@ -2,7 +2,7 @@ import { Lock, Person, Visibility, VisibilityOff } from '@mui/icons-material';
 import { Box, Button, Container, Stack, Typography } from '@mui/material';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router';
-import logo from '../../assets/logo.png';
+import logo from '../../assets/logo.webp';
 import PetFosterTextField from '../../components/PetFosterTextField/PetFosterTextField';
 import WelcomePanel from '../../components/WelcomePanel/WelcomePanel';
 import { useAuth } from '../../hooks/useAuth';

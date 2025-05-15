@@ -1,7 +1,7 @@
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Alert, Container, Slide, SlideProps, Snackbar, Stack, Typography } from "@mui/material";
 import React, { ChangeEvent, useEffect, useState } from "react";
-import heart from "../../assets/heart.png";
+import heart from "../../assets/heart.webp";
 import { LoaderPetFoster } from "../../components/Loader/LoaderPetFoster";
 import PetFosterTextField from "../../components/PetFosterTextField/PetFosterTextField";
 import ButtonPurple from "../../components/ui/ButtonPurple";

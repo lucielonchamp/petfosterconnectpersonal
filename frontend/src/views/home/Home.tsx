@@ -1,10 +1,10 @@
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Container, Typography } from '@mui/material';
-import cat from '../../assets/cat.png';
-import corgi from '../../assets/corgi.png';
-import dog from '../../assets/dog.png';
-import doggi from '../../assets/doggi.png';
-import heart from '../../assets/heart.png';
+import cat from '../../assets/cat.webp';
+import corgi from '../../assets/corgi.webp';
+import dog from '../../assets/dog.webp';
+import doggi from '../../assets/doggi.webp';
+import heart from '../../assets/heart.webp';
 import Header from '../../components/layout/header/Header';
 import ButtonPurple from '../../components/ui/ButtonPurple';
 import './Home.css';
