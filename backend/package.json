@@ -8,7 +8,7 @@
     "build": "tsc",
     "serve": "node dist/index.js",
     "db:seed": "prisma db seed",
-    "test": "jest"
+    "test": "NODE_ENV=test jest"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

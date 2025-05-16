@@ -1,6 +1,7 @@
 import express from 'express';
 import * as Controller from '../controllers/animal.controller';
 import { authMiddleware, isFosterOwnerMiddleware, roleMiddleware } from '../middlewares/authMiddleware';
+import { RoleEnum } from '../interfaces/role';
 
 const router = express.Router();
 
@@ -237,7 +238,7 @@ const router = express.Router();
 
 router.get('/', Controller.getAnimals);
 router.get('/:id', Controller.getAnimalById);
-router.post('/', authMiddleware, roleMiddleware(['shelter']), Controller.createAnimal);
+router.post('/', authMiddleware, roleMiddleware([RoleEnum.SHELTER]), Controller.createAnimal);
 router.put('/:id', authMiddleware, roleMiddleware(['shelter']), Controller.updateAnimal);
 router.delete('/:id', authMiddleware, roleMiddleware(['shelter']), Controller.deleteAnimal);
 router.get('/shelter/:shelterId', Controller.getAnimalsByShelter);

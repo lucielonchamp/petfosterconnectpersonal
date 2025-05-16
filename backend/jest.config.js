@@ -1,3 +1,7 @@
-/** @type {import('ts-jest').JestConfigWithTsJest} */
-export const preset = 'ts-jest';
-export const testEnvironment = 'node';
+// jest.config.js
+module.exports = {
+  preset: 'ts-jest',
+  testEnvironment: 'node',
+  clearMocks: true,
+  setupFiles: ['./jest.setup.js'], // Ajustez le chemin si nécessaire
+};
