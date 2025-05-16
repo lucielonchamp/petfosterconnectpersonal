@@ -34,12 +34,12 @@ export const RequestList = () => {
 
   return (
 
-    <Container
+    <Container maxWidth={false}
       sx={{
         py: 4,
         px: { xs: 2, sm: 4 },
         flex: 1,
-        overflow: 'scroll',
+        // overflow: 'scroll',
         bgcolor: 'rgba(255,255,255,0.8)',
       }}>
 

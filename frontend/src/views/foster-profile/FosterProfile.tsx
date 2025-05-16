@@ -203,7 +203,7 @@ const FosterProfile = () => {
   }
 
   return (
-    <Container sx={{ bgcolor: '#f5f5f5' }}>
+    <Container maxWidth={false}>
 
       <Snackbar
         open={snackbar.open}
@@ -238,8 +238,8 @@ const FosterProfile = () => {
 
       <Stack margin={4} direction="row" justifyContent="space-between">
         <Stack>
-          <Typography variant="h1">Profil de ma famille</Typography>
-          <Typography variant="h2">{`${fosterWithUser.firstName} ${fosterWithUser.lastName}`}</Typography>
+          <Typography variant="h4" fontWeight={500}>Profil de ma famille</Typography>
+          <Typography variant="h5" fontWeight={600}>{`${fosterWithUser.firstName} ${fosterWithUser.lastName}`}</Typography>
         </Stack>
         <div className="img-right">
           <img src={heart} className="heart" alt="" height="100px" width="auto" />
