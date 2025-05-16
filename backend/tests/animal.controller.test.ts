@@ -1,4 +1,4 @@
-import { Animal, AnimalStatus, Prisma } from '@prisma/client'; // Importez les types nécessaires
+import { Prisma, Animal, AnimalStatus } from '@prisma/client';
 import { describe, it, expect, jest, beforeEach } from '@jest/globals';
 import { RoleEnum } from '../src/interfaces/role';
 import { NextFunction, Response, Request } from 'express';
@@ -58,7 +58,6 @@ jest.mock('@prisma/client', () => {
   };
 });
 
-
 // 2. Mock pour csrfMiddleware
 jest.mock('../src/middlewares/csrfMiddleware', () => ({
   validateCsrfToken: (req: Request, res: Response, next: NextFunction) => {
@@ -68,7 +67,7 @@ jest.mock('../src/middlewares/csrfMiddleware', () => ({
   generateCsrfToken: (req: Request, res: Response, next: NextFunction) => {
     // console.log('MOCK generateCsrfToken (from csrfMiddleware) CALLED');
     res.status(200).json({ csrfToken: 'mocked-csrf-token-from-csrf-module' });
-  }
+  },
 }));
 
 // 3. Mock pour authMiddleware
@@ -90,7 +89,9 @@ jest.mock('../src/middlewares/authMiddleware', () => {
         if (req.user && req.user.role && allowedRoles.includes(req.user.role)) {
           next();
         } else {
-          res.status(403).json({ success: false, message: 'Accès refusé - Rôle insuffisant (mock)' });
+          res
+            .status(403)
+            .json({ success: false, message: 'Accès refusé - Rôle insuffisant (mock)' });
         }
       };
     },
@@ -107,7 +108,6 @@ import { app } from '../src/index';
 
 // --- TESTS ---
 describe('Animal Controller - createAnimal', () => {
-
   beforeEach(() => {
     mockPrismaClient.animal.create.mockReset();
     mockPrismaClient.$disconnect.mockReset();
@@ -137,7 +137,7 @@ describe('Animal Controller - createAnimal', () => {
       shelterId: mockAnimalData.shelterId,
       picture: '',
       status: AnimalStatus.sheltered,
-      fosterId: null
+      fosterId: null,
     };
 
     mockPrismaClient.animal.create.mockResolvedValue(expectedCreatedAnimal);
@@ -165,7 +165,7 @@ describe('Animal Controller - createAnimal', () => {
         breed: mockAnimalData.breed,
         description: mockAnimalData.description,
         sex: mockAnimalData.sex.toString().toLowerCase(),
-        picture: "",
+        picture: '',
         status: AnimalStatus.sheltered,
         shelter: {
           connect: {
@@ -182,10 +182,7 @@ describe('Animal Controller - createAnimal', () => {
   });
 
   it('should return 400 if required fields are missing', async () => {
-
-    const response = await request(app)
-      .post('/animal')
-      .send({}); // Envoyez un corps vide
+    const response = await request(app).post('/animal').send({}); // Envoyez un corps vide
 
     expect(response.status).toBe(400);
     expect(response.body.success).toBe(false);
@@ -194,8 +191,7 @@ describe('Animal Controller - createAnimal', () => {
   });
 
   it('should return 500 if there is a server error during Prisma operation', async () => {
-
-    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => { }); // Supprime le log
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {}); // Supprime le log
 
     const mockAnimalData = {
       name: 'Buddy',
