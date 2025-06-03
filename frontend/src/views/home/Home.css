@@ -1,0 +1,130 @@
+#home-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#home {
+    div {
+        display: flex;
+        justify-content: space-evenly;
+
+        .img-left {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .img-right {
+            display: flex;
+            align-items: flex-end;
+        }
+
+        img.heart {
+            width: 70px;
+        }
+
+        img.dog {
+            width: 125px;
+        }
+
+        .title {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 500px;
+            gap: 20px;
+
+            h1 {
+                background: linear-gradient(90deg, var(--color-purple) 0%, var(--color-purple) 69%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                font-weight: var(--font-weight-semibold);
+                text-align: center;
+            }
+
+            .text-bold {
+                background: linear-gradient(90deg, #151515 0%, #584F4F 69%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                text-align: center;
+                text-wrap: balance;
+                margin-bottom: 15px;
+            }
+
+            a.btn-blue {
+                display: flex;
+                align-items: center;
+                gap: 0 10px;
+                padding: 4px 5px 4px 15px;
+                border-radius: 50px;
+                font-family: var(--font);
+                font-weight: var(--font-weight-semibold);
+                font-size: 18px;
+            }
+        }
+    }
+
+    .imgs {
+        display: flex;
+        margin: 6rem 0 2rem 0;
+        gap: 20px;
+
+        img {
+            width: 255px;
+        }
+    }
+
+    .imgs div {
+        display: flex;
+    }
+
+    .imgs div:first-of-type {
+        align-items: flex-start;
+    }
+
+    .imgs div:last-of-type {
+        align-items: flex-end;
+    }
+}
+
+@media(max-width: 976px) {
+
+    #home .imgs div:last-of-type,
+    #home .imgs div:first-of-type {
+        display: none;
+    }
+}
+
+@media (max-width: 560px) {
+    #home>div {
+        position: relative;
+    }
+
+    #home>div .title {
+        padding: 1rem 0;
+    }
+
+    #home .img-left,
+    #home .img-right {
+        position: absolute;
+    }
+
+    #home .img-left img.heart {
+        width: 55px;
+    }
+
+    #home .img-right img.dog {
+        width: 70px;
+    }
+
+    #home .img-left {
+        bottom: -60px;
+        left: 0px;
+    }
+
+    #home .img-right {
+        top: -33px;
+        right: 0px;
+    }
+}
